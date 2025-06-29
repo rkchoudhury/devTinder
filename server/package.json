@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/rkchoudhury/devTinder/issues"
   },
-  "homepage": "https://github.com/rkchoudhury/devTinder#readme"
+  "homepage": "https://github.com/rkchoudhury/devTinder#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
 }
