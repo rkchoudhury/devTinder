@@ -26,6 +26,24 @@ const connectionRequestSchema = new Schema(
     }
 );
 
+/**
+ * Schema Validation
+ * 
+ * Pre saving validation
+ *  - Can be used for logging, monitoring purposes.
+ *  - We can add validation logic here
+ */
+connectionRequestSchema.pre("save", function (next) {
+    const connectionRequest = this;
+    const { fromUserId, toUserId } = connectionRequest;
+
+    if (fromUserId.equals(toUserId)) {
+        throw new Error("You can't send request to yourself!");
+    }
+
+    next(); // IMP: Call next otherwise we can't move ahead.
+});
+
 // Model always starts with Capital letter
 const ConnectionRequest = mongoose.model("ConnectionRequest", connectionRequestSchema);
 

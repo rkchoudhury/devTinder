@@ -19,7 +19,8 @@ requestRouter.post("/request/send/:status/:userId", userAuth, async (req, res) =
 
         const toUser = await User.findOne({ _id: toUserId });
         if (!toUser) {
-            res.status(404).json({ message: "User not found." });
+            // Always return the statement otherwise below code will be executed
+            return res.status(404).json({ message: "User not found." });
         }
 
         // Check if there is any existing connection request
