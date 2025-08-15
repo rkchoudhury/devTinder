@@ -23,17 +23,20 @@ profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
     try {
         const data = req.body;
 
-        const shouldAllowUpdate = validateEditProfileData(data);
-        if (!shouldAllowUpdate) {
-            return res.status(400).send("Invalid edit request!");
-        }
+        // 1. Validate received data
+        validateEditProfileData(data);
 
         const loggedInUser = req.user;
+
+        // 2. Update the loggedInUser data
         Object.keys(data).forEach(key => loggedInUser[key] = data[key]);
+
+        // 3. Save updated loggedInUser data
         await loggedInUser.save();
 
+        // 4. Send success message back to the client
         res.json({
-            message: "User profile updated successfully.",
+            message: `${loggedInUser.firstName}, your profile updated successfully`,
             data: loggedInUser,
         })
 
