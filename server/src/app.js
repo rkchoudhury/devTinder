@@ -1,21 +1,44 @@
-// Starting point of our node.js application
+const express = require("express");
+const cookieParser = require('cookie-parser');
 
-const express = require('express');
+const connectDB = require("./config/database");
+const authRouter = require("./routes/auth");
 
 const app = express();
 
-app.use("/test", (req, res) => {
-    res.send("Hello from the server test!");
+// This middleware converts the request object to the readable string
+app.use(express.json()); // The client must send requests with Content-Type: application/json for express.json() to work
+
+// Parses Cookie header and populate req.cookies with an object keyed by the cookie names
+app.use(cookieParser());
+
+// Added all the API routes here
+app.use("/", authRouter);
+
+
+// Default route handler
+app.use("/", (_req, res) => {
+    res.send("Hello from server!");
 });
 
-app.use("/", (req, res) => {
-    res.send("Hello from the server!");
-});
+connectDB()
+    .then(() => {
+        console.log("Database connected successfully");
 
-// app.use((req, res) => {
-//     res.send("Hello from the server!")
-// });
+        app.listen(7000, () => {
+            console.log("Server is running at 7000");
+        });
+    })
+    .catch((error) => {
+        console.log("Error: Database cannot be connected", error.message);
+    });
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
-});
+/**
+ * Proper way to connect to database
+ *    - First connect to DB then start the server
+ * 
+ * Output:
+ * 
+    Database connected successfully
+    Server is running at 7000
+ */

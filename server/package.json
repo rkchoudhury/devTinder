@@ -4,8 +4,7 @@
   "description": "Tinder for devs",
   "main": "index.js",
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js"
+    "start": "nodemon src/app.js"
   },
   "repository": {
     "type": "git",
@@ -23,7 +22,12 @@
   },
   "homepage": "https://github.com/rkchoudhury/devTinder#readme",
   "dependencies": {
-    "express": "^5.1.0",
-    "nodemon": "^3.1.10"
+    "bcrypt": "6.0.0",
+    "cookie-parser": "1.4.7",
+    "express": "5.1.0",
+    "jsonwebtoken": "9.0.2",
+    "mongoose": "8.6.1",
+    "nodemon": "3.1.10",
+    "validator": "13.15.15"
   }
 }
