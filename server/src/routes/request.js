@@ -11,16 +11,18 @@ requestRouter.post("/request/send/:status/:userId", userAuth, async (req, res) =
         const { status, userId: toUserId } = req.params;
         const fromUserId = req.user._id;
 
-        const isValidStatus = ["ignored", "interested"].includes(status);
-        if (!isValidStatus) {
-            throw new Error("Invalid status!")
+        // Validate the received data
+        const allowedStatus = ["ignored", "interested"];
+        if (!allowedStatus.includes(status)) {
+            throw new Error("Invalid status type: " + status);
         }
 
-        const isUserExist = await User.findOne({ _id: toUserId });
-        if (!isUserExist) {
-            throw new Error("Invalid userId!");
+        const toUser = await User.findOne({ _id: toUserId });
+        if (!toUser) {
+            res.status(404).json({ message: "User not found." });
         }
 
+        // Check if there is any existing connection request
         const isRequestExist = await ConnectionRequest.findOne({
             $or: [
                 { fromUserId, toUserId },
@@ -29,9 +31,10 @@ requestRouter.post("/request/send/:status/:userId", userAuth, async (req, res) =
         });
 
         if (isRequestExist) {
-            throw new Error("There is already a connection request from the requested user.");
+            throw new Error("Connection request already exist.");
         }
 
+        // Saving the data into the DB
         const data = new ConnectionRequest({
             fromUserId,
             toUserId,
@@ -45,7 +48,7 @@ requestRouter.post("/request/send/:status/:userId", userAuth, async (req, res) =
             data
         })
     } catch (error) {
-        res.status(400).send("Error: " + error.message);
+        res.status(400).json({ message: error.message });
     }
 });
 
