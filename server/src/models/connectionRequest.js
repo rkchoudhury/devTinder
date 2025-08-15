@@ -14,7 +14,10 @@ const connectionRequestSchema = new Schema(
         },
         status: {
             type: String,
-            enum: ["ignored", "interested"],
+            enum: {
+                values: ["ignored", "interested"],
+                message: '{VALUE} is incorrect status type.'
+            },
             required: true,
         }
     },
@@ -23,6 +26,7 @@ const connectionRequestSchema = new Schema(
     }
 );
 
+// Model always starts with Capital letter
 const ConnectionRequest = mongoose.model("ConnectionRequest", connectionRequestSchema);
 
 module.exports = ConnectionRequest;
