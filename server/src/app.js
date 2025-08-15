@@ -1,12 +1,23 @@
-// Starting point of our node.js application
-
-const express = require('express');
+const express = require("express");
+const cookieParser = require('cookie-parser');
 
 const connectDB = require("./config/database");
+const authRouter = require("./routes/auth");
 
 const app = express();
 
-app.use("/", (req, res) => {
+// This middleware converts the request object to the readable string
+app.use(express.json()); // The client must send requests with Content-Type: application/json for express.json() to work
+
+// Parses Cookie header and populate req.cookies with an object keyed by the cookie names
+app.use(cookieParser());
+
+// Added all the API routes here
+app.use("/", authRouter);
+
+
+// Default route handler
+app.use("/", (_req, res) => {
     res.send("Hello from server!");
 });
 
@@ -21,3 +32,13 @@ connectDB()
     .catch((error) => {
         console.log("Error: Database cannot be connected", error.message);
     });
+
+/**
+ * Proper way to connect to database
+ *    - First connect to DB then start the server
+ * 
+ * Output:
+ * 
+    Database connected successfully
+    Server is running at 7000
+ */
