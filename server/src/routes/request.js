@@ -8,23 +8,23 @@ const requestRouter = express.Router();
 
 requestRouter.post("/request/send/:status/:userId", userAuth, async (req, res) => {
     try {
-        const { status, userId } = req.params;
-        const loggedInUser = req.user;
+        const { status, userId: toUserId } = req.params;
+        const fromUserId = req.user._id;
 
         const isValidStatus = ["ignored", "interested"].includes(status);
         if (!isValidStatus) {
             throw new Error("Invalid status!")
         }
 
-        const isUserExist = await User.findOne({ _id: userId });
+        const isUserExist = await User.findOne({ _id: toUserId });
         if (!isUserExist) {
             throw new Error("Invalid userId!");
         }
 
         const isRequestExist = await ConnectionRequest.findOne({
             $or: [
-                { fromUserId: loggedInUser._id, toUserId: userId },
-                { fromUserId: userId, toUserId: loggedInUser._id }
+                { fromUserId, toUserId },
+                { fromUserId: toUserId, toUserId: fromUserId }
             ]
         });
 
@@ -32,15 +32,18 @@ requestRouter.post("/request/send/:status/:userId", userAuth, async (req, res) =
             throw new Error("There is already a connection request from the requested user.");
         }
 
-        const request = new ConnectionRequest({
-            fromUserId: loggedInUser._id,
-            toUserId: userId,
+        const data = new ConnectionRequest({
+            fromUserId,
+            toUserId,
             status
         });
 
-        await request.save();
+        await data.save();
 
-        res.status(200).send("Connection request send successfully");
+        res.json({
+            message: 'Connection request sent successfully.',
+            data
+        })
     } catch (error) {
         res.status(400).send("Error: " + error.message);
     }

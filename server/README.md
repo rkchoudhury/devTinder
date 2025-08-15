@@ -41,3 +41,7 @@ Install nodemon in global level
     GET /profile/view
     PATCH /profile/edit
     PATCH /profile/password -> Forgot password API
+
+# connectionRequestRouter
+
+    POST /request/send/:status/:userId
