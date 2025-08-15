@@ -52,6 +52,9 @@ const validateEditProfileData = (data) => {
     if (shouldAllowUpdate) {
         const { firstName, lastName, about, photoUrl, skills } = data;
 
+        // Further data validation:
+        // If we have added any condtion in the User schema level then 
+        // that validation will be also applied when the data is being entered into the Database.
         if (firstName?.length < 4 || firstName?.length > 50) {
             throw new Error("First Name is not valid");
         } else if (lastName?.length > 50) {
