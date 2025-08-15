@@ -27,3 +27,17 @@ Install nodemon in global level
   - `Solution`: Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 
     [https://stackoverflow.com/questions/63423584/how-to-fix-error-nodemon-ps1-cannot-be-loaded-because-running-scripts-is-disabl]
+
+# DevTinder APIs
+
+## authRouter
+
+    POST /signup
+    POST /login
+    POST /logout
+
+## profileRouter
+
+    GET /profile/view
+    PATCH /profile/edit
+    PATCH /profile/password -> Forgot password API

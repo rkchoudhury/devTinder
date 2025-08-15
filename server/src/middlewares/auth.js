@@ -21,7 +21,7 @@ const userAuth = async (req, res, next) => {
         }
 
         // 3. Find the user
-        const user = await User.findOne({ _id: _id });
+        const user = await User.findOne({ _id: _id }); // The user is the instance of User object. And it will hold the reference.
 
         if (!user) {
             throw new Error("User not found,")

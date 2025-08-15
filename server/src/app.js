@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 
 const connectDB = require("./config/database");
 const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(cookieParser());
 
 // Added all the API routes here
 app.use("/", authRouter);
+app.use("/", profileRouter);
 
 
 // Default route handler
