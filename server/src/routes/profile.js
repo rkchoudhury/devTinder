@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 
 const { userAuth } = require("../middlewares/auth");
-const { validateForgotPasswordData } = require("../utils/validation");
+const { validateForgotPasswordData, validateEditProfileData } = require("../utils/validation");
 
 const User = require("../models/user");
 
@@ -14,6 +14,29 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
 
         // Sending custom data as a json from the server
         res.status(200).json({ data: user, status: "success" });
+    } catch (error) {
+        res.status(400).send("Error: " + error.message);
+    }
+});
+
+profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
+    try {
+        const data = req.body;
+
+        const shouldAllowUpdate = validateEditProfileData(data);
+        if (!shouldAllowUpdate) {
+            return res.status(400).send("Invalid edit request!");
+        }
+
+        const loggedInUser = req.user;
+        Object.keys(data).forEach(key => loggedInUser[key] = data[key]);
+        await loggedInUser.save();
+
+        res.json({
+            message: "User profile updated successfully.",
+            data: loggedInUser,
+        })
+
     } catch (error) {
         res.status(400).send("Error: " + error.message);
     }

@@ -36,9 +36,26 @@ const validateForgotPasswordData = (emailId, password) => {
     }
 }
 
+const validateEditProfileData = (data) => {
+    const allowedFieldUpdate = [
+        "firstName",
+        "lastName",
+        "gender",
+        "age",
+        "gender",
+        "about",
+        "photoUrl",
+        "skills",
+    ];
+
+    const shouldAllowUpdate = Object.keys(data).every(key => allowedFieldUpdate.includes(key));
+    return shouldAllowUpdate;
+};
+
 
 module.exports = {
     validateSignUpData,
     validateLoginData,
+    validateEditProfileData,
     validateForgotPasswordData,
 }
