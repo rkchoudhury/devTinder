@@ -13,11 +13,13 @@ userRouter.get("/user/requests/received", userAuth, async (req, res) => {
         const connectionRequests = await ConnectionRequest.find({
             toUserId: loggedInUserId,
             status: "interested",
-        });
+        }).populate("fromUserId", ["firstName", "lastName", "age", "photoUrl", "skills"]);
 
-        if (connectionRequests?.length === 0) {
-            return res.json({ message: "No pending connection request found." });
-        }
+        // Alternative way
+        // const connectionRequests = await ConnectionRequest.find({
+        //     toUserId: loggedInUserId,
+        //     status: "interested",
+        // }).populate("fromUserId", "firstName lastName age photoUrl skills");
 
         res.json({ message: "Data fetched successfully.", data: connectionRequests });
     } catch (error) {
