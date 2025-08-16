@@ -1,6 +1,7 @@
 const express = require("express");
 const { userAuth } = require("../middlewares/auth");
 const ConnectionRequest = require("../models/connectionRequest");
+const User = require("../models/user");
 
 const userRouter = express.Router();
 
@@ -63,6 +64,46 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
         res.json({ message: "Data fetched successfully.", data });
     } catch (error) {
         res.status(400).send({ message: "Error: " + error.message });
+    }
+});
+
+/**
+ * Get all the users expects following users
+ *  - self
+ *  - which you have already ignored 
+ *  - which you have already shown interested
+ *  - which you have rejected/approved the request
+ * 
+ * ie. We have to hide all the users that you have ignored/iterested/accepted/rejected the connection request
+ * ie. To the users to which a record available in the connectionRequest table
+ */
+userRouter.get("/user/feed", userAuth, async (req, res) => {
+    try {
+        const loggedInUser = req.user;
+        const loggedInUserId = loggedInUser._id;
+
+        const existingConnectionRequests = await ConnectionRequest.find({
+            $or: [
+                { fromUserId: loggedInUserId },
+                { toUserId: loggedInUserId }
+            ]
+        });
+
+        console.log(existingConnectionRequests)
+
+        const existingRequestedUserIds = existingConnectionRequests.map(request => {
+            if (request.fromUserId.toString() === loggedInUserId.toString()) {
+                return request.toUserId;
+            } else {
+                return request.fromUserId;
+            }
+        });
+
+        const users = await User.find({ _id: { $nin: [...existingRequestedUserIds, loggedInUserId] } });
+
+        res.json({ message: 'Data fetched successfully.', data: users });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
     }
 });
 
