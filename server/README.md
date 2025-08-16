@@ -46,3 +46,11 @@ Install nodemon in global level
 
     POST /request/send/:status/:userId
     POST /request/review/:status/:requestId
+
+# userRouter
+
+    GET /user/requests/received
+    GET /user/connections
+    GET /user/feed -> Get you the profile of other users on platform
+
+Status: ignored, interested, accepted, rejected
