@@ -45,3 +45,4 @@ Install nodemon in global level
 # connectionRequestRouter
 
     POST /request/send/:status/:userId
+    POST /request/review/:status/:requestId
