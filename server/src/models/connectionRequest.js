@@ -7,11 +7,12 @@ const connectionRequestSchema = new Schema(
         fromUserId: {
             type: Schema.Types.ObjectId,
             required: true,
-            ref: "User"
+            ref: "User", // Reference to the User collection
         },
         toUserId: {
             type: Schema.Types.ObjectId,
             required: true,
+            ref: "User", // Reference to the User collection
         },
         status: {
             type: String,
