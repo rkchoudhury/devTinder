@@ -49,13 +49,14 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
                 { fromUserId: loggedInUserId },
             ],
             status: "accepted"
-        }).populate("fromUserId", USER_SAFE_FIELDS).populate("toUserId", USER_SAFE_FIELDS);
+        }).populate("fromUserId", USER_SAFE_FIELDS).populate("toUserId", USER_SAFE_FIELDS); // It will populate the User data inside the respective keys
 
+        // Extracted only the user information from the connectionData List
         const data = connectionData.map(connection => {
-            if (connection.fromUserId._id.toString() === loggedInUserId.toString()) {
-                return connection.toUserId
+            if (connection.fromUserId._id.toString() === loggedInUserId.toString()) { // the connection that is sent by you
+                return connection.toUserId; // the user to whom you have sent out a connection request
             } else {
-                return connection.fromUserId
+                return connection.fromUserId; // the user that has sent the connection request to you
             }
         });
 
