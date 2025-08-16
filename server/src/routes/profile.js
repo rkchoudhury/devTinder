@@ -57,6 +57,7 @@ profileRouter.patch("/profile/password", async (req, res) => {
         const user = await User.findOne({ emailId: emailId });
 
         if (!user) {
+            // return res.status(400).send("Invalid Email Id.");
             throw new Error("Invalid Email Id.");
         }
 
