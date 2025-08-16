@@ -53,4 +53,50 @@ requestRouter.post("/request/send/:status/:userId", userAuth, async (req, res) =
     }
 });
 
+/**
+ * Thought Procss:
+ *      User is reviewing the requests (interested request only). He can either accept/reject the request.
+ * 
+ * /request/review/:status/:requestId
+ *      1. Validate the status
+ *          - status can only be accepted/rejected.
+ *      2. Validate requestId
+ *          - check if requestId is there in connectionRequest DB or not
+ *      3. LoggedIn user's id should match the toUserId
+ *      4. connection request should be interested
+ */
+requestRouter.post("/request/review/:status/:requestId", userAuth, async (req, res) => {
+    try {
+        const { status, requestId } = req.params;
+        const loggedInUser = req.user;
+
+        // validate status
+        const allowedStatus = ["accepted", "rejected"];
+        if (!allowedStatus.includes(status)) {
+            throw new Error("Invalid status type: " + status);
+        }
+
+        // validate requestId - if request id present inside the DB
+        // loggedInUserId should be toUserId
+        // status should be interested
+        const connectionRequest = await ConnectionRequest.findOne({
+            _id: requestId,
+            toUserId: loggedInUser._id,
+            status: 'interested'
+        });
+
+        if (!connectionRequest) {
+            return res.status(404).json({ message: "Connection request not found." });
+        }
+
+        // Update the status & DB
+        connectionRequest.status = status;
+        const data = await connectionRequest.save();
+
+        res.json({ message: `Connection request ${status}.`, data });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+});
+
 module.exports = requestRouter;
