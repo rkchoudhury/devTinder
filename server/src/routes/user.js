@@ -99,7 +99,9 @@ userRouter.get("/user/feed", userAuth, async (req, res) => {
             }
         });
 
-        const users = await User.find({ _id: { $nin: [...existingRequestedUserIds, loggedInUserId] } });
+        const users = await User.find({
+            _id: { $nin: [...existingRequestedUserIds, loggedInUserId] },
+        }).select(USER_SAFE_FIELDS);
 
         res.json({ message: 'Data fetched successfully.', data: users });
     } catch (error) {
