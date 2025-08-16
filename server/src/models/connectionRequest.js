@@ -27,6 +27,11 @@ const connectionRequestSchema = new Schema(
 );
 
 /**
+ * Compound Indexes: to optimal the connectionRequest query search on fromUserId & toUserId together
+ */
+connectionRequestSchema.index({ fromUserId: 1, toUserId: 1 });
+
+/**
  * Schema Validation
  * 
  * Pre saving validation
