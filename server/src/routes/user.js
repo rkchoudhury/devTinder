@@ -1,6 +1,7 @@
 const express = require("express");
 const { userAuth } = require("../middlewares/auth");
 const ConnectionRequest = require("../models/connectionRequest");
+const User = require("../models/user");
 
 const userRouter = express.Router();
 
@@ -66,4 +67,72 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
     }
 });
 
+/**
+ * Get all the users expects following users
+ *  - self
+ *  - which you have already ignored 
+ *  - which you have already shown interested
+ *  - which you have rejected/approved the request
+ * 
+ * ie. We have to hide all the users that you have ignored/iterested/accepted/rejected the connection request
+ * ie. To the users to which a record available in the connectionRequest table
+ */
+userRouter.get("/user/feed", userAuth, async (req, res) => {
+    try {
+        const loggedInUserId = req.user._id;
+        const page = parseInt(req.query.page) || 1;
+        let limit = parseInt(req.query.limit) || 10;
+
+        // Validate limit
+        limit = limit > 50 ? 50 : limit;
+
+        // Added skip logic
+        const skip = (page - 1) * limit;
+
+        const existingConnectionRequests = await ConnectionRequest.find({
+            $or: [
+                { fromUserId: loggedInUserId },
+                { toUserId: loggedInUserId }
+            ]
+        }).select(["fromUserId", "toUserId"]);
+
+        const hideUsersFromFeed = new Set(); // stores unique data
+
+        // Hide self
+        hideUsersFromFeed.add(loggedInUserId);
+
+        // Hide existing connections requested users if any
+        existingConnectionRequests.forEach(request => {
+            const { fromUserId, toUserId } = request;
+            hideUsersFromFeed.add(fromUserId);
+            hideUsersFromFeed.add(toUserId);
+        });
+
+        const users = await User.find({
+            _id: { $nin: Array.from(hideUsersFromFeed) },
+        })
+            .select(USER_SAFE_FIELDS)
+            .skip(skip)
+            .limit(limit);
+
+        res.json({ message: 'Data fetched successfully.', data: users });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+});
+
 module.exports = userRouter;
+
+/**
+ * Pagination:
+ * 
+ * /user/feed?page=1&limit=10 -> 1-10
+ * /user/feed?page=2&limit=10 -> 11-20
+ * /user/feed?page=3&limit=10 -> 21-30
+ * 
+ * MongoDB provides two methods:
+ *      .skip()
+ *      .limit()
+ *
+ * skip = (page - 1) * limit
+ */
