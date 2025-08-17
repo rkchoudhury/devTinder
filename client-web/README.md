@@ -9,9 +9,13 @@ The project is created using Vite + React
 1. Install Vite
 
    ```sh
-   npm create vite@latest devtinder-web -- --template react-ts
+   npm create vite@latest client-web -- --template react-ts
    ```
 
-2. cd devtinder-web
-   npm install
-   npm run dev
+2. Run the app
+
+   ```
+    cd client-web
+    npm install
+    npm run dev
+   ```
