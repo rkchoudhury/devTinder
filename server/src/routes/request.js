@@ -45,9 +45,12 @@ requestRouter.post("/request/send/:status/:userId", userAuth, async (req, res) =
         await data.save();
 
         res.json({
-            message: 'Connection request sent successfully.',
-            data
-        })
+            message:
+                status === "interested"
+                    ? `${req.user.firstName} is interested in ${toUser.firstName}.`
+                    : `${req.user.firstName} ignored ${toUser.firstName}.`,
+            data,
+        });
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
