@@ -122,3 +122,17 @@ userRouter.get("/user/feed", userAuth, async (req, res) => {
 });
 
 module.exports = userRouter;
+
+/**
+ * Pagination:
+ * 
+ * /user/feed?page=1&limit=10 -> 1-10
+ * /user/feed?page=2&limit=10 -> 11-20
+ * /user/feed?page=3&limit=10 -> 21-30
+ * 
+ * MongoDB provides two methods:
+ *      .skip()
+ *      .limit()
+ *
+ * skip = (page - 1) * limit
+ */
