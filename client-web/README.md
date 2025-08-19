@@ -23,3 +23,5 @@ The project is created using React + TypeScript + Vite
 3. Install [Tailwind CSS using Vite](https://v3.tailwindcss.com/docs/guides/vite)
 
 4. Install Component Library - [daisyui](https://daisyui.com/docs/install/)
+
+5. Install [react-router-dom](https://www.npmjs.com/package/react-router-dom) for navigation
