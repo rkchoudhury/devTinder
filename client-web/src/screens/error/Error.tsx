@@ -13,8 +13,7 @@ const Error = () => {
   };
 
   return (
-    <div className="bg-black h-screen text-white">
-      <div>{/* <img src={NETFLIX_LOGO} alt="logo" className="w-44" /> */}</div>
+    <div className="bg-error text-neutral-content h-screen text-white">
       <div className="flex justify-center items-center h-screen">
         <div className="text-center">
           <h1 className="text-4xl">Something went wrong!!</h1>
