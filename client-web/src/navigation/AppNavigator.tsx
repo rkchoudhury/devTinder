@@ -6,6 +6,7 @@ import LogIn from "../screens/login/LogIn";
 import Error from "../screens/error/Error";
 import AppOutlet from "./AppOutlet";
 import Feed from "../screens/feed/Feed";
+import Profile from "../screens/profile/Profile";
 
 const appRouter = createBrowserRouter([
   {
@@ -18,12 +19,12 @@ const appRouter = createBrowserRouter([
     element: <AppOutlet />,
     children: [
       {
-        path: ROUTE_NAMES.LOGIN,
-        element: <LogIn />,
-      },
-      {
         path: ROUTE_NAMES.FEED,
         element: <Feed />,
+      },
+      {
+        path: ROUTE_NAMES.PROFILE,
+        element: <Profile />,
       },
     ],
     errorElement: <Error />,

@@ -9,7 +9,7 @@ const Error = () => {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate(ROUTE_NAMES.LOGIN);
+    navigate(ROUTE_NAMES.HOME);
   };
 
   return (
