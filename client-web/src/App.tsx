@@ -1,12 +1,12 @@
-import NavBar from "./components/NavBar";
+import { RouterProvider } from "react-router-dom";
+
+import appRouter from "./navigation/AppNavigator";
 
 function App() {
   return (
-    <>
-      <NavBar />
-      <div>Hello World</div>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-    </>
+    <div className="App">
+      <RouterProvider router={appRouter} />
+    </div>
   );
 }
 
