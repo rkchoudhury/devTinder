@@ -11,4 +11,13 @@ const authenticateUser = async (emailId: string, password: string) => {
   }
 };
 
-export { authenticateUser };
+const logoutUser = async () => {
+  try {
+    const response = await axios.post(`${BASE_URL}/logout`);
+    return response?.data;
+  } catch (error) {
+    throw error?.response?.data;
+  }
+};
+
+export { authenticateUser, logoutUser };
