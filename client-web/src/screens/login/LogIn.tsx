@@ -26,17 +26,19 @@ const LogIn = () => {
           <h2 className="card-title">Log In</h2>
           <div className="w-full mt-4">
             <input
+              value={emailId}
               type="text"
               className="input"
               placeholder="Enter Your Email Id"
-              onChange={(e) => setEmailId(e.currentTarget.value)}
+              onChange={(e) => setEmailId(e.target.value)}
             />
             <div className="mt-4">
               <input
+                value={password}
                 type="password"
                 className="input"
                 placeholder="Enter Your Password"
-                onChange={(e) => setPassword(e.currentTarget.value)}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
           </div>

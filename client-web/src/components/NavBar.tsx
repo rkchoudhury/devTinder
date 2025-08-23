@@ -11,10 +11,8 @@ const NavBar = () => {
   const hasUserLoggedIn = !!user?._id;
 
   const onPressLogout = async () => {
-    try {
-      await logoutUser();
-      dispatch(removeUser());
-    } catch (error) {}
+    await logoutUser();
+    dispatch(removeUser());
   };
 
   return (
