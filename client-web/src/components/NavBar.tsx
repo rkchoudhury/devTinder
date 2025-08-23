@@ -1,18 +1,22 @@
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import type { RootState } from "../redux/store";
 import { removeUser } from "../redux/slices/userSlice";
 import { logoutUser } from "../services/authService";
 import type { IUser } from "../models/userModel";
+import { ROUTE_NAMES } from "../navigation/Routes";
 
 const NavBar = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const user: IUser = useSelector((state: RootState) => state.user.data);
   const hasUserLoggedIn = !!user?._id;
 
   const onPressLogout = async () => {
     await logoutUser();
     dispatch(removeUser());
+    navigate(ROUTE_NAMES.LOGIN);
   };
 
   return (
