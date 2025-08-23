@@ -18,9 +18,8 @@ const userSlice = createSlice({
     addUser: (state, action) => {
       state.data = action.payload;
     },
-    removeUser: (state) => {
-      state = initialState;
-      return state;
+    removeUser: () => {
+      return initialState;
     },
   },
 });
