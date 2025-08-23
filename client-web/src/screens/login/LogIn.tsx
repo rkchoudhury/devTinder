@@ -1,14 +1,19 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+
 import { authenticateUser } from "../../services/authService";
+import { addUser } from "../../redux/slices/userSlice";
 
 const LogIn = () => {
+  const dispatch = useDispatch();
+
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
 
   const onPressLogin = async () => {
     try {
       const response = await authenticateUser(emailId, password);
-      console.log("rkkk response", response);
+      dispatch(addUser(response?.data));
     } catch (error) {
       console.log("rkkk error", error);
     }
