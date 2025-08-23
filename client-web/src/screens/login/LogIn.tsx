@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import { authenticateUser } from "../../services/authService";
 import { addUser } from "../../redux/slices/userSlice";
+import { ROUTE_NAMES } from "../../navigation/Routes";
 
 const LogIn = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,6 +16,7 @@ const LogIn = () => {
     try {
       const response = await authenticateUser(emailId, password);
       dispatch(addUser(response?.data));
+      navigate(ROUTE_NAMES.FEED);
     } catch (error) {
       console.log("rkkk error", error);
     }
