@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 import packageJson from "../../package.json";
@@ -9,7 +8,7 @@ const Footer = () => {
   const appVersion = packageJson.version;
 
   return (
-    <footer className="footer bg-neutral text-neutral-content flex justify-between items-center p-3 bottom-0 fixed">
+    <footer className="footer bg-base-200 text-neutral-content flex justify-between items-center p-3 bottom-0 fixed">
       <p className="text-sm font-bold">{`v${appVersion}`}</p>
       <div className="flex gap-8">
         <Link to={"https://www.linkedin.com/in/rakchoudhury/"}>
