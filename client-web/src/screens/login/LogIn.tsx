@@ -6,7 +6,7 @@ import type { AxiosError } from "axios";
 import { authenticateUser } from "../../services/authService";
 import { addUser } from "../../redux/slices/userSlice";
 import { ROUTE_NAMES } from "../../navigation/Routes";
-import { setErrorAlert } from "../../redux/slices/errorSlice";
+import { showAlert } from "../../redux/slices/alertSlice";
 
 const LogIn = () => {
   const dispatch = useDispatch();
@@ -24,9 +24,9 @@ const LogIn = () => {
       const axiosError = error as AxiosError;
       setError(axiosError?.message);
       dispatch(
-        setErrorAlert({
-          showErrorAlert: true,
-          errorMessage: axiosError?.message,
+        showAlert({
+          showAlert: true,
+          message: axiosError?.message,
         })
       );
     }

@@ -2,34 +2,30 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import type { RootState } from "../redux/store";
-import { clearErrorAlert } from "../redux/slices/errorSlice";
+import { hideAlert } from "../redux/slices/alertSlice";
 
 export const ErrorAlert = () => {
   const dispacth = useDispatch();
-  const { errorMessage, showErrorAlert, errorTimeout } = useSelector(
-    (state: RootState) => state.errorAlert
+  const { message, showAlert, duration, type } = useSelector(
+    (state: RootState) => state.alert
   );
 
   useEffect(() => {
-    const dismissAlert = () => {
+    if (showAlert) {
       setTimeout(() => {
-        dispacth(clearErrorAlert());
-      }, errorTimeout);
-    };
-
-    if (showErrorAlert) {
-      dismissAlert();
+        dispacth(hideAlert());
+      }, duration);
     }
-  }, [dispacth, errorTimeout, showErrorAlert]);
+  }, [dispacth, duration, showAlert]);
 
-  if (!showErrorAlert) {
+  if (!showAlert) {
     return null;
   }
 
   return (
     <div className="flex right-10 bottom-20 fixed">
-      <div role="alert" className="alert alert-error w-96">
-        <span>{errorMessage}</span>
+      <div role="alert" className={`alert ${type}`}>
+        <span>{message}</span>
       </div>
     </div>
   );
