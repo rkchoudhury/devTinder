@@ -6,6 +6,8 @@ import { removeUser } from "../redux/slices/userSlice";
 import { logoutUser } from "../services/authService";
 import type { IUser } from "../models/userModel";
 import { ROUTE_NAMES } from "../navigation/Routes";
+import { showAlert } from "../redux/slices/alertSlice";
+import { AlertType } from "../enums/AlertEnum";
 
 const NavBar = () => {
   const dispatch = useDispatch();
@@ -17,6 +19,13 @@ const NavBar = () => {
     await logoutUser();
     dispatch(removeUser());
     navigate(ROUTE_NAMES.LOGIN);
+    dispatch(
+      showAlert({
+        showAlert: true,
+        message: "You have logged out successfully!",
+        type: AlertType.Success,
+      })
+    );
   };
 
   const dissmissDropDownMenu = () => {

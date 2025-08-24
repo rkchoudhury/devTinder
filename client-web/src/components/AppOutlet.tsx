@@ -10,6 +10,7 @@ import { getUserProfile } from "../services/profileService";
 import { addUser } from "../redux/slices/userSlice";
 import type { IUser } from "../models/userModel";
 import type { RootState } from "../redux/store";
+import { showAlert } from "../redux/slices/alertSlice";
 
 const AppOutlet = () => {
   const dispatch = useDispatch();
@@ -37,6 +38,13 @@ const AppOutlet = () => {
           const axiosError = error as AxiosError;
           if (axiosError?.status === 401) {
             navigate(ROUTE_NAMES.LOGIN);
+          } else {
+            dispatch(
+              showAlert({
+                showAlert: true,
+                message: axiosError?.message,
+              })
+            );
           }
         }
       }
