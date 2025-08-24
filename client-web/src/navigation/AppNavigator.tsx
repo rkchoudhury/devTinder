@@ -49,7 +49,7 @@ export const AppNavigator = () => {
         >
           {/* Children routes */}
           <Route path={ROUTE_NAMES.LOGIN} element={<LogIn />} />
-          <Route path={ROUTE_NAMES.FEED} element={<Feed />} />
+          <Route path={ROUTE_NAMES.HOME} element={<Feed />} />
           <Route path={ROUTE_NAMES.PROFILE} element={<Profile />} />
         </Route>
       </Routes>
