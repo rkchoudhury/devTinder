@@ -11,6 +11,7 @@ const LogIn = () => {
   const navigate = useNavigate();
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const onPressLogin = async () => {
     try {
@@ -18,7 +19,7 @@ const LogIn = () => {
       dispatch(addUser(response?.data));
       navigate(ROUTE_NAMES.HOME);
     } catch (error) {
-      console.log("rkkk error", error);
+      setError(error?.message);
     }
   };
 
@@ -44,6 +45,7 @@ const LogIn = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+            <p className="text-red-500 mt-4">{error}</p>
           </div>
           <div className="w-full mt-4">
             <button
