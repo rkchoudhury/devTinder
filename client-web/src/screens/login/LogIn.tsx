@@ -16,7 +16,7 @@ const LogIn = () => {
     try {
       const response = await authenticateUser(emailId, password);
       dispatch(addUser(response?.data));
-      navigate(ROUTE_NAMES.FEED);
+      navigate(ROUTE_NAMES.HOME);
     } catch (error) {
       console.log("rkkk error", error);
     }
