@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { authenticateUser } from "../../services/authService";
 import { addUser } from "../../redux/slices/userSlice";
 import { ROUTE_NAMES } from "../../navigation/Routes";
+import { setErrorAlert } from "../../redux/slices/errorSlice";
 
 const LogIn = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,9 @@ const LogIn = () => {
       navigate(ROUTE_NAMES.HOME);
     } catch (error) {
       setError(error?.message);
+      dispatch(
+        setErrorAlert({ showErrorAlert: true, errorMessage: error?.message })
+      );
     }
   };
 
