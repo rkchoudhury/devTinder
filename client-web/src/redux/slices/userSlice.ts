@@ -1,22 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { IUser } from "../../models/userModel";
 
-interface IUserState {
-  data: IUser;
-  error: Error | null;
-}
-
-const initialState: IUserState = {
-  data: {} as IUser,
-  error: null,
-};
+const initialState: IUser | null = null;
 
 const userSlice = createSlice({
   name: "user",
   initialState: initialState,
   reducers: {
-    addUser: (state, action) => {
-      state.data = action.payload;
+    addUser: (_state, action) => {
+      return action.payload;
     },
     removeUser: () => {
       return initialState;

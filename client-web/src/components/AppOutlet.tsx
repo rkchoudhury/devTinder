@@ -16,7 +16,7 @@ const AppOutlet = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const user: IUser = useSelector((state: RootState) => state.user.data);
+  const user = useSelector((state: RootState) => state.user as IUser | null);
 
   /**
    * Handling page reload or intial page load scenario
@@ -29,7 +29,7 @@ const AppOutlet = () => {
    */
   useEffect(() => {
     const fetchUserProfile = async () => {
-      if (!user._id) {
+      if (!user?._id) {
         try {
           const response = await getUserProfile();
           dispatch(addUser(response?.data));

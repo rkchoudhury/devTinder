@@ -12,7 +12,7 @@ import { AlertType } from "../enums/AlertEnum";
 const NavBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user: IUser = useSelector((state: RootState) => state.user.data);
+  const user = useSelector((state: RootState) => state.user as IUser | null);
   const hasUserLoggedIn = !!user?._id;
 
   const onPressLogout = async () => {
