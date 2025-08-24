@@ -1,4 +1,4 @@
-import { RouterProvider } from "react-router-dom";
+// import { RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
 
 import { AppNavigator } from "./navigation/AppNavigator";

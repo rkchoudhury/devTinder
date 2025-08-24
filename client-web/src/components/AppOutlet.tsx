@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import type { AxiosError } from "axios";
 
 import NavBar from "./NavBar";
 import Footer from "./Footer";
@@ -33,7 +34,8 @@ const AppOutlet = () => {
           dispatch(addUser(response?.data));
           navigate(ROUTE_NAMES.HOME);
         } catch (error) {
-          if (error?.status === 401) {
+          const axiosError = error as AxiosError;
+          if (axiosError?.status === 401) {
             navigate(ROUTE_NAMES.LOGIN);
           }
         }

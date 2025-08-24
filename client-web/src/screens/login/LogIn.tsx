@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import type { AxiosError } from "axios";
 
 import { authenticateUser } from "../../services/authService";
 import { addUser } from "../../redux/slices/userSlice";
@@ -20,9 +21,13 @@ const LogIn = () => {
       dispatch(addUser(response?.data));
       navigate(ROUTE_NAMES.HOME);
     } catch (error) {
-      setError(error?.message);
+      const axiosError = error as AxiosError;
+      setError(axiosError?.message);
       dispatch(
-        setErrorAlert({ showErrorAlert: true, errorMessage: error?.message })
+        setErrorAlert({
+          showErrorAlert: true,
+          errorMessage: axiosError?.message,
+        })
       );
     }
   };

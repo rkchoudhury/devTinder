@@ -1,6 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "../redux/store";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import type { RootState } from "../redux/store";
 import { clearErrorAlert } from "../redux/slices/errorSlice";
 
 export const ErrorAlert = () => {

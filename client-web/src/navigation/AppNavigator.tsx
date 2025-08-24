@@ -8,7 +8,7 @@ import {
 
 import { ROUTE_NAMES } from "./Routes";
 import LogIn from "../screens/login/LogIn";
-import Error from "../screens/error/Error";
+// import Error from "../screens/error/Error";
 import AppOutlet from "../components/AppOutlet";
 import Feed from "../screens/feed/Feed";
 import Profile from "../screens/profile/Profile";

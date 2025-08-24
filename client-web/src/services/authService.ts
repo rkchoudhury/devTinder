@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+
 import { BASE_URL } from "../utils/apiConfig";
 
 const authenticateUser = async (emailId: string, password: string) => {
@@ -9,7 +10,8 @@ const authenticateUser = async (emailId: string, password: string) => {
     });
     return response?.data;
   } catch (error) {
-    throw error?.response?.data;
+    const axiosError = error as AxiosError;
+    throw axiosError?.response?.data;
   }
 };
 
@@ -20,7 +22,8 @@ const logoutUser = async () => {
     });
     return response?.data;
   } catch (error) {
-    throw error?.response?.data;
+    const axiosError = error as AxiosError;
+    throw axiosError?.response?.data;
   }
 };
 
