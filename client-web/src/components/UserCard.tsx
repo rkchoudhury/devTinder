@@ -1,12 +1,18 @@
 import type { IUser } from "../models/userModel";
 
-export const UserCard = ({ user }: { user: IUser | null }) => {
+export const UserCard = ({
+  user,
+  showButton = false,
+}: {
+  user: IUser | null;
+  showButton?: boolean;
+}) => {
   if (!user) return;
 
   const { firstName, lastName, about, photoUrl, gender, age, skills } = user;
 
   return (
-    <div className="flex justify-center my-10">
+    <div className="flex justify-center">
       <div className="card bg-base-300 w-96 shadow-sm">
         <figure>
           <img src={photoUrl} alt="User Photo" />
@@ -31,10 +37,12 @@ export const UserCard = ({ user }: { user: IUser | null }) => {
               </div>
             </div>
           )}
-          <div className="card-actions justify-center mt-2">
-            <button className="btn btn-primary mr-2">Ignore</button>
-            <button className="btn btn-secondary">Interested</button>
-          </div>
+          {showButton && (
+            <div className="card-actions justify-center mt-2">
+              <button className="btn btn-primary mr-2">Ignore</button>
+              <button className="btn btn-secondary">Interested</button>
+            </div>
+          )}
         </div>
       </div>
     </div>
