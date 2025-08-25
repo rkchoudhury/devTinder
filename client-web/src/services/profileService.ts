@@ -9,6 +9,7 @@ const getUserProfile = async () => {
   return response?.data;
 };
 
+// patch is throwing cros error. So has changed the method to put
 const updateUserProfile = async (user: Partial<IUser>) => {
   try {
     const response = await axios.put(`${BASE_URL}/profile/edit`, user, {

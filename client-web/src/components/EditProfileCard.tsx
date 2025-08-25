@@ -34,6 +34,8 @@ export const EditProfileCard = (props: IEditProfileProps) => {
     gender,
     setGender,
     onPressUpdateProfile,
+    skills = [],
+    setSkills,
   } = props;
 
   const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,6 +47,22 @@ export const EditProfileCard = (props: IEditProfileProps) => {
       setAge(value);
       setAgeError("Age must be a number");
     }
+  };
+
+  const [newSkill, setNewSkill] = useState(""); // Add this line
+  // ...existing code...
+
+  const handleAddSkill = () => {
+    const skill = newSkill.trim();
+    if (skill && !skills?.includes(skill)) {
+      setSkills([...(skills ?? []), skill]);
+      setNewSkill("");
+    }
+  };
+
+  const updateSkills = (name: string) => {
+    const newList = skills?.filter((eachSkill) => eachSkill !== name);
+    setSkills(newList ?? []);
   };
 
   return (
@@ -112,6 +130,50 @@ export const EditProfileCard = (props: IEditProfileProps) => {
                 placeholder="About"
                 maxLength={250}
               ></textarea>
+            </div>
+            <div className="mt-4">
+              <div className="flex items-center">
+                <div className="mr-2">Skills:</div>
+                <div>
+                  {skills?.map((name) => (
+                    <button
+                      onClick={() => updateSkills(name)}
+                      className="btn btn-outline btn-accent btn-sm mr-2 mb-2"
+                      key={name}
+                    >
+                      {name.replace(/\b\w/g, (char) => char.toUpperCase())}
+                      <span className="ml-1">&times;</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              {skills?.length < 10 && (
+                <div className="flex mt-2">
+                  <input
+                    type="text"
+                    className="input input-bordered mr-2"
+                    placeholder="Add skill"
+                    value={newSkill}
+                    onChange={(e) => setNewSkill(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleAddSkill();
+                      }
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-success"
+                    onClick={handleAddSkill}
+                    disabled={
+                      !newSkill.trim() || skills?.includes(newSkill.trim())
+                    }
+                  >
+                    Add
+                  </button>
+                </div>
+              )}
             </div>
             {/* <p className="text-red-500 mt-4">{error}</p> */}
           </div>
