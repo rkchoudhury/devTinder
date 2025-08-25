@@ -14,7 +14,8 @@ interface IEditProfileProps {
   setGender: (value: string) => void;
   setAbout: (value: string) => void;
   setPhotoUrl: (value: string) => void;
-  setSkills?: (skills: string[]) => void;
+  setSkills: (skills: string[]) => void;
+  onPressUpdateProfile: () => void;
 }
 
 export const EditProfileCard = (props: IEditProfileProps) => {
@@ -32,6 +33,7 @@ export const EditProfileCard = (props: IEditProfileProps) => {
     setPhotoUrl,
     gender,
     setGender,
+    onPressUpdateProfile,
   } = props;
 
   const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -114,7 +116,10 @@ export const EditProfileCard = (props: IEditProfileProps) => {
             {/* <p className="text-red-500 mt-4">{error}</p> */}
           </div>
           <div className="w-full mt-4">
-            <button className="btn btn-outline btn-primary" onClick={() => {}}>
+            <button
+              className="btn btn-outline btn-primary"
+              onClick={onPressUpdateProfile}
+            >
               Update Profile
             </button>
           </div>
