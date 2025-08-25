@@ -4,12 +4,20 @@ export const UserCard = ({
   user,
   showButton = false,
 }: {
-  user: IUser | null;
+  user: Partial<IUser>;
   showButton?: boolean;
 }) => {
   if (!user) return;
 
-  const { firstName, lastName, about, photoUrl, gender, age, skills } = user;
+  const {
+    firstName,
+    lastName,
+    about,
+    photoUrl,
+    gender,
+    age,
+    skills = [],
+  } = user;
 
   return (
     <div className="flex justify-center">
@@ -25,7 +33,7 @@ export const UserCard = ({
             </p>
           )}
           <p>{about}</p>
-          {skills.length > 0 && (
+          {skills?.length > 0 && (
             <div className="flex">
               <div className="mr-2">Skills:</div>
               <div>

@@ -1,4 +1,24 @@
-export const EditProfileCard = (props: any) => {
+import { useState } from "react";
+
+interface IEditProfileProps {
+  firstName: string;
+  lastName: string;
+  age?: string;
+  gender?: string;
+  about: string;
+  photoUrl: string;
+  skills?: string[];
+  setFirstName: (value: string) => void;
+  setLastName: (value: string) => void;
+  setAge: (value: string) => void;
+  setGender: (value: string) => void;
+  setAbout: (value: string) => void;
+  setPhotoUrl: (value: string) => void;
+  setSkills?: (skills: string[]) => void;
+}
+
+export const EditProfileCard = (props: IEditProfileProps) => {
+  const [ageError, setAgeError] = useState<string | null>(null);
   const {
     firstName,
     setFirstName,
@@ -13,6 +33,17 @@ export const EditProfileCard = (props: any) => {
     gender,
     setGender,
   } = props;
+
+  const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value === "" || /^\d+$/.test(value)) {
+      setAge(value);
+      setAgeError(null);
+    } else {
+      setAge(value);
+      setAgeError("Age must be a number");
+    }
+  };
 
   return (
     <div className="flex justify-center">
@@ -40,14 +71,19 @@ export const EditProfileCard = (props: any) => {
               <input
                 value={age}
                 type="text"
-                className="input"
+                className={`input ${
+                  ageError ? "input-error border-red-500" : ""
+                }`}
                 placeholder="Age"
-                onChange={(e) => setAge(e.target.value)}
+                onChange={handleAgeChange}
               />
+              {ageError && (
+                <p className="text-red-500 text-sm mt-1">{ageError}</p>
+              )}
             </div>
             <div className="mt-4">
               <select
-                defaultValue={gender}
+                defaultValue={gender ?? "Select Gender"}
                 onChange={(e) => setGender(e.target.value)}
                 className="select"
               >
