@@ -37,8 +37,12 @@ const Feed = () => {
   }
 
   return (
-    <div>
-      <UserCard user={list[0]} showButton />
+    <div className="flex justify-center items-center my-6 h-1/3">
+      <div className="stack stack-top">
+        {list.map((item) => (
+          <UserCard key={item._id} user={item} showButton />
+        ))}
+      </div>
     </div>
   );
 };
