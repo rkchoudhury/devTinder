@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 
 import packageJson from "../../package.json";
-
 import { CODE_ICON, GITHUB_ICON, LINKEDIN_ICON } from "../assets";
 
 const Footer = () => {

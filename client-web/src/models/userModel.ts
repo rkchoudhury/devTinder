@@ -9,6 +9,8 @@ interface IUser {
   skills: string[];
   createdAt: string;
   updatedAt: string;
+  gender?: string;
+  age?: number;
 }
 
 export type { IUser };

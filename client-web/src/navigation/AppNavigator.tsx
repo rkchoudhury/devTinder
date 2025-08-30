@@ -8,7 +8,7 @@ import {
 
 import { ROUTE_NAMES } from "./Routes";
 import LogIn from "../screens/login/LogIn";
-import Error from "../screens/error/Error";
+// import Error from "../screens/error/Error";
 import AppOutlet from "../components/AppOutlet";
 import Feed from "../screens/feed/Feed";
 import Profile from "../screens/profile/Profile";
@@ -45,12 +45,14 @@ export const AppNavigator = () => {
         <Route
           path={ROUTE_NAMES.HOME}
           element={<AppOutlet />} // Parent route -> It will render the children routes inside the outlet
-          errorElement={<Error />}
+          // errorElement={<Error />}
         >
           {/* Children routes */}
           <Route path={ROUTE_NAMES.LOGIN} element={<LogIn />} />
           <Route path={ROUTE_NAMES.HOME} element={<Feed />} />
           <Route path={ROUTE_NAMES.PROFILE} element={<Profile />} />
+          {/** Handling all other routes */}
+          <Route path={"*"} element={<Feed />} />
         </Route>
       </Routes>
     </BrowserRouter>

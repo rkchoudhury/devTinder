@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import type { AxiosError } from "axios";
 
 import { authenticateUser } from "../../services/authService";
 import { addUser } from "../../redux/slices/userSlice";
 import { ROUTE_NAMES } from "../../navigation/Routes";
+import { showAlert } from "../../redux/slices/alertSlice";
 
 const LogIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const onPressLogin = async () => {
     try {
@@ -18,7 +21,14 @@ const LogIn = () => {
       dispatch(addUser(response?.data));
       navigate(ROUTE_NAMES.HOME);
     } catch (error) {
-      console.log("rkkk error", error);
+      const axiosError = error as AxiosError;
+      setError(axiosError?.message);
+      dispatch(
+        showAlert({
+          showAlert: true,
+          message: axiosError?.message,
+        })
+      );
     }
   };
 
@@ -44,6 +54,7 @@ const LogIn = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+            <p className="text-red-500 mt-4">{error}</p>
           </div>
           <div className="w-full mt-4">
             <button
