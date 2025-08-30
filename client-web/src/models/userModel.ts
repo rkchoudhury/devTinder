@@ -12,3 +12,14 @@ export interface IUser {
   gender?: string;
   age?: number;
 }
+
+export interface IConnectionUser {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  about: string;
+  photoUrl: string;
+  skills: string[];
+  gender?: string;
+  age?: number;
+}

@@ -39,7 +39,10 @@ export const UserCard = ({
               <div className="mr-2">Skills:</div>
               <div>
                 {skills?.map((name) => (
-                  <div className="badge badge-md badge-outline badge-primary mr-2 mb-2">
+                  <div
+                    key={name}
+                    className="badge badge-md badge-outline badge-primary mr-2 mb-2"
+                  >
                     {capitalizedString(name)}
                   </div>
                 ))}
