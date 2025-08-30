@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { capitalizedString } from "../utils/stringUtil";
 
 interface IProps {
   skills: string[];
@@ -29,7 +30,7 @@ export const SkillBadgeList = ({ skills, setSkills }: IProps) => {
             className="btn btn-outline btn-accent btn-sm mr-2 mb-2"
             key={name}
           >
-            {name.replace(/\b\w/g, (char) => char.toUpperCase())}
+            {capitalizedString(name)}
             <span className="ml-1">&times;</span>
           </button>
         ))}

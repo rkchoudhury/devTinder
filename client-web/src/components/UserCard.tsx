@@ -1,4 +1,5 @@
 import type { IUser } from "../models/userModel";
+import { capitalizedString } from "../utils/stringUtil";
 
 export const UserCard = ({
   user,
@@ -29,7 +30,7 @@ export const UserCard = ({
           <h2 className="card-title">{firstName + " " + lastName}</h2>
           {age && gender && (
             <p>
-              {age} {gender?.[0]?.toUpperCase() + gender?.substring(1)}
+              {age} {capitalizedString(gender)}
             </p>
           )}
           <p>{about}</p>
@@ -39,13 +40,7 @@ export const UserCard = ({
               <div>
                 {skills?.map((name) => (
                   <div className="badge badge-md badge-outline badge-primary mr-2 mb-2">
-                    {/* {name
-                      .split(" ")
-                      .map(
-                        (word) => word?.[0]?.toUpperCase() + word.substring(1)
-                      )
-                      .join(" ")} */}
-                    {name.replace(/\b\w/g, (char) => char.toUpperCase())}
+                    {capitalizedString(name)}
                   </div>
                 ))}
               </div>
