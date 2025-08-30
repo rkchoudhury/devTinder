@@ -65,7 +65,15 @@ const NavBar = () => {
                 </Link>
               </li>
               <li>
-                <a onClick={dissmissDropDownMenu}>Settings</a>
+                <a onClick={dissmissDropDownMenu}>My Connections</a>
+              </li>
+              <li>
+                <Link
+                  to={ROUTE_NAMES.CONNECTION_REQUEST}
+                  onClick={dissmissDropDownMenu}
+                >
+                  Connection Requests
+                </Link>
               </li>
               <li onClick={onPressLogout}>
                 <a>Logout</a>

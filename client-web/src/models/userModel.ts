@@ -1,4 +1,4 @@
-interface IUser {
+export interface IUser {
   _id: string;
   firstName: string;
   lastName: string;
@@ -12,5 +12,3 @@ interface IUser {
   gender?: string;
   age?: number;
 }
-
-export type { IUser };
