@@ -59,7 +59,7 @@ const validateEditProfileData = (data) => {
             throw new Error("First Name is not valid");
         } else if (lastName?.length > 50) {
             throw new Error("Last Name is not valid");
-        } else if (about?.length > 50) {
+        } else if (about?.length > 250) {
             throw new Error("Maximum 250 characters length can be allowed in the about field.");
         } else if (photoUrl && !validator.isURL(photoUrl)) {
             throw new Error("Invalid photo URL.");
