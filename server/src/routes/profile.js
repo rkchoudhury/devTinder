@@ -19,7 +19,8 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
     }
 });
 
-profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
+// patch is giving cors error on web -> So changed `profileRouter.patch` to `profileRouter.put`
+profileRouter.put("/profile/edit", userAuth, async (req, res) => {
     try {
         const data = req.body;
 
@@ -41,7 +42,7 @@ profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
         })
 
     } catch (error) {
-        res.status(400).send("Error: " + error.message);
+        res.status(400).json({ message: "Error: " + error?.message });
     }
 });
 
