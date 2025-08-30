@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { SkillBadgeList } from "./SkillBadgeList";
+import { TextInput } from "./TextInput";
 
 interface IEditProfileProps {
   firstName: string;
@@ -20,13 +21,13 @@ interface IEditProfileProps {
 }
 
 export const EditProfileCard = (props: IEditProfileProps) => {
-  const [ageError, setAgeError] = useState<string | null>(null);
+  const [ageError, setAgeError] = useState<string | undefined>(undefined);
   const {
     firstName,
     setFirstName,
     lastName,
     setLastName,
-    age,
+    age = "",
     setAge,
     about,
     setAbout,
@@ -39,11 +40,10 @@ export const EditProfileCard = (props: IEditProfileProps) => {
     setSkills,
   } = props;
 
-  const handleAgeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+  const handleAgeChange = (value: string) => {
     if (value === "" || /^\d+$/.test(value)) {
       setAge(value);
-      setAgeError(null);
+      setAgeError(undefined);
     } else {
       setAge(value);
       setAgeError("Age must be a number");
@@ -56,37 +56,28 @@ export const EditProfileCard = (props: IEditProfileProps) => {
         <div className="card-body items-center text-center">
           <h2 className="card-title">Edit Profile</h2>
           <div className="w-full mt-4">
-            <input
+            <TextInput
+              label="First Name"
+              placeHolder="First Name"
               value={firstName}
-              type="text"
-              className="input"
-              placeholder="First Name"
-              onChange={(e) => setFirstName(e.target.value)}
+              onChangevalue={setFirstName}
             />
-            <div className="mt-4">
-              <input
-                value={lastName}
-                type="text"
-                className="input"
-                placeholder="Last Name"
-                onChange={(e) => setLastName(e.target.value)}
-              />
-            </div>
-            <div className="mt-4">
-              <input
-                value={age}
-                type="text"
-                className={`input ${
-                  ageError ? "input-error border-red-500" : ""
-                }`}
-                placeholder="Age"
-                onChange={handleAgeChange}
-              />
-              {ageError && (
-                <p className="text-red-500 text-sm mt-1">{ageError}</p>
-              )}
-            </div>
-            <div className="mt-4">
+            <TextInput
+              label="Last Name"
+              placeHolder="Last Name"
+              value={lastName}
+              onChangevalue={setLastName}
+            />
+            <TextInput
+              label="Age"
+              placeHolder="Age"
+              value={age}
+              onChangevalue={handleAgeChange}
+              hasError={!!ageError?.length}
+              errorMessage={ageError}
+            />
+            <fieldset className="fieldset">
+              <label className="label">Gender</label>
               <select
                 defaultValue={gender ?? "Select Gender"}
                 onChange={(e) => setGender(e.target.value)}
@@ -97,17 +88,15 @@ export const EditProfileCard = (props: IEditProfileProps) => {
                 <option value={"female"}>Female</option>
                 <option value={"other"}>Other</option>
               </select>
-            </div>
-            <div className="mt-4">
-              <input
-                value={photoUrl}
-                type="text"
-                className="input"
-                placeholder="Photo URL"
-                onChange={(e) => setPhotoUrl(e.target.value)}
-              />
-            </div>
-            <div className="mt-4">
+            </fieldset>
+            <TextInput
+              label="Photo URL"
+              placeHolder="Photo URL"
+              value={photoUrl}
+              onChangevalue={setPhotoUrl}
+            />
+            <fieldset className="fieldset">
+              <label className="label">About</label>
               <textarea
                 value={about}
                 onChange={(e) => setAbout(e.target.value)}
@@ -115,11 +104,11 @@ export const EditProfileCard = (props: IEditProfileProps) => {
                 placeholder="About"
                 maxLength={250}
               ></textarea>
-            </div>
-            <div className="mt-4">
+            </fieldset>
+            <fieldset className="fieldset">
+              <label className="label">Skills</label>
               <SkillBadgeList skills={skills} setSkills={setSkills} />
-            </div>
-            {/* <p className="text-red-500 mt-4">{error}</p> */}
+            </fieldset>
           </div>
           <div className="w-full mt-4">
             <button

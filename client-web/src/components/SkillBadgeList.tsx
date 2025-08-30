@@ -9,7 +9,7 @@ export const SkillBadgeList = ({ skills, setSkills }: IProps) => {
   const [newSkill, setNewSkill] = useState("");
 
   const handleAddSkill = () => {
-    const skill = newSkill.trim();
+    const skill = newSkill.toLowerCase().trim();
     if (skill && !skills?.includes(skill)) {
       setSkills([...(skills ?? []), skill]);
       setNewSkill("");
@@ -22,7 +22,6 @@ export const SkillBadgeList = ({ skills, setSkills }: IProps) => {
   };
   return (
     <div className="flex items-center">
-      <div className="mr-2">Skills:</div>
       <div>
         {skills?.map((name) => (
           <button
@@ -53,7 +52,10 @@ export const SkillBadgeList = ({ skills, setSkills }: IProps) => {
               type="button"
               className="btn btn-success"
               onClick={handleAddSkill}
-              disabled={!newSkill.trim() || skills?.includes(newSkill.trim())}
+              disabled={
+                !newSkill.trim() ||
+                skills?.includes(newSkill.toLowerCase().trim())
+              }
             >
               Add
             </button>
