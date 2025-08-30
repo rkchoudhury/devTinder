@@ -13,6 +13,7 @@ import AppOutlet from "../components/AppOutlet";
 import Feed from "../screens/feed/Feed";
 import Profile from "../screens/profile/Profile";
 import { ConnectionRequest } from "../screens/connectionRequest/ConnectionRequest";
+import { Connections } from "../screens/connection/Connections";
 
 // const appRouter = createBrowserRouter([
 //   {
@@ -56,6 +57,7 @@ export const AppNavigator = () => {
             path={ROUTE_NAMES.CONNECTION_REQUEST}
             element={<ConnectionRequest />}
           />
+          <Route path={ROUTE_NAMES.CONNECTIONS} element={<Connections />} />
           {/** Handling all other routes */}
           <Route path={"*"} element={<Feed />} />
         </Route>

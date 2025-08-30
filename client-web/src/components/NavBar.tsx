@@ -65,7 +65,12 @@ const NavBar = () => {
                 </Link>
               </li>
               <li>
-                <a onClick={dissmissDropDownMenu}>My Connections</a>
+                <Link
+                  to={ROUTE_NAMES.CONNECTIONS}
+                  onClick={dissmissDropDownMenu}
+                >
+                  My Connections
+                </Link>
               </li>
               <li>
                 <Link

@@ -3,6 +3,7 @@ const ROUTE_NAMES = {
   LOGIN: "/login",
   PROFILE: "/profile",
   CONNECTION_REQUEST: "/requests",
+  CONNECTIONS: "/connections",
 };
 
 export { ROUTE_NAMES };
