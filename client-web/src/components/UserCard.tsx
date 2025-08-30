@@ -1,16 +1,20 @@
+import { StatusType } from "../enums/StatusEnum";
 import type { IUser } from "../models/userModel";
 import { capitalizedString } from "../utils/stringUtil";
 
 export const UserCard = ({
   user,
   showButton = false,
+  onPressButton,
 }: {
   user: Partial<IUser>;
   showButton?: boolean;
+  onPressButton?: (status: string, userId: string) => void;
 }) => {
   if (!user) return;
 
   const {
+    _id = "",
     firstName,
     lastName,
     about,
@@ -51,8 +55,18 @@ export const UserCard = ({
           )}
           {showButton && (
             <div className="card-actions justify-center mt-2">
-              <button className="btn btn-primary mr-2">Ignore</button>
-              <button className="btn btn-secondary">Interested</button>
+              <button
+                className="btn btn-primary mr-2"
+                onClick={() => onPressButton?.(StatusType.Ignored, _id)}
+              >
+                Ignore
+              </button>
+              <button
+                className="btn btn-secondary"
+                onClick={() => onPressButton?.(StatusType.Interested, _id)}
+              >
+                Interested
+              </button>
             </div>
           )}
         </div>

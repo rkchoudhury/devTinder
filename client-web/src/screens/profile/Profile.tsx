@@ -8,7 +8,7 @@ import type { RootState } from "../../redux/store";
 import type { IUser } from "../../models/userModel";
 import { updateUserProfile } from "../../services/profileService";
 import { showAlert } from "../../redux/slices/alertSlice";
-import { AlertType } from "../../enums/AlertEnum";
+import { AlertType } from "../../enums/alertEnum";
 import { addUser } from "../../redux/slices/userSlice";
 
 const Profile = () => {
