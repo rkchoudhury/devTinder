@@ -15,7 +15,7 @@ export const Connections = () => {
   );
 
   useEffect(() => {
-    const fetchFeed = async () => {
+    const fetchserConnections = async () => {
       try {
         const response = await getUserConnections();
         console.log(response);
@@ -31,7 +31,7 @@ export const Connections = () => {
         );
       }
     };
-    fetchFeed();
+    fetchserConnections();
   }, [dispatch]);
 
   return (
