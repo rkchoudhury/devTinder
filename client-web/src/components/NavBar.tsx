@@ -7,7 +7,7 @@ import { logoutUser } from "../services/authService";
 import type { IUser } from "../models/userModel";
 import { ROUTE_NAMES } from "../navigation/Routes";
 import { showAlert } from "../redux/slices/alertSlice";
-import { AlertType } from "../enums/AlertEnum";
+import { AlertType } from "../enums/alertEnum";
 
 const NavBar = () => {
   const dispatch = useDispatch();

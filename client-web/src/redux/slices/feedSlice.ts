@@ -24,14 +24,22 @@ const feedSlice = createSlice({
       };
       return newState;
     },
-    clearFeed: () => {
-      return initialState;
+    updateFeed: (state, action) => {
+      const { data } = action.payload;
+      const newList = state.list.filter(
+        (eachFeed) => eachFeed._id !== data.toUserId
+      );
+      const newState = {
+        ...state,
+        list: newList,
+      };
+      return newState;
     },
   },
 });
 
-const { addFeed, clearFeed } = feedSlice.actions;
+const { addFeed, updateFeed } = feedSlice.actions;
 
-export { addFeed, clearFeed };
+export { addFeed, updateFeed };
 
 export default feedSlice.reducer;

@@ -5,7 +5,9 @@ import { UserCard } from "../../components/UserCard";
 import type { RootState } from "../../redux/store";
 import { getFeed } from "../../services/userService";
 import { showAlert } from "../../redux/slices/alertSlice";
-import { addFeed } from "../../redux/slices/feedSlice";
+import { addFeed, updateFeed } from "../../redux/slices/feedSlice";
+import { sendRequest } from "../../services/requestService";
+import { AlertType } from "../../enums/alertEnum";
 
 const Feed = () => {
   const dispatch = useDispatch();
@@ -30,6 +32,30 @@ const Feed = () => {
     fetchFeed();
   }, [dispatch]);
 
+  const handleSendRequest = async (status: string, userId: string) => {
+    try {
+      const response = await sendRequest(status, userId);
+      dispatch(updateFeed(response));
+      dispatch(
+        showAlert({
+          showAlert: true,
+          message: response?.message,
+          duration: 3000,
+          type: AlertType.Success,
+        })
+      );
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      dispatch(
+        showAlert({
+          showAlert: true,
+          message: axiosError?.message,
+          duration: 5000,
+        })
+      );
+    }
+  };
+
   if (!list) return null;
 
   if (list?.length === 0) {
@@ -41,7 +67,12 @@ const Feed = () => {
       <div className="carousel carousel-center bg-neutral rounded-box max-w-md space-x-4 p-4">
         {list.map((item) => (
           <div className="carousel-item">
-            <UserCard key={item._id} user={item} showButton />
+            <UserCard
+              key={item._id}
+              user={item}
+              showButton
+              onPressButton={handleSendRequest}
+            />
           </div>
         ))}
       </div>

@@ -10,8 +10,11 @@ const connectionRequestSlice = createSlice({
     addConnectionRequest: (_state, action) => {
       return action.payload;
     },
-    removeConnectionRequest: () => {
-      return initialState;
+    removeConnectionRequest: (state, action) => {
+      const newState = state.filter(
+        (eachRequest) => eachRequest._id !== action.payload._id
+      );
+      return newState;
     },
   },
 });

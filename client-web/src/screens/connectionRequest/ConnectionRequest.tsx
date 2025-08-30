@@ -4,9 +4,14 @@ import { getConnectionRequests } from "../../services/userService";
 import { showAlert } from "../../redux/slices/alertSlice";
 import type { AxiosError } from "axios";
 import type { RootState } from "../../redux/store";
-import { addConnectionRequest } from "../../redux/slices/connectionRequests";
+import {
+  addConnectionRequest,
+  removeConnectionRequest,
+} from "../../redux/slices/connectionRequests";
 import { ConnectionCard } from "../../components/ConnectionCard";
 import type { IConnection } from "../../models/connectionModel";
+import { AlertType } from "../../enums/alertEnum";
+import { reviewRequest } from "../../services/requestService";
 
 export const ConnectionRequest = () => {
   const dispatch = useDispatch();
@@ -33,6 +38,30 @@ export const ConnectionRequest = () => {
     fetchConnectionReqests();
   }, [dispatch]);
 
+  const handleReviewRequest = async (status: string, requestId: string) => {
+    try {
+      const response = await reviewRequest(status, requestId);
+      dispatch(removeConnectionRequest(response.data));
+      dispatch(
+        showAlert({
+          showAlert: true,
+          message: response?.message,
+          duration: 3000,
+          type: AlertType.Success,
+        })
+      );
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      dispatch(
+        showAlert({
+          showAlert: true,
+          message: axiosError?.message,
+          duration: 5000,
+        })
+      );
+    }
+  };
+
   if (requests?.length === 0) {
     return <h1>No Connection Request Found.</h1>;
   }
@@ -45,7 +74,9 @@ export const ConnectionRequest = () => {
       {requests.map((eachRequest: IConnection) => (
         <ConnectionCard
           key={eachRequest?._id}
+          requestId={eachRequest?._id}
           connectionFrom={eachRequest?.fromUserId}
+          onPressButton={handleReviewRequest}
         />
       ))}
     </div>
