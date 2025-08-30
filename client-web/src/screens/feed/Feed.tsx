@@ -1,9 +1,9 @@
+import { useEffect } from "react";
+import type { AxiosError } from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { UserCard } from "../../components/UserCard";
 import type { RootState } from "../../redux/store";
-import { useEffect } from "react";
 import { getFeed } from "../../services/userService";
-import type { AxiosError } from "axios";
 import { showAlert } from "../../redux/slices/alertSlice";
 import { addFeed } from "../../redux/slices/feedSlice";
 
@@ -37,10 +37,12 @@ const Feed = () => {
   }
 
   return (
-    <div className="flex justify-center items-center my-6 h-1/3">
-      <div className="stack stack-top">
+    <div className="flex justify-center  my-6">
+      <div className="carousel carousel-center bg-neutral rounded-box max-w-md space-x-4 p-4">
         {list.map((item) => (
-          <UserCard key={item._id} user={item} showButton />
+          <div className="carousel-item">
+            <UserCard key={item._id} user={item} showButton />
+          </div>
         ))}
       </div>
     </div>
