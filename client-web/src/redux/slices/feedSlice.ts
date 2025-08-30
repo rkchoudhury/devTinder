@@ -31,7 +31,7 @@ const feedSlice = createSlice({
       );
       const newState = {
         ...state,
-        list: [...newList],
+        list: newList,
       };
       return newState;
     },

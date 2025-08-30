@@ -32,7 +32,7 @@ const Feed = () => {
     fetchFeed();
   }, [dispatch]);
 
-  const onSendRequest = async (status: string, userId: string) => {
+  const handleSendRequest = async (status: string, userId: string) => {
     try {
       const response = await sendRequest(status, userId);
       dispatch(updateFeed(response));
@@ -71,7 +71,7 @@ const Feed = () => {
               key={item._id}
               user={item}
               showButton
-              onPressButton={onSendRequest}
+              onPressButton={handleSendRequest}
             />
           </div>
         ))}

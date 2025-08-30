@@ -1,10 +1,15 @@
+import { StatusType } from "../enums/StatusEnum";
 import type { IConnectionFrom } from "../models/connectionModel";
 import { capitalizedString } from "../utils/stringUtil";
 
 export const ConnectionCard = ({
   connectionFrom,
+  requestId,
+  onPressButton,
 }: {
   connectionFrom: IConnectionFrom;
+  requestId: string;
+  onPressButton?: (status: string, userId: string) => void;
 }) => {
   const { firstName, lastName, about, photoUrl, age, gender } = connectionFrom;
 
@@ -29,8 +34,18 @@ export const ConnectionCard = ({
         </li>
         <div className="card-actions justify-center my-2">
           {/* <button className="btn btn-success mr-2">View Profile</button> */}
-          <button className="btn btn-primary mr-2">Accept</button>
-          <button className="btn btn-secondary">Reject</button>
+          <button
+            className="btn btn-primary mr-2"
+            onClick={() => onPressButton?.(StatusType.Accepted, requestId)}
+          >
+            Accept
+          </button>
+          <button
+            className="btn btn-secondary"
+            onClick={() => onPressButton?.(StatusType.Rejected, requestId)}
+          >
+            Reject
+          </button>
         </div>
       </div>
     </div>
