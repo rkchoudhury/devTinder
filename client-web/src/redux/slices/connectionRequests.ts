@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { IUser } from "../../models/userModel";
+import type { IConnection } from "../../models/connectionModel";
 
-const initialState: IUser | null = null;
+const initialState: IConnection[] = [];
 
 const connectionRequestSlice = createSlice({
   name: "connectionRequest",

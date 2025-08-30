@@ -1,14 +1,18 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getConnectionRequests } from "../../services/userService";
 import { showAlert } from "../../redux/slices/alertSlice";
 import type { AxiosError } from "axios";
 import type { RootState } from "../../redux/store";
 import { addConnectionRequest } from "../../redux/slices/connectionRequests";
+import { ConnectionCard } from "../../components/ConnectionCard";
+import type { IConnection } from "../../models/connectionModel";
 
 export const ConnectionRequest = () => {
   const dispatch = useDispatch();
-  const requests = useSelector((state: RootState) => state.connectionRequest);
+  const requests: IConnection[] = useSelector(
+    (state: RootState) => state.connectionRequest
+  );
 
   useEffect(() => {
     const fetchFeed = async () => {
@@ -29,7 +33,19 @@ export const ConnectionRequest = () => {
     fetchFeed();
   }, [dispatch]);
 
-  console.log(requests);
+  if (requests?.length === 0) {
+    return <h1>No Connection Request Found.</h1>;
+  }
 
-  return <div>ConnectionRequest</div>;
+  return (
+    <div>
+      <h1>Connection Requests</h1>
+      {requests.map((eachRequest: IConnection) => (
+        <ConnectionCard
+          key={eachRequest?._id}
+          connectionFrom={eachRequest?.fromUserId}
+        />
+      ))}
+    </div>
+  );
 };

@@ -1,14 +1,17 @@
-export interface IUser {
+export interface IConnectionFrom {
   _id: string;
   firstName: string;
   lastName: string;
-  emailId: string;
-  password: string;
   about: string;
   photoUrl: string;
   skills: string[];
+}
+
+export interface IConnection {
+  _id: string;
+  fromUserId: IConnectionFrom;
+  toUserId: string;
+  status: string;
   createdAt: string;
   updatedAt: string;
-  gender?: string;
-  age?: number;
 }
