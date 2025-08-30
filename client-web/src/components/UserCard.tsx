@@ -29,7 +29,7 @@ export const UserCard = ({
           <h2 className="card-title">{firstName + " " + lastName}</h2>
           {age && gender && (
             <p>
-              {age} {gender}
+              {age} {gender?.[0]?.toUpperCase() + gender?.substring(1)}
             </p>
           )}
           <p>{about}</p>
@@ -39,7 +39,13 @@ export const UserCard = ({
               <div>
                 {skills?.map((name) => (
                   <div className="badge badge-md badge-outline badge-primary mr-2 mb-2">
-                    {name}
+                    {/* {name
+                      .split(" ")
+                      .map(
+                        (word) => word?.[0]?.toUpperCase() + word.substring(1)
+                      )
+                      .join(" ")} */}
+                    {name.replace(/\b\w/g, (char) => char.toUpperCase())}
                   </div>
                 ))}
               </div>
