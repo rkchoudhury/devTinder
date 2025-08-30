@@ -39,7 +39,9 @@ export const ConnectionRequest = () => {
 
   return (
     <div>
-      <h1>Connection Requests</h1>
+      <h1 className="flex justify-center my-6 font-semibold text-xl">
+        Connection Requests
+      </h1>
       {requests.map((eachRequest: IConnection) => (
         <ConnectionCard
           key={eachRequest?._id}

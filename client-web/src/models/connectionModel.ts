@@ -5,6 +5,8 @@ export interface IConnectionFrom {
   about: string;
   photoUrl: string;
   skills: string[];
+  age: number;
+  gender: string;
 }
 
 export interface IConnection {
