@@ -15,7 +15,7 @@ export const ConnectionRequest = () => {
   );
 
   useEffect(() => {
-    const fetchFeed = async () => {
+    const fetchConnectionReqests = async () => {
       try {
         const response = await getConnectionRequests();
         dispatch(addConnectionRequest(response.data));
@@ -30,7 +30,7 @@ export const ConnectionRequest = () => {
         );
       }
     };
-    fetchFeed();
+    fetchConnectionReqests();
   }, [dispatch]);
 
   if (requests?.length === 0) {

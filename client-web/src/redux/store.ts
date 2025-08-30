@@ -4,6 +4,7 @@ import userReducer from "./slices/userSlice";
 import alertReducer from "./slices/alertSlice";
 import feedReducer from "./slices/feedSlice";
 import connectionRequestReducer from "./slices/connectionRequests";
+import connectionReducer from "./slices/connection";
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     alert: alertReducer,
     feed: feedReducer,
     connectionRequest: connectionRequestReducer,
+    connection: connectionReducer,
   },
 });
 
