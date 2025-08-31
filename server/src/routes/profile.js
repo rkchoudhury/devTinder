@@ -19,7 +19,8 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
     }
 });
 
-profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
+// patch is giving cors error on web -> So changed `profileRouter.patch` to `profileRouter.put`
+profileRouter.put("/profile/edit", userAuth, async (req, res) => {
     try {
         const data = req.body;
 
@@ -41,11 +42,13 @@ profileRouter.patch("/profile/edit", userAuth, async (req, res) => {
         })
 
     } catch (error) {
-        res.status(400).send("Error: " + error.message);
+        res.status(400).json({ message: "Error: " + error?.message });
     }
 });
 
-profileRouter.patch("/profile/password", async (req, res) => {
+// Patch is blocked by cors. Changing it to put
+// profileRouter.patch("/profile/password", async (req, res) => {
+profileRouter.put("/profile/password", async (req, res) => {
     try {
         const saltRounds = 10;
         const { emailId, password } = req.body;
@@ -71,10 +74,10 @@ profileRouter.patch("/profile/password", async (req, res) => {
         await user.save();
 
         // 6. Send the response back to the client
-        res.send("Password updated successfully!");
+        res.status(200).json({ message: "Password updated successfully!" });
 
     } catch (error) {
-        res.status(400).send("Error: " + error.message);
+        res.status(400).json({ message: "Error: " + error?.message });
     }
 });
 

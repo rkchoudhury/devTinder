@@ -9,7 +9,7 @@ const userAuth = async (req, res, next) => {
         const { token } = cookies;
 
         if (!token) {
-            throw new Error("Invalid token");
+            return res.status(401).send("Unauthorized Access. Please login again!");
         }
 
         // 2. Decoded the token to get the user id
@@ -17,7 +17,7 @@ const userAuth = async (req, res, next) => {
         const { _id } = decodedMessage;
 
         if (!_id) {
-            throw new Error("Invalid token");
+            return res.status(401).send("Unauthorized: Invalid token");
         }
 
         // 3. Find the user

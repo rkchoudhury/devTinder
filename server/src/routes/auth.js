@@ -39,12 +39,17 @@ authRouter.post("/signup", async (req, res) => {
         });
 
         // 4. Now the data will be saved onto the database
-        await user.save();
+        const data = await user.save();
 
-        // 5. Send the response back to the client
-        res.send("User added successfully!");
+        // 5. Adding JWT token onto the cookie header
+        const token = await user.getJWT();
+        // Added a exipre time of 7 days - After the exipre time the token will automatically removed from the browser's cookie
+        res.cookie("token", token, { expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) }); // Adding value to the cookie header
+
+        // 6. Send the response back to the client
+        res.status(200).json({ message: "User created successfully!", data });
     } catch (error) {
-        res.status(400).send("Error: " + error?.message);
+        res.status(400).json({ message: "Error: " + error?.message });
     }
 });
 
@@ -76,13 +81,13 @@ authRouter.post("/login", async (req, res) => {
             // Added a exipre time of 7 days - After the exipre time the token will automatically removed from the browser's cookie
             res.cookie("token", token, { expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) }); // Adding value to the cookie header
 
-            res.status(200).send("Login Successful!");
+            res.status(200).json({ message: "Login Successful!", data: user });
         } else {
             throw new Error("Invalid Credentials."); // Don't expose any other infromation
         }
 
     } catch (error) {
-        res.status(400).send("Error: " + error?.message);
+        res.status(400).json({ message: "Error: " + error?.message });
     }
 });
 

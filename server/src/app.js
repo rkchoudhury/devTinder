@@ -1,5 +1,6 @@
 const express = require("express");
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const connectDB = require("./config/database");
 const authRouter = require("./routes/auth");
@@ -8,6 +9,13 @@ const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
 
 const app = express();
+
+const corsOptions = {
+    // Whitelisting the domain so that the cookies can be set
+    origin: 'http://localhost:5173',
+    credentials: true,
+}
+app.use(cors(corsOptions));
 
 // This middleware converts the request object to the readable string
 app.use(express.json()); // The client must send requests with Content-Type: application/json for express.json() to work
