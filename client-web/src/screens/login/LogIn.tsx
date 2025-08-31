@@ -64,10 +64,16 @@ const LogIn = () => {
               Login ❤️
             </button>
           </div>
-          <p className="mt-2" onClick={() => navigate(ROUTE_NAMES.SIGNUP)}>
+          <label className="mt-2" onClick={() => navigate(ROUTE_NAMES.SIGNUP)}>
             New user <b className="underline hover:cursor-pointer">Sign up</b>{" "}
             here.
-          </p>
+          </label>
+          <label
+            className="underline hover:cursor-pointer text-red-500 font-semibold"
+            onClick={() => navigate(ROUTE_NAMES.FORGOT_PASSWORD)}
+          >
+            Forgot Password
+          </label>
         </div>
       </div>
     </div>

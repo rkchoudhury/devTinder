@@ -5,6 +5,7 @@ const ROUTE_NAMES = {
   CONNECTION_REQUEST: "/requests",
   CONNECTIONS: "/connections",
   SIGNUP: "/signup",
+  FORGOT_PASSWORD: "/password",
 };
 
 export { ROUTE_NAMES };
