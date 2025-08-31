@@ -18,13 +18,13 @@ export const ErrorAlert = () => {
     }
   }, [dispacth, duration, showAlert]);
 
-  if (!showAlert) {
+  if (!showAlert || !message?.length) {
     return null;
   }
 
   return (
-    <div className="flex right-10 bottom-20 fixed">
-      <div role="alert" className={`alert ${type}`}>
+    <div className="toast toast-top toast-center top-32">
+      <div className={`alert ${type}`}>
         <span>{message}</span>
       </div>
     </div>
