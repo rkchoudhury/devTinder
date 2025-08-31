@@ -27,4 +27,21 @@ const logoutUser = async () => {
   }
 };
 
-export { authenticateUser, logoutUser };
+const signUpNewUser = async (data: {
+  firstName: string;
+  lastName: string;
+  emailId: string;
+  password: string;
+}) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/signup`, data, {
+      withCredentials: true,
+    });
+    return response?.data;
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    throw axiosError?.response?.data;
+  }
+};
+
+export { authenticateUser, logoutUser, signUpNewUser };

@@ -12,6 +12,7 @@ import { AlertType } from "../../enums/alertEnum";
 const Feed = () => {
   const dispatch = useDispatch();
   const { list } = useSelector((state: RootState) => state.feed);
+  const user = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     const fetchFeed = async () => {
@@ -56,10 +57,25 @@ const Feed = () => {
     }
   };
 
-  if (!list) return null;
+  if (!user) {
+    return (
+      <div className="flex flex-col items-center justify-center mt-10">
+        <p className="text-2xl">⚠️</p>
+        <p className="text-2xl font-bold">Something went wrong!</p>
+        <p className="text-lg mt-4">
+          Please check your internet connection and try to login again!
+        </p>
+      </div>
+    );
+  }
 
   if (list?.length === 0) {
-    return <h1>No Connections</h1>;
+    return (
+      <div className="flex flex-col items-center justify-center mt-10">
+        <p className="text-2xl">❤️</p>
+        <p className="text-2xl">No new connection available!</p>
+      </div>
+    );
   }
 
   return (

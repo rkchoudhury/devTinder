@@ -13,16 +13,14 @@ const LogIn = () => {
   const navigate = useNavigate();
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const onPressLogin = async () => {
     try {
       const response = await authenticateUser(emailId, password);
       dispatch(addUser(response?.data));
-      navigate(ROUTE_NAMES.HOME);
+      navigate(ROUTE_NAMES.HOME, { replace: true });
     } catch (error) {
       const axiosError = error as AxiosError;
-      setError(axiosError?.message);
       dispatch(
         showAlert({
           showAlert: true,
@@ -33,7 +31,7 @@ const LogIn = () => {
   };
 
   return (
-    <div className="flex justify-center mt-40">
+    <div className="flex justify-center mt-32">
       <div className="card bg-neutral text-neutral-content w-96">
         <div className="card-body items-center text-center">
           <h2 className="card-title">Log In</h2>
@@ -54,7 +52,6 @@ const LogIn = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <p className="text-red-500 mt-4">{error}</p>
           </div>
           <div className="w-full mt-4">
             <button
@@ -64,6 +61,16 @@ const LogIn = () => {
               Login ❤️
             </button>
           </div>
+          <label className="mt-2" onClick={() => navigate(ROUTE_NAMES.SIGNUP)}>
+            New user <b className="underline hover:cursor-pointer">Sign up</b>{" "}
+            here.
+          </label>
+          <label
+            className="underline hover:cursor-pointer text-red-500 font-semibold"
+            onClick={() => navigate(ROUTE_NAMES.FORGOT_PASSWORD)}
+          >
+            Forgot Password
+          </label>
         </div>
       </div>
     </div>
