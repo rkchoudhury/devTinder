@@ -23,7 +23,7 @@ export const ErrorAlert = () => {
   }
 
   return (
-    <div className="toast toast-top toast-center top-32">
+    <div className="toast toast-top toast-center top-20">
       <div className={`alert ${type}`}>
         <span>{message}</span>
       </div>

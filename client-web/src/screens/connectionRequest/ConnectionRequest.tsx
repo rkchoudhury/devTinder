@@ -63,7 +63,12 @@ export const ConnectionRequest = () => {
   };
 
   if (requests?.length === 0) {
-    return <h1>No Connection Request Found.</h1>;
+    return (
+      <div className="flex flex-col items-center justify-center mt-10">
+        <p className="text-2xl">❤️</p>
+        <p className="text-2xl">No new connection request found!</p>
+      </div>
+    );
   }
 
   return (
