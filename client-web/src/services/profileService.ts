@@ -22,4 +22,17 @@ const updateUserProfile = async (user: Partial<IUser>) => {
   }
 };
 
-export { getUserProfile, updateUserProfile };
+const updateUserPassword = async (emailId: string, password: string) => {
+  try {
+    const data = { emailId, password };
+    const response = await axios.put(`${BASE_URL}/profile/password`, data, {
+      withCredentials: true,
+    });
+    return response?.data;
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    throw axiosError?.response?.data;
+  }
+};
+
+export { getUserProfile, updateUserProfile, updateUserPassword };
