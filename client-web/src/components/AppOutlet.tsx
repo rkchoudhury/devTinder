@@ -18,6 +18,12 @@ const AppOutlet = () => {
   const location = useLocation();
   const user = useSelector((state: RootState) => state.user as IUser | null);
 
+  const showFooter: boolean = [
+    ROUTE_NAMES.LOGIN,
+    ROUTE_NAMES.SIGNUP,
+    ROUTE_NAMES.FORGOT_PASSWORD,
+  ].includes(location.pathname);
+
   /**
    * Handling page reload or intial page load scenario
    *
@@ -58,7 +64,7 @@ const AppOutlet = () => {
     <div>
       <NavBar />
       <Outlet />
-      {location.pathname === ROUTE_NAMES.LOGIN && <Footer />}
+      {showFooter && <Footer />}
     </div>
   );
 };

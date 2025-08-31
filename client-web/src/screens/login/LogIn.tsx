@@ -13,16 +13,14 @@ const LogIn = () => {
   const navigate = useNavigate();
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const onPressLogin = async () => {
     try {
       const response = await authenticateUser(emailId, password);
       dispatch(addUser(response?.data));
-      navigate(ROUTE_NAMES.HOME);
+      navigate(ROUTE_NAMES.HOME, { replace: true });
     } catch (error) {
       const axiosError = error as AxiosError;
-      setError(axiosError?.message);
       dispatch(
         showAlert({
           showAlert: true,
@@ -54,7 +52,6 @@ const LogIn = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <p className="text-red-500 mt-2">{error}</p>
           </div>
           <div className="w-full mt-4">
             <button

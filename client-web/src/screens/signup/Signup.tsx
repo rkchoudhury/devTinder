@@ -27,7 +27,7 @@ export const Signup = () => {
         password,
       });
       dispatch(addUser(response?.data));
-      navigate(ROUTE_NAMES.HOME);
+      navigate(ROUTE_NAMES.HOME, { replace: true });
     } catch (error) {
       const axiosError = error as AxiosError;
       dispatch(
