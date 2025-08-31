@@ -54,7 +54,7 @@ const LogIn = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <p className="text-red-500 mt-4">{error}</p>
+            <p className="text-red-500 mt-2">{error}</p>
           </div>
           <div className="w-full mt-4">
             <button
@@ -64,6 +64,10 @@ const LogIn = () => {
               Login ❤️
             </button>
           </div>
+          <p className="mt-2" onClick={() => navigate(ROUTE_NAMES.SIGNUP)}>
+            New user <b className="underline hover:cursor-pointer">Sign up</b>{" "}
+            here.
+          </p>
         </div>
       </div>
     </div>

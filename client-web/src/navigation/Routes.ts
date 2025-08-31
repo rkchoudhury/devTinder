@@ -4,6 +4,7 @@ const ROUTE_NAMES = {
   PROFILE: "/profile",
   CONNECTION_REQUEST: "/requests",
   CONNECTIONS: "/connections",
+  SIGNUP: "/signup",
 };
 
 export { ROUTE_NAMES };

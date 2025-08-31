@@ -14,6 +14,7 @@ import Feed from "../screens/feed/Feed";
 import Profile from "../screens/profile/Profile";
 import { ConnectionRequest } from "../screens/connectionRequest/ConnectionRequest";
 import { Connections } from "../screens/connection/Connections";
+import { Signup } from "../screens/signup/Signup";
 
 // const appRouter = createBrowserRouter([
 //   {
@@ -51,6 +52,7 @@ export const AppNavigator = () => {
         >
           {/* Children routes */}
           <Route path={ROUTE_NAMES.LOGIN} element={<LogIn />} />
+          <Route path={ROUTE_NAMES.SIGNUP} element={<Signup />} />
           <Route path={ROUTE_NAMES.HOME} element={<Feed />} />
           <Route path={ROUTE_NAMES.PROFILE} element={<Profile />} />
           <Route
