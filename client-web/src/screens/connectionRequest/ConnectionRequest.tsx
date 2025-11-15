@@ -10,7 +10,7 @@ import {
 } from "../../redux/slices/connectionRequests";
 import { ConnectionCard } from "../../components/ConnectionCard";
 import type { IConnection } from "../../models/connectionModel";
-import { AlertType } from "../../enums/alertEnum";
+import { AlertType } from "../../enums/AlertEnum";
 import { reviewRequest } from "../../services/requestService";
 
 export const ConnectionRequest = () => {

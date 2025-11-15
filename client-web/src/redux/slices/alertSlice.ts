@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { AlertType } from "../../enums/alertEnum";
+import { AlertType } from "../../enums/AlertEnum";
 
 interface IAlertState {
   type?: AlertType;
