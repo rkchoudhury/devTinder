@@ -1,8 +1,23 @@
-# Deployement
+# Deployement Steps
 
-V22.11.0
+## 0. Create AWS Account
 
-## Setup the Remote Machine
+--
+
+## 1. Create EC2 Instance
+
+--
+
+## 2. Connect to AWS Instance
+
+- Locate your private key file (devtinder-secrete.pem). This key is used to launch the instance. Open the terminal at that location.
+
+  - chmod 400 "devtinder-secrete.pem"
+  - ssh -i "devtinder-secrete.pem" ubuntu@ec2-16-170-133-198.eu-north-1.compute.amazonaws.com
+
+- Now you will be able to access AWS machine's terminal
+
+## 3. Setup the Remote Machine
 
 1.  Install Node.js
 
@@ -15,13 +30,18 @@ V22.11.0
       - nvm install 22.11.0
       - node -v
 
+    - For Restart follow the following steps
+
+      - exit
+      - ssh -i "devtinder-secrete.pem" ubuntu@ec2-16-170-133-198.eu-north-1.compute.amazonaws.com
+
 2.  Clone the Project
 
     - git clone https://github.com/rkchoudhury/devTinder.git
     - ls
       - devTinder
 
-## Deploye Forntend Web App/Project
+## 4. Deploye Forntend Web App/Project
 
 1. Build the project on Remote Machine
 
@@ -79,3 +99,7 @@ V22.11.0
    -> The frontend web app now deployed to the public IP addess of the Instance.
 
    -> We can access the public IP Address anywhere on the internet
+
+## 5. Deploye Backend Node.js App/Project
+
+--
