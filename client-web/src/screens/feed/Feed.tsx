@@ -7,7 +7,7 @@ import { getFeed } from "../../services/userService";
 import { showAlert } from "../../redux/slices/alertSlice";
 import { addFeed, updateFeed } from "../../redux/slices/feedSlice";
 import { sendRequest } from "../../services/requestService";
-import { AlertType } from "../../enums/alertEnum";
+import { AlertType } from "../../enums/AlertEnum";
 
 const Feed = () => {
   const dispatch = useDispatch();
