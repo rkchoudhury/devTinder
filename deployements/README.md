@@ -25,18 +25,57 @@ V22.11.0
 
 1. Build the project on Remote Machine
 
-- Go to the web folder
+   - Go to the web folder
 
-  - cd devtinder
-  - cd client-web
+     - ls
+     - cd devTinder/client-web
 
-- Install the dependencies
+   - Install the dependencies
 
-  - npm install
+     - npm install
 
-- Build the project
+   - Build the project
 
-  - npm run build
+     - npm run build
 
-  - ls
-    - dist (Folder contains all the code that we wat to run onto the server)
+     - ls
+       - dist (Folder contains all the code that we want to run onto the server)
+
+2. Deploye Web App using `nginx`
+
+   - We are inside the client-web folder
+
+     - cd devTinder/client-web
+
+   - Install the nginx
+
+     - sudo apt update
+     - sudo apt install nginx
+
+   - Start & Enable nginx onto our system
+
+     - sudo systemctl start nginx
+
+     - sudo systemctl enable nginx
+
+   - Copy code from dist(build files) to the nginx's http server (/var/www/html/)
+
+     - `sudo scp -r dist/* /var/www/html/`
+
+3. Enable port :80 of our instance on AWS Site
+
+   > Go to AWS instance
+
+   - > Security
+     - > Security Groups
+       - Inbound rules
+         - Edit inbound rules
+         - Add rule
+         - Set port range to 80 & source to 0.0.0.0/0
+         - Save rules
+
+   -> Now hit the public IP Address on the browser
+
+   -> The frontend web app now deployed to the public IP addess of the Instance.
+
+   -> We can access the public IP Address anywhere on the internet
