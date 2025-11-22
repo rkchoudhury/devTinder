@@ -189,7 +189,7 @@ But the best practice, we should make our url like this,
     Frontend -> http://devtinder.com
     Backend -> http://devtinder.com/api/
 
-`nginx` configuration to map `/api` to `:7000`
+### `nginx` configuration to map `/api` to `:7000`
 
 1. Edit the nginx configuration file:
 
@@ -222,3 +222,32 @@ server {
      - Hello from Server!
    - http://51.21.171.84/api/feed
      - Hello from Server!
+
+### Modify the BASE_URL of the Frontend Project (DevTinder Web App)
+
+- from `"http://localhost:7000"` to `/api`
+
+### Now re-deploy the Frontend Web Project
+
+- Go to the devTinder project
+
+  - cd devTinder
+
+- Pull the latest change
+
+  - git fetch
+  - git pull
+
+- Go to the web project & build the project
+
+  - cd client-web
+  - npm run build
+
+- Copy code from dist(build files) to the nginx's http server (/var/www/html/)
+
+  - `sudo scp -r dist/* /var/www/html/`
+
+- Now nginx will start serving the new file to us
+
+- Hit the url on the browser & we will see, the devTinder UI with all the features integrated to it.
+  - http://51.21.171.84/
