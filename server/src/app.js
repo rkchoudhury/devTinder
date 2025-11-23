@@ -2,6 +2,12 @@ const express = require("express");
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
+// Configure dotenv
+require('dotenv').config({ path: '.env' });
+
+// const path = require('path');
+// require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
+
 const connectDB = require("./config/database");
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
@@ -39,8 +45,8 @@ connectDB()
     .then(() => {
         console.log("Database connected successfully");
 
-        app.listen(7000, () => {
-            console.log("Server is running at 7000");
+        app.listen(process.env.SERVER_PORT, () => {
+            console.log(`Server is running at ${process.env.SERVER_PORT}`);
         });
     })
     .catch((error) => {

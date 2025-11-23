@@ -13,7 +13,7 @@ const userAuth = async (req, res, next) => {
         }
 
         // 2. Decoded the token to get the user id
-        const decodedMessage = jwt.verify(token, 'DevTinder@123#TestEnv');
+        const decodedMessage = jwt.verify(token, process.env.JWT_TOKEN);
         const { _id } = decodedMessage;
 
         if (!_id) {
