@@ -74,7 +74,7 @@ authRouter.post("/login", async (req, res) => {
         // 4. Send the response back to the client
         if (isPasswordValid) {
             // A. Creating JSW token - Added expire time of 7 days
-            // const token = jwt.sign({ _id: user._id }, 'DevTinder@123#TestEnv', { expiresIn: '7d' });
+            // const token = jwt.sign({ _id: user._id }, process.env.JWT_TOKEN, { expiresIn: '7d' });
             const token = await user.getJWT();
 
             // B. Adding JWT token onto the cookie header

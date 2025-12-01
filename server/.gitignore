@@ -1,1 +1,4 @@
 node_modules
+
+# Un-commet the .env file
+# .env
