@@ -4,7 +4,7 @@ const { userAuth } = require("../middlewares/auth");
 const ConnectionRequest = require("../models/connectionRequest");
 const User = require("../models/user");
 
-const sendEmail = require("../utils/sendEmail");
+const sendEmail = require("../utils/emailUtils/sendEmail");
 
 const requestRouter = express.Router();
 
