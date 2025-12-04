@@ -39,6 +39,7 @@ const createSendEmailCommand = (toAddress, fromAddress, message) => {
 };
 
 const run = async (message, _recipientEmailId, _senderEmailId) => {
+    // Important: Used the emailIds those are verified in the AWS SES site
     const sendEmailCommand = createSendEmailCommand(
         "rakeshchoudhury@gmail.com", // "recipient@example.com",
         "choudhuryrakesh@gmail.com", // "sender@example.com",
