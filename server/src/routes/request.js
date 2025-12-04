@@ -4,6 +4,8 @@ const { userAuth } = require("../middlewares/auth");
 const ConnectionRequest = require("../models/connectionRequest");
 const User = require("../models/user");
 
+const sendEmail = require("../utils/emailUtils/sendEmail");
+
 const requestRouter = express.Router();
 
 requestRouter.post("/request/send/:status/:userId", userAuth, async (req, res) => {
@@ -43,6 +45,19 @@ requestRouter.post("/request/send/:status/:userId", userAuth, async (req, res) =
         });
 
         await data.save();
+
+        // Sending Email to the User
+        if (status === "interested") {
+            const { firstName: receiverFirstName, emailId: receiverEmailId } = toUser;
+            const {
+                firstName: senderFirstName,
+                lastName: senderLastName,
+                emailId: senderEmailId,
+            } = req.user;
+
+            const emailMessage = `${receiverFirstName}, you have got one friend request from ${senderFirstName} ${senderLastName}.`;
+            await sendEmail.run(emailMessage, receiverEmailId, senderEmailId);
+        }
 
         res.json({
             message:

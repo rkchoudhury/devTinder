@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/rkchoudhury/devTinder#readme",
   "dependencies": {
+    "@aws-sdk/client-ses": "3.940.0",
     "bcrypt": "6.0.0",
     "cookie-parser": "1.4.7",
     "cors": "2.8.5",

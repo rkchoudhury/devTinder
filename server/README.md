@@ -54,3 +54,11 @@ Install nodemon in global level
     GET /user/feed -> Get you the profile of other users on platform
 
 Status: ignored, interested, accepted, rejected
+
+# DevTinder Environment Variable Setup
+
+1. Create a `.env` file and place it inside the `server` directory.
+
+2. Copy the content from `.env.local` and paste it inside the `.env` file.
+
+3. Now add the secrete configurations inside `.env` file by replacing the `<>` contents with the secrete values.
