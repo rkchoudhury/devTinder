@@ -8,6 +8,8 @@ require('dotenv').config({ path: '.env' });
 // const path = require('path');
 // require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
 
+require("./utils/cronjob");
+
 const connectDB = require("./config/database");
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
