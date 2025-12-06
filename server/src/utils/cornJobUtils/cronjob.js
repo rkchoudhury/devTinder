@@ -21,6 +21,7 @@ const sendEmail = require("../emailUtils/sendEmail");
  */
 cron.schedule("0 8 * * *", async () => {
     try {
+        // Set the value to `0` to send mails for the friend requests which are sent within 24 hours
         const previousDay = subDays(new Date(), 1);
         const previousDayStart = startOfDay(previousDay); // 00.00 AM
         const previousDayEnd = endOfDay(previousDay); // 11.59 PM
