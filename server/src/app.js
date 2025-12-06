@@ -2,12 +2,17 @@ const express = require("express");
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
-// Configure dotenv
+/**
+ * Configure dotenv
+ */
 require('dotenv').config({ path: '.env' });
 
 // const path = require('path');
 // require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
 
+/**
+ * Start the corn jobs as soon as the app started
+ */
 require("./utils/cornJobUtils/cronjob");
 
 const connectDB = require("./config/database");

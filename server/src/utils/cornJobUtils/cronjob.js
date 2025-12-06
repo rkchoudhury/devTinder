@@ -3,27 +3,32 @@ const { subDays, startOfDay, endOfDay } = require("date-fns");
 const ConnectionRequest = require("../../models/connectionRequest");
 const sendEmail = require("../emailUtils/sendEmail");
 
-// crontab.guru
 
-// Every second this job will run
-// second | min | hour | day | month | day of week
+/**
+ * Every second this job will run
+ * 
+ * Syntax:
+ *      second (Optional) | min | hour | day | month | day of week
+ */
 // cron.schedule("* * * * * *", () => {
 //     console.log("Hello World, " + new Date());
 // });
 
 /**
  * Send emails to all the people who got requests on the previous day
+ * 
+ * This job will run at 8 AM in the morning everyday
  */
 cron.schedule("0 8 * * *", async () => {
     try {
         const previousDay = subDays(new Date(), 1);
-        const previousDayStart = startOfDay(previousDay);
-        const previousDayEnd = endOfDay(previousDay);
+        const previousDayStart = startOfDay(previousDay); // 00.00 AM
+        const previousDayEnd = endOfDay(previousDay); // 11.59 PM
 
         /**
          * This query can also be very expensive.
          * 
-         * This query can also be paginated using Limit
+         * This query can also be paginated using Limit for performance improvements
          */
         const pendingRequests = await ConnectionRequest.find({
             status: "interested",
@@ -64,3 +69,9 @@ cron.schedule("0 8 * * *", async () => {
         console.log("Error in corn job", error);
     }
 });
+
+/**
+ * Notes:
+ * 
+ * Visit `crontab.guru` to test the cron job
+ */
