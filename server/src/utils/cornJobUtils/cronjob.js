@@ -20,6 +20,11 @@ cron.schedule("0 8 * * *", async () => {
         const previousDayStart = startOfDay(previousDay);
         const previousDayEnd = endOfDay(previousDay);
 
+        /**
+         * This query can also be very expensive.
+         * 
+         * This query can also be paginated using Limit
+         */
         const pendingRequests = await ConnectionRequest.find({
             status: "interested",
             createdAt: {
@@ -31,6 +36,20 @@ cron.schedule("0 8 * * *", async () => {
         const listOfEmails = pendingRequests.map((req) => req.toUserId.emailId);
         const listOfUniqueEmailIds = [...new Set(listOfEmails)];
 
+        /**
+         * Not Proficent:
+         *  1. Works good for less number of users.
+         *  2. It is a syncroneous way / blocking way of sending the requests.
+         * 
+         * For handling millions of email Ids
+         *  - We can use queue or send emails in bluck operations
+         * 
+         *  0. Send bluck request to Amazon SES and they will handle it.
+         *  1. Or, we can create our own queue in nodejs process and send the emails in batches.
+         *      - We can create queue using following libraries and send the emails in batch format.
+         *          - bee-queue
+         *          - bullMQ
+         */
         for (const toEmailId of listOfUniqueEmailIds) {
             try {
                 // Send Email
