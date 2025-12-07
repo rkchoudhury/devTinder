@@ -80,6 +80,11 @@ const NavBar = () => {
                   Connection Requests
                 </Link>
               </li>
+              <li>
+                <Link to={ROUTE_NAMES.PREMIUM} onClick={dissmissDropDownMenu}>
+                  Premium
+                </Link>
+              </li>
               <li onClick={onPressLogout}>
                 <a>Logout</a>
               </li>
