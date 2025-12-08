@@ -12,17 +12,21 @@ const Payment = require("../models/payment");
 paymentRouter.post("/payment/create", userAuth, async (req, res) => {
     try {
         const user = req.user;
+        const { membershipType } = req.body;
+
+        // Lower currency will be passed. For Gold - Rs 700, for Silver - Rs. 300
+        const membershipAmount = membershipType === "gold" ? 70000 : 30000;
 
         // Create an order on RazorPay
         const order = await razorpayInstnace.orders.create({
-            amount: 50000, // Rs: 500 - Lower currency will be passed
+            amount: membershipAmount,
             currency: "INR",
             receipt: "receipt#1",
             notes: {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 emailId: user.emailId,
-                membershipType: "silver",
+                membershipType,
             },
         });
 
@@ -32,7 +36,7 @@ paymentRouter.post("/payment/create", userAuth, async (req, res) => {
             userId: user._id,
             orderId: id,
             status,
-            amount,
+            amount: amount / 100,
             currency,
             receipt,
             notes

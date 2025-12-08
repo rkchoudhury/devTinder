@@ -1,6 +1,27 @@
-import React from "react";
+import { useDispatch } from "react-redux";
+import type { AxiosError } from "axios";
+
+import { createPayment } from "../../services/paymentService";
+import { showAlert } from "../../redux/slices/alertSlice";
+import { MembershipType } from "../../enums/MembershipEnum";
 
 export const Premium = () => {
+  const dispatch = useDispatch();
+
+  const onPressBuy = async (membershipType: MembershipType) => {
+    try {
+      const response = await createPayment(membershipType);
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      dispatch(
+        showAlert({
+          showAlert: true,
+          message: axiosError?.message,
+        })
+      );
+    }
+  };
+
   return (
     <div className="">
       <h1 className="font-bold text-3xl mt-5 mb-8 text-center">
@@ -16,7 +37,10 @@ export const Premium = () => {
               <li>- Blue Tick</li>
               <li>- 3 Months</li>
             </ul>
-            <button className="btn btn-outline btn-secondary mb-5 btn-wide">
+            <button
+              className="btn btn-outline btn-secondary mb-5 btn-wide"
+              onClick={() => onPressBuy(MembershipType.SILVER)}
+            >
               Buy Silver
             </button>
           </div>
@@ -29,7 +53,10 @@ export const Premium = () => {
               <li>- Blue Tick</li>
               <li>- 6 Months</li>
             </ul>
-            <button className="btn btn-outline btn-warning mb-5 btn-wide">
+            <button
+              className="btn btn-outline btn-warning mb-5 btn-wide"
+              onClick={() => onPressBuy(MembershipType.GOLD)}
+            >
               Buy Gold
             </button>
           </div>
