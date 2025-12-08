@@ -4,13 +4,42 @@ import type { AxiosError } from "axios";
 import { createPayment } from "../../services/paymentService";
 import { showAlert } from "../../redux/slices/alertSlice";
 import { MembershipType } from "../../enums/MembershipEnum";
+import type { IPayment } from "../../models/paymentModel";
 
 export const Premium = () => {
   const dispatch = useDispatch();
 
   const onPressBuy = async (membershipType: MembershipType) => {
     try {
-      const response = await createPayment(membershipType);
+      const response: IPayment = await createPayment(membershipType);
+      const {
+        amount,
+        currency,
+        orderId,
+        notes: { firstName, lastName, emailId },
+      } = response.order;
+
+      // Open Razorpay Checkout
+      const options = {
+        key: response.razorpayKeyId, // Replace with your Razorpay key_id
+        amount: amount * 100, // Amount is in currency subunits.
+        currency,
+        name: `${firstName} ${lastName}`,
+        description: "DeTinder Membership Payment",
+        order_id: orderId, // This is the order_id created in the backend
+        // callback_url: "http://localhost:3000/payment-success", // Your success URL
+        prefill: {
+          name: `${firstName} ${lastName}`,
+          email: emailId,
+          description: "DeTinder Membership Payment",
+        },
+        theme: {
+          color: "#F37254",
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
     } catch (error) {
       const axiosError = error as AxiosError;
       dispatch(

@@ -39,12 +39,18 @@ paymentRouter.post("/payment/create", userAuth, async (req, res) => {
             amount: amount / 100,
             currency,
             receipt,
-            notes
+            notes,
         });
         const savedPayment = await payment.save();
 
         // Sending order data as a json to frontend
-        res.status(200).json({ data: savedPayment, status: "success" });
+        res
+            .status(200)
+            .json({
+                order: savedPayment,
+                razorpayKeyId: process.env.RAZORPAY_KEY_ID, // Public Data
+                status: "success",
+            });
     } catch (error) {
         res.status(400).send("Error: " + error.message);
     }
