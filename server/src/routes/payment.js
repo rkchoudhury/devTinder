@@ -4,6 +4,11 @@ const { userAuth } = require("../middlewares/auth");
 const paymentRouter = express.Router();
 const razorpayInstnace = require("../utils/paymentUtils/razorpay");
 const Payment = require("../models/payment");
+const {
+    validatePaymentVerification,
+    validateWebhookSignature,
+} = require("razorpay/dist/utils/razorpay-utils");
+const crypto = require("crypto");
 
 /**
  * 1. Create the Order on RozarPay
@@ -30,6 +35,8 @@ paymentRouter.post("/payment/create", userAuth, async (req, res) => {
             },
         });
 
+        console.log("rkk order", order);
+
         // Save the order data on DB
         const { id, amount, currency, status, receipt, notes } = order;
         const payment = new Payment({
@@ -43,14 +50,51 @@ paymentRouter.post("/payment/create", userAuth, async (req, res) => {
         });
         const savedPayment = await payment.save();
 
+        console.log("rkk savedPayment", savedPayment);
+
         // Sending order data as a json to frontend
-        res
-            .status(200)
-            .json({
-                order: savedPayment,
-                razorpayKeyId: process.env.RAZORPAY_KEY_ID, // Public Data
-                status: "success",
-            });
+        res.status(200).json({
+            order: savedPayment,
+            razorpayKeyId: process.env.RAZORPAY_KEY_ID, // Public Data
+            status: "success",
+        });
+    } catch (error) {
+        res.status(400).send("Error: " + error.message);
+    }
+});
+
+paymentRouter.post("/payment/verification", userAuth, async (req, res) => {
+    try {
+        const user = req.user;
+        const { razorpayPaymentId, razorpayOrderId, razorpaySignature } = req.body;
+
+        console.log("res 1>>", req.body);
+
+        const hmac = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
+        hmac.update(razorpayOrderId + "|" + razorpayPaymentId);
+        const generatedSignature = hmac.digest("hex");
+
+        if (generatedSignature !== razorpaySignature) {
+            throw new Error("Payment verification failed.");
+        }
+
+        const response = validatePaymentVerification(
+            { order_id: razorpayOrderId, payment_id: razorpayPaymentId },
+            razorpaySignature,
+            process.env.RAZORPAY_KEY_SECRET
+        );
+
+        console.log("response>>", response);
+
+        // res
+        //     .status(200)
+        //     .json({
+        //         order: savedPayment,
+        //         razorpayKeyId: process.env.RAZORPAY_KEY_ID, // Public Data
+        //         status: "success",
+        //     });
+
+        res.status(200);
     } catch (error) {
         res.status(400).send("Error: " + error.message);
     }

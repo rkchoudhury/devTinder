@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import type { AxiosError } from "axios";
 
-import { createPayment } from "../../services/paymentService";
+import { createPayment, verifyPayment } from "../../services/paymentService";
 import { showAlert } from "../../redux/slices/alertSlice";
 import { MembershipType } from "../../enums/MembershipEnum";
 import type { IPayment } from "../../models/paymentModel";
@@ -42,13 +42,16 @@ export const Premium = () => {
       name: `${firstName} ${lastName}`,
       description: "DeTinder Membership Payment",
       order_id: orderId, // This is the order_id created in the backend
-      // callback_url: "http://localhost:3000/payment-success", // Your success URL
+      // callback_url: "http://localhost:7000/payment/verification", // Your success URL
       prefill: {
         name: `${firstName} ${lastName}`,
         email: emailId,
       },
       theme: {
         color: "#F37254",
+      },
+      handler: async (response) => {
+        await verifyPayment(response);
       },
     };
 

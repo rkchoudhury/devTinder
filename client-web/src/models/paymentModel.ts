@@ -23,4 +23,10 @@ interface IPayment {
   razorpayKeyId: string;
 }
 
-export type { IOrder, IPayment };
+interface IPaymentVerification {
+  razorpay_order_id: string;
+  razorpay_payment_id: string;
+  razorpay_signature: string;
+}
+
+export type { IOrder, IPayment, IPaymentVerification };
