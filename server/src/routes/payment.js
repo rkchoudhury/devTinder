@@ -94,7 +94,11 @@ paymentRouter.post("/payment/verification", userAuth, async (req, res) => {
         //         status: "success",
         //     });
 
-        res.status(200);
+        if (response) {
+            // Update user data
+        }
+
+        res.status(200).json({ "success": true });
     } catch (error) {
         res.status(400).send("Error: " + error.message);
     }

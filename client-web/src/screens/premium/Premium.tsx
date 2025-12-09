@@ -5,12 +5,14 @@ import { createPayment, verifyPayment } from "../../services/paymentService";
 import { showAlert } from "../../redux/slices/alertSlice";
 import { MembershipType } from "../../enums/MembershipEnum";
 import type { IPayment } from "../../models/paymentModel";
+import { hideLoader, showLoader } from "../../redux/slices/loaderSlice";
 
 export const Premium = () => {
   const dispatch = useDispatch();
 
   const onPressBuy = async (membershipType: MembershipType) => {
     try {
+      dispatch(showLoader());
       const response: IPayment = await createPayment(membershipType);
 
       // Open Razorpay Checkout
@@ -23,6 +25,7 @@ export const Premium = () => {
           message: axiosError?.message,
         })
       );
+      dispatch(hideLoader());
     }
   };
 
@@ -51,7 +54,9 @@ export const Premium = () => {
         color: "#F37254",
       },
       handler: async (response) => {
-        await verifyPayment(response);
+        const res = await verifyPayment(response);
+        console.log("rkkk res", res);
+        dispatch(hideLoader());
       },
     };
 
