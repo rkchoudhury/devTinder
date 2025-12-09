@@ -44,6 +44,7 @@ const paymentSchema = new Schema(
                 required: true,
             }
         },
+        // A order can be without payment also. It is optional.
         paymentId: {
             type: String,
         },

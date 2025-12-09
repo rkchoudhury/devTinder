@@ -42,7 +42,7 @@ export const Premium = () => {
       key: razorpayKeyId, // Replace with your Razorpay key_id
       amount: amount * 100, // Amount is in currency subunits.
       currency,
-      name: `${firstName} ${lastName}`,
+      name: "DevTinder",
       description: "DeTinder Membership Payment",
       order_id: orderId, // This is the order_id created in the backend
       // callback_url: "http://localhost:7000/payment/verification", // Your success URL

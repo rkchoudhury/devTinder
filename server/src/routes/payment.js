@@ -1,14 +1,15 @@
 const express = require("express");
+const {
+    validatePaymentVerification,
+    validateWebhookSignature,
+} = require("razorpay/dist/utils/razorpay-utils");
 const { userAuth } = require("../middlewares/auth");
 
 const paymentRouter = express.Router();
 const razorpayInstnace = require("../utils/paymentUtils/razorpay");
 const Payment = require("../models/payment");
-const {
-    validatePaymentVerification,
-    validateWebhookSignature,
-} = require("razorpay/dist/utils/razorpay-utils");
 const crypto = require("crypto");
+const { membershipAmount } = require("../utils/constants");
 
 /**
  * 1. Create the Order on RozarPay
@@ -19,12 +20,9 @@ paymentRouter.post("/payment/create", userAuth, async (req, res) => {
         const user = req.user;
         const { membershipType } = req.body;
 
-        // Lower currency will be passed. For Gold - Rs 700, for Silver - Rs. 300
-        const membershipAmount = membershipType === "gold" ? 70000 : 30000;
-
         // Create an order on RazorPay
         const order = await razorpayInstnace.orders.create({
-            amount: membershipAmount,
+            amount: membershipAmount[membershipType] * 100, // Lower currency will be passed - in Paisa. For Gold - 70000, for Silver - 30000
             currency: "INR",
             receipt: "receipt#1",
             notes: {
@@ -34,8 +32,6 @@ paymentRouter.post("/payment/create", userAuth, async (req, res) => {
                 membershipType,
             },
         });
-
-        console.log("rkk order", order);
 
         // Save the order data on DB
         const { id, amount, currency, status, receipt, notes } = order;
@@ -49,8 +45,6 @@ paymentRouter.post("/payment/create", userAuth, async (req, res) => {
             notes,
         });
         const savedPayment = await payment.save();
-
-        console.log("rkk savedPayment", savedPayment);
 
         // Sending order data as a json to frontend
         res.status(200).json({
