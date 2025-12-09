@@ -5,6 +5,7 @@ import alertReducer from "./slices/alertSlice";
 import feedReducer from "./slices/feedSlice";
 import connectionRequestReducer from "./slices/connectionRequests";
 import connectionReducer from "./slices/connection";
+import loaderReducer from "./slices/loaderSlice";
 
 const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
     feed: feedReducer,
     connectionRequest: connectionRequestReducer,
     connection: connectionReducer,
+    loader: loaderReducer,
   },
 });
 

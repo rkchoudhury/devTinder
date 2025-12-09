@@ -1,7 +1,10 @@
-export const Loader = () => {
-  const isLoading = false;
+import { useSelector } from "react-redux";
+import type { RootState } from "../redux/store";
 
-  if (!isLoading) {
+export const Loader = () => {
+  const { loading } = useSelector((state: RootState) => state.loader);
+
+  if (!loading) {
     return null;
   }
 
