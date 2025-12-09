@@ -10,6 +10,7 @@ const razorpayInstnace = require("../utils/paymentUtils/razorpay");
 const Payment = require("../models/payment");
 const crypto = require("crypto");
 const { membershipAmount } = require("../utils/constants");
+const User = require("../models/user");
 
 /**
  * 1. Create the Order on RozarPay
@@ -59,7 +60,6 @@ paymentRouter.post("/payment/create", userAuth, async (req, res) => {
 
 paymentRouter.post("/payment/verification", userAuth, async (req, res) => {
     try {
-        const user = req.user;
         const { razorpayPaymentId, razorpayOrderId, razorpaySignature } = req.body;
 
         console.log("res 1>>", req.body);
@@ -72,27 +72,32 @@ paymentRouter.post("/payment/verification", userAuth, async (req, res) => {
             throw new Error("Payment verification failed.");
         }
 
-        const response = validatePaymentVerification(
+        const isPaymentValid = validatePaymentVerification(
             { order_id: razorpayOrderId, payment_id: razorpayPaymentId },
             razorpaySignature,
             process.env.RAZORPAY_KEY_SECRET
         );
 
-        console.log("response>>", response);
-
-        // res
-        //     .status(200)
-        //     .json({
-        //         order: savedPayment,
-        //         razorpayKeyId: process.env.RAZORPAY_KEY_ID, // Public Data
-        //         status: "success",
-        //     });
-
-        if (response) {
-            // Update user data
+        if (!isPaymentValid) {
+            throw new Error("Invalid Payment");
         }
 
-        res.status(200).json({ "success": true });
+        // TODO: Get the payment information from RazorPay
+
+        // Update payment details
+        const payment = await Payment.findOne({ orderId: razorpayOrderId });
+        payment.paymentId = razorpayPaymentId;
+        // payment.status = "TODO";
+        await payment.save();
+
+        // Update user data
+        const user = await User.findOne({ _id: payment.userId });
+        user.isPremium = true;
+        // user.membershipType = "TODO";
+        // user.membershipValidity = "TODO";
+        await user.save();
+
+        res.status(200).json({ user, status: "success" });
     } catch (error) {
         res.status(400).send("Error: " + error.message);
     }

@@ -54,6 +54,7 @@ export const Premium = () => {
         color: "#F37254",
       },
       handler: async (response) => {
+        // This method is only called when payment is succesful.
         const res = await verifyPayment(response);
         console.log("rkkk res", res);
         dispatch(hideLoader());
@@ -62,6 +63,12 @@ export const Premium = () => {
 
     const rzp = new window.Razorpay(options);
     rzp.open();
+
+    // The call back function will only be called when payment is not completed or in case of failure case
+    rzp.on("payment.failed", (response) => {
+      console.log("payment failed", response);
+      dispatch(hideLoader());
+    });
   };
 
   return (

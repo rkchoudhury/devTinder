@@ -80,6 +80,24 @@ const userSchema = new Schema(
                     throw new Error("Maximum 10 skills can be added.")
                 }
             }
+        },
+        isPremium: {
+            type: Boolean,
+            default: false,
+        },
+        membershipType: {
+            type: String,
+            enum: {
+                values: ["gold", "silver"],
+                message: '{VALUE} is incorrect membership type.'
+            },
+        },
+        membershipValidity: {
+            type: String,
+            enum: {
+                values: ["3 Months", "6 Months"],
+                message: '{VALUE} is incorrect membership type.'
+            },
         }
     },
     {
