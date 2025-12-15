@@ -14,6 +14,7 @@ const NavBar = () => {
   const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.user as IUser | null);
   const hasUserLoggedIn = !!user?._id;
+  const isPremiumUser = user?.isPremium ?? false;
 
   const onPressLogout = async () => {
     await logoutUser();
@@ -41,6 +42,9 @@ const NavBar = () => {
         >
           🧑‍💻 DevTinder 💕
         </Link>
+        <div className={`badge ${isPremiumUser ? "badge-primary" : "badge-warning"}`}>
+          {isPremiumUser ? "Premium" : "Free"}
+        </div>
       </div>
       {hasUserLoggedIn && (
         <div className="flex justify-center items-center">

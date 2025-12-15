@@ -4,8 +4,9 @@ import type { AxiosError } from "axios";
 import { createPayment, updateFailedPayment, verifyPayment } from "../../services/paymentService";
 import { showAlert } from "../../redux/slices/alertSlice";
 import { MembershipType } from "../../enums/MembershipEnum";
-import type { IPayment } from "../../models/paymentModel";
+import type { IPayment, IPaymentError, IPaymentVerification } from "../../models/paymentModel";
 import { hideLoader, showLoader } from "../../redux/slices/loaderSlice";
+import { updateUser } from "../../redux/slices/userSlice";
 
 export const Premium = () => {
   const dispatch = useDispatch();
@@ -53,10 +54,10 @@ export const Premium = () => {
       theme: {
         color: "#F37254",
       },
-      handler: async (response) => {
+      handler: async (response: IPaymentVerification) => {
         // This method is only called when payment is succesful.
         const res = await verifyPayment(response);
-        console.log("rkkk res", res);
+        dispatch(updateUser(res.user));
         dispatch(hideLoader());
       },
     };
@@ -65,7 +66,7 @@ export const Premium = () => {
     rzp.open();
 
     // The call back function will only be called when payment is not completed or in case of failure case
-    rzp.on("payment.failed", async (response) => {
+    rzp.on("payment.failed", async (response: IPaymentError) => {
       await updateFailedPayment(response);
       dispatch(hideLoader());
     });

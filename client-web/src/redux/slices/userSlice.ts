@@ -13,11 +13,15 @@ const userSlice = createSlice({
     removeUser: () => {
       return initialState;
     },
+    updateUser: (state, action) => {
+      if (!state) return state;
+      return { ...(state as IUser), ...action.payload };
+    }
   },
 });
 
-const { addUser, removeUser } = userSlice.actions;
+const { addUser, removeUser, updateUser } = userSlice.actions;
 
-export { addUser, removeUser };
+export { addUser, removeUser, updateUser };
 
 export default userSlice.reducer;

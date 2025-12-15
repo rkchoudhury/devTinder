@@ -11,6 +11,7 @@ export interface IUser {
   updatedAt: string;
   gender?: string;
   age?: number;
+  isPremium?: boolean;
 }
 
 export interface IConnectionUser {
