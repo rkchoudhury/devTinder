@@ -42,9 +42,15 @@ const NavBar = () => {
         >
           🧑‍💻 DevTinder 💕
         </Link>
-        <div className={`badge ${isPremiumUser ? "badge-primary" : "badge-warning"}`}>
-          {isPremiumUser ? "Premium" : "Free"}
-        </div>
+        {hasUserLoggedIn && (
+          <div
+            className={`badge ${
+              isPremiumUser ? "badge-primary" : "badge-warning"
+            }`}
+          >
+            {isPremiumUser ? "Premium" : "Free"}
+          </div>
+        )}
       </div>
       {hasUserLoggedIn && (
         <div className="flex justify-center items-center">
