@@ -9,7 +9,7 @@ const paymentRouter = express.Router();
 const razorpayInstnace = require("../utils/paymentUtils/razorpay");
 const Payment = require("../models/payment");
 const crypto = require("crypto");
-const { membershipAmount } = require("../utils/constants");
+const { membershipAmount, membershipValidity } = require("../utils/constants");
 const User = require("../models/user");
 
 /**
@@ -82,19 +82,20 @@ paymentRouter.post("/payment/verification", userAuth, async (req, res) => {
             throw new Error("Invalid Payment");
         }
 
-        // TODO: Get the payment information from RazorPay
+        // Get the payment information from RazorPay
+        const paymentDetails = await razorpayInstnace.payments.fetch(razorpayPaymentId);
 
         // Update payment details
         const payment = await Payment.findOne({ orderId: razorpayOrderId });
         payment.paymentId = razorpayPaymentId;
-        // payment.status = "TODO";
+        payment.status = paymentDetails.status;
         await payment.save();
 
         // Update user data
         const user = await User.findOne({ _id: payment.userId });
         user.isPremium = true;
-        // user.membershipType = "TODO";
-        // user.membershipValidity = "TODO";
+        user.membershipType = paymentDetails.notes.membershipType;
+        user.membershipValidity = membershipValidity[paymentDetails.notes.membershipType];
         await user.save();
 
         res.status(200).json({ user, status: "success" });

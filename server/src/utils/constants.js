@@ -1,9 +1,14 @@
 /**
  * Never relay on the frontend amount because some can alter this frontend amount (MIM - Man In the Middle Attack)
  */
-membershipAmount = {
+const membershipAmount = {
     'silver': 300,
     'gold': 700,
 }
 
-module.exports = { membershipAmount };
+const membershipValidity = {
+    'silver': '3 Months',
+    'gold': '7 Months',
+}
+
+module.exports = { membershipAmount, membershipValidity };
