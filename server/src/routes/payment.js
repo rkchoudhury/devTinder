@@ -98,10 +98,46 @@ paymentRouter.post("/payment/verification", userAuth, async (req, res) => {
         user.membershipValidity = membershipValidity[paymentDetails.notes.membershipType];
         await user.save();
 
-        res.status(200).json({ user, status: "success" });
+        // Removed sensitive data before sending the response
+        const response = user.toJSON();
+        delete response.password;
+
+        res.status(200).json({ user: response, status: "success" });
     } catch (error) {
         res.status(400).send("Error: " + error.message);
     }
 });
+
+paymentRouter.post('/payment/failure', userAuth, async (req, res) => {
+    const { razorpayPaymentId, razorpayOrderId } = req.body;
+
+    if (!razorpayPaymentId || !razorpayOrderId) {
+        return res.status(400).json({ success: false, message: "Payment ID and Order ID are required." });
+    }
+
+    try {
+        // Update payment details
+        const payment = await Payment.findOne({ orderId: razorpayOrderId });
+        payment.paymentId = razorpayPaymentId;
+        payment.status = 'failed';
+        await payment.save();
+
+        // Update user data
+        const user = await User.findOne({ _id: payment.userId });
+        user.isPremium = false;
+        await user.save();
+
+        res.json({
+            success: false,
+            status: 'failed',
+            message: "Payment failed",
+        });
+
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Error fetching payment details from Razorpay API" });
+    }
+});
+
+
 
 module.exports = paymentRouter;

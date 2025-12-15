@@ -29,4 +29,19 @@ interface IPaymentVerification {
   razorpay_signature: string;
 }
 
-export type { IOrder, IPayment, IPaymentVerification };
+interface IPaymentError {
+  error: {
+    code: string;
+    description: string;
+    metadata: {
+      order_id: string;
+      payment_id: string;
+    }
+    reason: string;
+    source: string;
+    step: string;
+  }
+}
+
+
+export type { IOrder, IPayment, IPaymentVerification, IPaymentError };

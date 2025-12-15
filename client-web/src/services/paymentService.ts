@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { BASE_URL } from "../utils/apiConfig";
 import type { MembershipType } from "../enums/MembershipEnum";
-import type { IPaymentVerification } from "../models/paymentModel";
+import type { IPaymentError, IPaymentVerification } from "../models/paymentModel";
 
 const createPayment = async (membershipType: MembershipType) => {
   try {
@@ -38,4 +38,25 @@ const verifyPayment = async (payment: IPaymentVerification) => {
   }
 };
 
-export { createPayment, verifyPayment };
+const updateFailedPayment = async (payment: IPaymentError) => {
+  try {
+    const data = {
+      razorpayPaymentId: payment.error.metadata.payment_id,
+      razorpayOrderId: payment.error.metadata.order_id,
+    };
+
+    const response = await axios.post(
+      `${BASE_URL}/payment/failure`,
+      data,
+      {
+        withCredentials: true,
+      }
+    );
+    return response?.data;
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    throw axiosError?.response?.data;
+  }
+};
+
+export { createPayment, verifyPayment, updateFailedPayment };

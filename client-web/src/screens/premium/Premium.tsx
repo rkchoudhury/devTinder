@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import type { AxiosError } from "axios";
 
-import { createPayment, verifyPayment } from "../../services/paymentService";
+import { createPayment, updateFailedPayment, verifyPayment } from "../../services/paymentService";
 import { showAlert } from "../../redux/slices/alertSlice";
 import { MembershipType } from "../../enums/MembershipEnum";
 import type { IPayment } from "../../models/paymentModel";
@@ -65,8 +65,8 @@ export const Premium = () => {
     rzp.open();
 
     // The call back function will only be called when payment is not completed or in case of failure case
-    rzp.on("payment.failed", (response) => {
-      console.log("payment failed", response);
+    rzp.on("payment.failed", async (response) => {
+      await updateFailedPayment(response);
       dispatch(hideLoader());
     });
   };
