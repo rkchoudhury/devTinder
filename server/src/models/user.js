@@ -88,15 +88,15 @@ const userSchema = new Schema(
         membershipType: {
             type: String,
             enum: {
-                values: ["gold", "silver"],
+                values: ["silver", "gold"],
                 message: '{VALUE} is incorrect membership type.'
             },
         },
         membershipValidity: {
             type: String,
             enum: {
-                values: ["3 Months", "6 Months"],
-                message: '{VALUE} is incorrect membership type.'
+                values: ["3 Months", "7 Months"],
+                message: '{VALUE} is incorrect membership validity.'
             },
         }
     },

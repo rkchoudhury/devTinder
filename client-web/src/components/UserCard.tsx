@@ -22,6 +22,7 @@ export const UserCard = ({
     gender,
     age,
     skills = [],
+    isPremium,
   } = user;
 
   return (
@@ -31,7 +32,7 @@ export const UserCard = ({
           <img src={photoUrl} alt="User Photo" className="flex-1" />
         </figure>
         <div className="card-body">
-          <h2 className="card-title">{firstName + " " + lastName}</h2>
+          <h2 className="card-title">{firstName + " " + lastName} {isPremium && "☑️"}</h2>
           {age && gender && (
             <p>
               {age} {capitalizedString(gender)}

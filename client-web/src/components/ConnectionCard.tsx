@@ -11,7 +11,7 @@ export const ConnectionCard = ({
   requestId: string;
   onPressButton?: (status: string, userId: string) => void;
 }) => {
-  const { firstName, lastName, about, photoUrl, age, gender } = connectionFrom;
+  const { firstName, lastName, about, photoUrl, age, gender, isPremium = false } = connectionFrom;
 
   return (
     <div className="flex justify-center mb-4">
@@ -22,7 +22,7 @@ export const ConnectionCard = ({
           </div>
           <div>
             <div className="text-lg">
-              {firstName} {lastName}
+              {firstName} {lastName} {isPremium && "☑️"}
             </div>
             <div className="text-xs font-semibold">
               {age} {gender ? capitalizedString(gender) : ""}

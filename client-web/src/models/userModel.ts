@@ -1,3 +1,5 @@
+import type { MembershipType } from "../enums/MembershipEnum";
+
 export interface IUser {
   _id: string;
   firstName: string;
@@ -12,6 +14,7 @@ export interface IUser {
   gender?: string;
   age?: number;
   isPremium?: boolean;
+  membershipType?: MembershipType;
 }
 
 export interface IConnectionUser {

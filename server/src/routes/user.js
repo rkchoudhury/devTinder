@@ -5,7 +5,7 @@ const User = require("../models/user");
 
 const userRouter = express.Router();
 
-const USER_SAFE_FIELDS = ["firstName", "lastName", "age", "gender", "photoUrl", "skills", "about"];
+const USER_SAFE_FIELDS = ["firstName", "lastName", "age", "gender", "photoUrl", "skills", "about", "isPremium"];
 
 /**
  * Get all the pending connection request for the loggedIn user
