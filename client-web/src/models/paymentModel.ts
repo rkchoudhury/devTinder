@@ -1,5 +1,11 @@
 import type { MembershipType } from "../enums/MembershipEnum";
 
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
 interface IOrder {
   amount: number;
   currency: string;

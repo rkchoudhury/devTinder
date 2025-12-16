@@ -60,6 +60,7 @@ export const Premium = () => {
         color: "#F37254",
       },
       handler: async (response: IPaymentVerification) => {
+        dispatch(showLoader());
         // This method is only called when payment is succesful.
         const res = await verifyPayment(response);
         dispatch(updateUser(res.user));
