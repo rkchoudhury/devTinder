@@ -7,6 +7,7 @@ export interface IConnectionFrom {
   skills: string[];
   age: number;
   gender: string;
+  isPremium?: boolean;
 }
 
 export interface IConnection {
