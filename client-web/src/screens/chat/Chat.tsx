@@ -10,8 +10,8 @@ export const Chat: React.FC = () => {
   const { userId } = (location.state as ChatLocationState) || {};
 
   return (
-    <div className='flex flex-col items-center justify-center'>
-      <div className='flex flex-col items-center justify-center border-2 rounded-lg shadow-md w-1/2 mt-10'>
+    <div className='flex flex-col items-center justify-center px-4 md:px-0'>
+      <div className='flex flex-col items-center justify-center border-2 rounded-lg shadow-md w-full md:w-1/2 mt-10'>
         <h1 className='border-b-2 py-4 mb-4 w-full text-center'>Chat</h1>
         <div className='h-[60vh] w-full px-2'>
           <div className="chat chat-start">
