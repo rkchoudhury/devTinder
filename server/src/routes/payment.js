@@ -58,12 +58,18 @@ paymentRouter.post("/payment/create", userAuth, async (req, res) => {
     }
 });
 
+/**
+ * 0. Verify the payment signature
+ * 1. Verify the payment on RazorPay
+ * 2. Fetch the payment information from RazorPay
+ * 3. Update the payment status on DB
+ * 4. Update the user data on DB
+ */
 paymentRouter.post("/payment/verification", userAuth, async (req, res) => {
     try {
         const { razorpayPaymentId, razorpayOrderId, razorpaySignature } = req.body;
 
-        console.log("res 1>>", req.body);
-
+        // Verify the payment signature
         const hmac = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
         hmac.update(razorpayOrderId + "|" + razorpayPaymentId);
         const generatedSignature = hmac.digest("hex");
@@ -72,6 +78,7 @@ paymentRouter.post("/payment/verification", userAuth, async (req, res) => {
             throw new Error("Payment verification failed.");
         }
 
+        // Validate payment using Razorpay utility function
         const isPaymentValid = validatePaymentVerification(
             { order_id: razorpayOrderId, payment_id: razorpayPaymentId },
             razorpaySignature,
@@ -108,6 +115,9 @@ paymentRouter.post("/payment/verification", userAuth, async (req, res) => {
     }
 });
 
+/**
+ * Update the payment status and user data on payment failure
+ */
 paymentRouter.post('/payment/failure', userAuth, async (req, res) => {
     const { razorpayPaymentId, razorpayOrderId } = req.body;
 
