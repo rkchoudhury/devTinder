@@ -7,6 +7,7 @@ const ROUTE_NAMES = {
   SIGNUP: "/signup",
   FORGOT_PASSWORD: "/password",
   PREMIUM: "/premium",
+  CHAT: "/chat",
 };
 
 export { ROUTE_NAMES };

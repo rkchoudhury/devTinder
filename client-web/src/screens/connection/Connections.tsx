@@ -70,6 +70,12 @@ export const Connections = () => {
               key={eachConnection._id}
               user={eachConnection}
               showButton={false}
+              showChatButton={true}
+              onPressChat={() =>
+                navigate(ROUTE_NAMES.CHAT, {
+                  state: { userId: eachConnection._id },
+                })
+              }
             />
           </div>
         ))}

@@ -5,11 +5,15 @@ import { capitalizedString } from "../utils/stringUtil";
 export const UserCard = ({
   user,
   showButton = false,
+  showChatButton = false,
   onPressButton,
+  onPressChat,
 }: {
   user: Partial<IUser>;
   showButton?: boolean;
+  showChatButton?: boolean;
   onPressButton?: (status: string, userId: string) => void;
+  onPressChat?: () => void;
 }) => {
   if (!user) return;
 
@@ -32,7 +36,9 @@ export const UserCard = ({
           <img src={photoUrl} alt="User Photo" className="flex-1" />
         </figure>
         <div className="card-body">
-          <h2 className="card-title">{firstName + " " + lastName} {isPremium && "☑️"}</h2>
+          <h2 className="card-title">
+            {firstName + " " + lastName} {isPremium && "☑️"}
+          </h2>
           {age && gender && (
             <p>
               {age} {capitalizedString(gender)}
@@ -69,6 +75,11 @@ export const UserCard = ({
                 Interested
               </button>
             </div>
+          )}
+          {showChatButton && (
+            <button className="btn btn-dash btn-secondary mt-2" onClick={onPressChat}>
+              Chat
+            </button>
           )}
         </div>
       </div>

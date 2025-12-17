@@ -8,15 +8,18 @@ import { showAlert } from "../../redux/slices/alertSlice";
 import { addFeed, updateFeed } from "../../redux/slices/feedSlice";
 import { sendRequest } from "../../services/requestService";
 import { AlertType } from "../../enums/AlertEnum";
+import { hideLoader, showLoader } from "../../redux/slices/loaderSlice";
 
 const Feed = () => {
   const dispatch = useDispatch();
   const { list } = useSelector((state: RootState) => state.feed);
   const user = useSelector((state: RootState) => state.user);
+  const { loading } = useSelector((state: RootState) => state.loader);
 
   useEffect(() => {
     const fetchFeed = async () => {
       try {
+        dispatch(showLoader({message: 'Loading...'}));
         const response = await getFeed();
         dispatch(addFeed(response));
       } catch (error) {
@@ -28,6 +31,8 @@ const Feed = () => {
             duration: 5000,
           })
         );
+      } finally {
+        dispatch(hideLoader());
       }
     };
     fetchFeed();
@@ -56,6 +61,10 @@ const Feed = () => {
       );
     }
   };
+
+  if (loading) {
+    return;
+  }
 
   if (!user) {
     return (
