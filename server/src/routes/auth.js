@@ -46,6 +46,9 @@ authRouter.post("/signup", async (req, res) => {
         // Added a exipre time of 7 days - After the exipre time the token will automatically removed from the browser's cookie
         res.cookie("token", token, { expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) }); // Adding value to the cookie header
 
+        // Clenup the response data by removing sensitive information
+        delete data._doc.password;
+
         // 6. Send the response back to the client
         res.status(200).json({ message: "User created successfully!", data });
     } catch (error) {
@@ -80,6 +83,9 @@ authRouter.post("/login", async (req, res) => {
             // B. Adding JWT token onto the cookie header
             // Added a exipre time of 7 days - After the exipre time the token will automatically removed from the browser's cookie
             res.cookie("token", token, { expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) }); // Adding value to the cookie header
+
+            // Clenup the response data by removing sensitive information
+            delete user._doc.password;
 
             res.status(200).json({ message: "Login Successful!", data: user });
         } else {
