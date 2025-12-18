@@ -71,9 +71,6 @@ const Feed = () => {
       <div className="flex flex-col items-center justify-center mt-10">
         <p className="text-2xl">⚠️</p>
         <p className="text-2xl font-bold">Something went wrong!</p>
-        <p className="text-lg mt-4">
-          Please check your internet connection and try to login again!
-        </p>
       </div>
     );
   }
