@@ -9,17 +9,19 @@ const ChatMessagesComponent: React.FC<{
 }> = ({ chatMessages, currentUserName, targetUserName, currentUserId }) => {
   return (
     <>
-      {chatMessages.map((eachMessage, index) => {
-        const { fromUserId, message } = eachMessage;
+      {chatMessages.map((eachMessage) => {
+        const { fromUserId, message, _id, timestamp } = eachMessage;
         const isCurrentUser = fromUserId === currentUserId;
         return (
-          <div key={index}>
+          <div key={_id}>
             <div
               className={`chat ${isCurrentUser ? "chat-end" : "chat-start"}`}
             >
               <div className="chat-header">
                 {isCurrentUser ? currentUserName : targetUserName}
-                <time className="text-xs opacity-50">2 hours ago</time>
+                <time className="text-xs opacity-50">
+                  {new Date(timestamp).toLocaleString()}
+                </time>
               </div>
               <div
                 className={`chat-bubble ${

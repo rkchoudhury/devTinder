@@ -33,10 +33,10 @@ export const Chat: React.FC = () => {
       if (!fromUserId || !toUserId) return;
 
       try {
-         dispatch(showLoader({message: 'Loading chat...'}));
+        dispatch(showLoader({ message: "Loading chat..." }));
         const chatData = await getChat(toUserId);
         setChatMessages(chatData.messages);
-      } catch{
+      } catch {
         dispatch(
           showAlert({
             showAlert: true,
@@ -69,7 +69,13 @@ export const Chat: React.FC = () => {
     socket.on("receiveMessage", ({ fromUserId, toUserId, message }) => {
       setChatMessages((prevMessages) => [
         ...prevMessages,
-        { fromUserId, toUserId, message },
+        {
+          fromUserId,
+          toUserId,
+          message,
+          timestamp: new Date().toISOString(), // Temporary timestamp
+          _id: Math.random().toString(36).substring(2, 15), // Temporary ID
+        },
       ]);
     });
 
