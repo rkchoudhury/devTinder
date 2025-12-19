@@ -1,6 +1,7 @@
 const express = require("express");
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const http = require("http");
 
 /**
  * Configure dotenv
@@ -21,6 +22,7 @@ const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
 const paymentRouter = require("./routes/payment");
+const initializeSocket = require("./utils/socketUtils/initializeSocket");
 
 const app = express();
 
@@ -50,11 +52,18 @@ app.use("/", (_req, res) => {
     res.send("Hello from server!");
 });
 
+/**
+ * Socket.io setup
+ */
+const server = http.createServer(app);
+initializeSocket(server);
+
+
 connectDB()
     .then(() => {
         console.log("Database connected successfully");
 
-        app.listen(process.env.SERVER_PORT, () => {
+        server.listen(process.env.SERVER_PORT, () => {
             console.log(`Server is running at ${process.env.SERVER_PORT}`);
         });
     })
