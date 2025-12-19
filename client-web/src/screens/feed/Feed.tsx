@@ -88,9 +88,8 @@ const Feed = () => {
     <div className="flex justify-center  my-6">
       <div className="carousel carousel-center bg-neutral rounded-box max-w-md space-x-4 p-4">
         {list.map((item) => (
-          <div className="carousel-item">
+          <div className="carousel-item" key={item._id}>
             <UserCard
-              key={item._id}
               user={item}
               showButton
               onPressButton={handleSendRequest}

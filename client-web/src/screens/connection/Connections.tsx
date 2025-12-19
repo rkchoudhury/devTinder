@@ -73,15 +73,14 @@ export const Connections = () => {
       </h1>
       <div className="flex flex-wrap justify-center">
         {connections.map((eachConnection: IConnectionUser) => (
-          <div className="flex ml-4 mb-4">
+          <div className="flex ml-4 mb-4" key={eachConnection._id}>
             <UserCard
-              key={eachConnection._id}
               user={eachConnection}
               showButton={false}
               showChatButton={true}
               onPressChat={() =>
                 navigate(ROUTE_NAMES.CHAT, {
-                  state: { userId: eachConnection._id },
+                  state: { targetUserId: eachConnection._id },
                 })
               }
             />

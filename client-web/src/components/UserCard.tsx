@@ -33,7 +33,7 @@ export const UserCard = ({
     <div className="flex justify-center">
       <div className="card bg-base-300 w-96 shadow-sm">
         <figure>
-          <img src={photoUrl} alt="User Photo" className="flex-1" />
+          <img src={photoUrl} alt="User" className="flex-1" />
         </figure>
         <div className="card-body">
           <h2 className="card-title">
