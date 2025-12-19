@@ -1,33 +1,39 @@
-import React from "react";
+import React, { memo } from "react";
+import type { IChatMessage } from "../models/chatModel";
 
-export const ChatMessages: React.FC<{ messages: any[] }> = ({
-  messages,
-}) => {
+const ChatMessagesComponent: React.FC<{
+  chatMessages: IChatMessage[];
+  currentUserName: string;
+  targetUserName: string;
+  currentUserId: string;
+}> = ({ chatMessages, currentUserName, targetUserName, currentUserId }) => {
   return (
     <>
-      {messages.map((eachMessage) => (
-        <div>
-          <div className="chat chat-start">
-            <div className="chat-header">
-              Obi-Wan Kenobi
-              <time className="text-xs opacity-50">2 hours ago</time>
-            </div>
-            <div className="chat-bubble chat-bubble-info">
-              You were the Chosen One!
+      {chatMessages.map((eachMessage, index) => {
+        const { fromUserId, message } = eachMessage;
+        const isCurrentUser = fromUserId === currentUserId;
+        return (
+          <div key={index}>
+            <div
+              className={`chat ${isCurrentUser ? "chat-end" : "chat-start"}`}
+            >
+              <div className="chat-header">
+                {isCurrentUser ? currentUserName : targetUserName}
+                <time className="text-xs opacity-50">2 hours ago</time>
+              </div>
+              <div
+                className={`chat-bubble ${
+                  isCurrentUser ? "chat-bubble-accent" : "chat-bubble-info"
+                }`}
+              >
+                {message}
+              </div>
             </div>
           </div>
-
-          <div className="chat chat-end">
-            <div className="chat-header">
-              Obi-Wan Kenobi
-              <time className="text-xs opacity-50">2 hours ago</time>
-            </div>
-            <div className="chat-bubble chat-bubble-accent">
-              That's never been done in the history of the Jedi.
-            </div>
-          </div>
-        </div>
-      ))}
+        );
+      })}
     </>
   );
 };
+
+export const ChatMessages = memo(ChatMessagesComponent);

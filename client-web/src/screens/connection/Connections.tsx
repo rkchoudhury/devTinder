@@ -23,7 +23,7 @@ export const Connections = () => {
   useEffect(() => {
     const fetchserConnections = async () => {
       try {
-        dispatch(showLoader({message: 'Loading Connections...'}));
+        dispatch(showLoader({ message: "Loading Connections..." }));
         const response = await getUserConnections();
         dispatch(saveConnections(response.data));
       } catch (error) {
@@ -80,7 +80,10 @@ export const Connections = () => {
               showChatButton={true}
               onPressChat={() =>
                 navigate(ROUTE_NAMES.CHAT, {
-                  state: { targetUserId: eachConnection._id },
+                  state: {
+                    targetUserId: eachConnection._id,
+                    targetUserName: eachConnection.firstName,
+                  },
                 })
               }
             />

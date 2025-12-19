@@ -1,9 +1,9 @@
-interface IChatMessage {
-  _id: string;
+export interface IChatMessage {
+  _id?: string;
   fromUserId: string;
   toUserId: string;
-  content: string;
-  timestamp: string;
+  message?: string;
+  timestamp?: string;
 }
 
 export interface IChat {
