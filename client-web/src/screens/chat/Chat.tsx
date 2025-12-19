@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { ChatMessages } from "../../components/ChatMessages";
 import { createSocketConnection } from "../../utils/socket";
 import type { RootState } from "../../redux/store";
 import type { IUser } from "../../models/userModel";
 import type { IChatMessage } from "../../models/chatModel";
+import { getChat } from "../../services/chatService";
+import { hideLoader, showLoader } from "../../redux/slices/loaderSlice";
+import { showAlert } from "../../redux/slices/alertSlice";
 
 interface ChatLocationState {
   targetUserId: string;
@@ -14,6 +17,7 @@ interface ChatLocationState {
 }
 
 export const Chat: React.FC = () => {
+  const dispatch = useDispatch();
   const location = useLocation();
   const { targetUserId: toUserId, targetUserName } =
     (location.state as ChatLocationState) || {};
@@ -23,6 +27,30 @@ export const Chat: React.FC = () => {
   const [chatMessages, setChatMessages] = useState<IChatMessage[]>([]);
   const [newMessage, setNewMessage] = useState<string>("");
   const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    async function fetchChatHistory() {
+      if (!fromUserId || !toUserId) return;
+
+      try {
+         dispatch(showLoader({message: 'Loading chat...'}));
+        const chatData = await getChat(toUserId);
+        setChatMessages(chatData.messages);
+      } catch{
+        dispatch(
+          showAlert({
+            showAlert: true,
+            message: "Failed to fetch chat history",
+            duration: 5000,
+          })
+        );
+      } finally {
+        dispatch(hideLoader());
+      }
+    }
+
+    fetchChatHistory();
+  }, []);
 
   useEffect(() => {
     if (chatContainerRef.current) {

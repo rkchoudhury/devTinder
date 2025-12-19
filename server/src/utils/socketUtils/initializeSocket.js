@@ -14,7 +14,7 @@ const initializeSocket = (server) => {
         socket.on("joinChat", ({ fromUserId, toUserId }) => {
             const roomId = getHashedSecreteId(fromUserId, toUserId);
             socket.join(roomId);
-            console.log("User joined room:", roomId);
+            console.log("User joined room");
         });
 
         socket.on("sendMessage", async ({ fromUserId, toUserId, message }) => {
@@ -57,4 +57,4 @@ const getHashedSecreteId = (fromUserId, toUserId) => {
     return crypto.createHash("sha256").update(roomId).digest("hex");
 }
 
-module.exports = initializeSocket;
+module.exports = { initializeSocket, getHashedSecreteId };
