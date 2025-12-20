@@ -227,6 +227,14 @@ server {
 
 - from `"http://localhost:7000"` to `/api`
 
+### Prerequisite
+
+- Before deployement, run the build locally to verify if the build is happening or not.
+
+  - cd client-web
+  - npm run build
+
+
 ### Now re-deploy the Frontend Web Project
 
 - Go to the devTinder project
@@ -251,3 +259,39 @@ server {
 
 - Hit the url on the browser & we will see, the devTinder UI with all the features integrated to it.
   - http://51.21.171.84/
+
+### Now re-deploy the Backend Node.js App
+
+- Go to the devTinder project
+
+  - cd devTinder
+
+- Pull the latest change
+
+  - git fetch
+  - git pull
+
+- Go to the node.js project & do npm install
+
+  - cd server
+  - npm install
+
+- Update the .env file if there is any changes. Copy paste the content into .env file
+
+  - sudo nano .env
+
+- List down the pm processes that are currently running
+  
+  - pm2 list
+
+- Restart the process using process name/id
+
+  - pm2 restart 0
+
+- Flush all the existing logs
+
+  - pm2 flush
+
+- Check the logs if there any logs
+
+  - pm2 logs

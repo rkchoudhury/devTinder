@@ -128,7 +128,11 @@ export const Chat: React.FC = () => {
             }}
             maxLength={150}
           />
-          <button className="btn btn-primary ml-4" onClick={sendMessage}>
+          <button
+            className="btn btn-primary ml-4"
+            onClick={sendMessage}
+            disabled={!newMessage.trim()}
+          >
             Send
           </button>
         </div>
