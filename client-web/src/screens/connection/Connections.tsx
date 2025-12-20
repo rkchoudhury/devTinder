@@ -82,7 +82,6 @@ export const Connections = () => {
                 navigate(ROUTE_NAMES.CHAT, {
                   state: {
                     targetUserId: eachConnection._id,
-                    targetUserName: eachConnection.firstName,
                   },
                 })
               }

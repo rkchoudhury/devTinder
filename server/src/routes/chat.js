@@ -13,8 +13,23 @@ chatRouter.get("/chat/:toUserId", userAuth, async (req, res) => {
 
         const chat = await Chat.findOne({
             participants: { $all: [fromUserId, toUserId] }
+        }).populate({
+            path: "messages.senderId",
+            select: "firstName lastName photoUrl"
         });
-        const messages = chat ? chat.messages : [];
+
+        /**
+         * Flatten the messages to include sender details
+         */
+        const messages = chat ? chat.messages.map(({ _id, senderId, message, timestamp }) => ({
+            _id,
+            message,
+            timestamp,
+            senderId: senderId._id,
+            firstName: senderId.firstName,
+            lastName: senderId.lastName,
+            photoUrl: senderId.photoUrl
+        })) : [];
 
         res.status(200).json({ messages, status: "success" });
     } catch (error) {

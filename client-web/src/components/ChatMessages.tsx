@@ -3,14 +3,12 @@ import type { IChatMessage } from "../models/chatModel";
 
 const ChatMessagesComponent: React.FC<{
   chatMessages: IChatMessage[];
-  currentUserName: string;
-  targetUserName: string;
   currentUserId: string;
-}> = ({ chatMessages, currentUserName, targetUserName, currentUserId }) => {
+}> = ({ chatMessages, currentUserId }) => {
   return (
     <>
       {chatMessages.map((eachMessage) => {
-        const { senderId, message, _id, timestamp } = eachMessage;
+        const { senderId, message, _id, timestamp, firstName } = eachMessage;
         const isCurrentUser = senderId === currentUserId;
         return (
           <div key={_id}>
@@ -18,7 +16,7 @@ const ChatMessagesComponent: React.FC<{
               className={`chat ${isCurrentUser ? "chat-end" : "chat-start"}`}
             >
               <div className="chat-header">
-                {isCurrentUser ? currentUserName : targetUserName}
+                {firstName}
                 <time className="text-xs opacity-50">
                   {new Date(timestamp).toLocaleString()}
                 </time>

@@ -13,13 +13,12 @@ import { showAlert } from "../../redux/slices/alertSlice";
 
 interface ChatLocationState {
   targetUserId: string;
-  targetUserName: string;
 }
 
 export const Chat: React.FC = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const { targetUserId: toUserId, targetUserName } =
+  const { targetUserId: toUserId } =
     (location.state as ChatLocationState) || {};
   const user = useSelector((state: RootState) => state.user as IUser | null);
   const fromUserId = user?._id;
@@ -74,15 +73,10 @@ export const Chat: React.FC = () => {
       dispatch(hideLoader());
     });
 
-    socket.on("receiveMessage", ({ senderId, message, timestamp, _id}) => {
+    socket.on("receiveMessage", (receivedMessage) => {
       setChatMessages((prevMessages) => [
         ...prevMessages,
-        {
-          senderId,
-          message,
-          timestamp,
-          _id,
-        },
+        { ...receivedMessage },
       ]);
     });
 
@@ -118,8 +112,6 @@ export const Chat: React.FC = () => {
           <ChatMessages
             chatMessages={chatMessages}
             currentUserId={fromUserId ?? ""}
-            currentUserName={user?.firstName ?? "You"}
-            targetUserName={targetUserName}
           />
         </div>
         <div className="border-t-2 border-gray-600 py-4 px-4 w-full flex justify-end">
@@ -134,6 +126,7 @@ export const Chat: React.FC = () => {
                 sendMessage();
               }
             }}
+            maxLength={150}
           />
           <button className="btn btn-primary ml-4" onClick={sendMessage}>
             Send
