@@ -74,15 +74,14 @@ export const Chat: React.FC = () => {
       dispatch(hideLoader());
     });
 
-    socket.on("receiveMessage", ({ fromUserId, toUserId, message }) => {
+    socket.on("receiveMessage", ({ senderId, message, timestamp, _id}) => {
       setChatMessages((prevMessages) => [
         ...prevMessages,
         {
-          fromUserId,
-          toUserId,
+          senderId,
           message,
-          timestamp: new Date().toISOString(), // Temporary timestamp
-          _id: Math.random().toString(36).substring(2, 15), // Temporary ID
+          timestamp,
+          _id,
         },
       ]);
     });

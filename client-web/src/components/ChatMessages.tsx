@@ -10,8 +10,8 @@ const ChatMessagesComponent: React.FC<{
   return (
     <>
       {chatMessages.map((eachMessage) => {
-        const { fromUserId, message, _id, timestamp } = eachMessage;
-        const isCurrentUser = fromUserId === currentUserId;
+        const { senderId, message, _id, timestamp } = eachMessage;
+        const isCurrentUser = senderId === currentUserId;
         return (
           <div key={_id}>
             <div

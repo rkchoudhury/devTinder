@@ -19,30 +19,45 @@ const initializeSocket = (server) => {
 
         socket.on("sendMessage", async ({ fromUserId, toUserId, message }) => {
             const roomId = getHashedSecreteId(fromUserId, toUserId);
-            io.to(roomId).emit("receiveMessage", { fromUserId, toUserId, message });
 
             /**
              * Save chat message in DB
              */
-            const existingChat = await Chat.findOne({ roomId });
+            try {
+                const existingChat = await Chat.findOne({
+                    participants: { $all: [fromUserId, toUserId] }
+                });
 
-            if (existingChat) {
-                existingChat.messages.push({
-                    toUserId,
-                    fromUserId,
-                    message,
-                });
-                await existingChat.save();
-            } else {
-                const newChat = new Chat({
-                    roomId,
-                    messages: [{
-                        toUserId,
-                        fromUserId,
+                const timestamp = new Date();
+
+                if (existingChat) {
+                    existingChat.messages.push({
+                        senderId: fromUserId,
                         message,
-                    }]
+                        timestamp,
+                    });
+                    await existingChat.save();
+                } else {
+                    const newChat = new Chat({
+                        participants: [fromUserId, toUserId],
+                        messages: [{
+                            senderId: fromUserId,
+                            message,
+                            timestamp
+                        }]
+                    });
+                    await newChat.save();
+                }
+
+                // Emit the message to all clients in the room
+                io.to(roomId).emit("receiveMessage", {
+                    senderId: fromUserId,
+                    message,
+                    timestamp,
+                    _id: Math.random().toString(36).substring(2, 15), // Temporary ID 
                 });
-                await newChat.save();
+            } catch (error) {
+                console.error("Error saving message to DB:", error);
             }
         });
 
@@ -54,10 +69,16 @@ const initializeSocket = (server) => {
          * Approach 2: Using Socket.IO to fetch chat history and send it to the client
          */
         socket.on("chatHistory", async ({ fromUserId, toUserId }) => {
-            const roomId = getHashedSecreteId(fromUserId, toUserId);
-            const chat = await Chat.findOne({ roomId });
-            const messages = chat ? chat.messages : [];
-            socket.emit("chatHistoryResponse", { messages });
+            try {
+                const chat = await Chat.findOne({
+                    participants: { $all: [fromUserId, toUserId] }
+                });
+                const messages = chat ? chat.messages : [];
+                socket.emit("chatHistoryResponse", { messages });
+            } catch (error) {
+                console.error("Error fetching chat history:", error);
+            }
+
         });
 
     });
