@@ -123,3 +123,9 @@ module.exports = { initializeSocket, getHashedSecreteId };
  *  - Last seen timestamp
  *  - Group chats - Enhance chat to support group chats
  */
+
+/**
+ * Other usecase for websockets
+ * - Tick-tackto game
+ * - Chess Game between two users
+ */
