@@ -8,6 +8,8 @@
 
 --
 
+- Make sure you have selected the region (eu-north-1) - Right Top section of AWS Dashboard
+
 ## 2. Connect to AWS Instance
 
 - Locate your private key file (devtinder-secrete.pem). This key is used to launch the instance. Open the terminal at that location.
