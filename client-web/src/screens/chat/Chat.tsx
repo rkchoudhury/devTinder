@@ -29,6 +29,10 @@ export const Chat: React.FC = () => {
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    /**
+     * Approach 1: Using REST API to fetch chat history
+     * Fetch chat history when component mounts
+     */
     async function fetchChatHistory() {
       if (!fromUserId || !toUserId) return;
 
@@ -49,14 +53,7 @@ export const Chat: React.FC = () => {
       }
     }
 
-    fetchChatHistory();
-  }, []);
-
-  useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
-    }
+    // fetchChatHistory();
   }, []);
 
   useEffect(() => {
@@ -65,6 +62,17 @@ export const Chat: React.FC = () => {
     const socket = createSocketConnection();
     // As soon as the page loads, join the chat room
     socket.emit("joinChat", { fromUserId, toUserId });
+
+    /**
+     * Approach 2: Using Socket.IO to fetch chat history
+     * Fetch chat history when component mounts
+     */
+    dispatch(showLoader({ message: "Loading chat..." }));
+    socket.emit("chatHistory", { fromUserId, toUserId });
+    socket.on("chatHistoryResponse", ({ messages }) => {
+      setChatMessages(messages);
+      dispatch(hideLoader());
+    });
 
     socket.on("receiveMessage", ({ fromUserId, toUserId, message }) => {
       setChatMessages((prevMessages) => [
@@ -83,6 +91,14 @@ export const Chat: React.FC = () => {
       socket.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    // Scroll to bottom whenever messages change
+    chatContainerRef.current?.scrollTo({
+      top: chatContainerRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [chatMessages]);
 
   const sendMessage = () => {
     const socket = createSocketConnection();
@@ -114,6 +130,11 @@ export const Chat: React.FC = () => {
             className="input input-md"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                sendMessage();
+              }
+            }}
           />
           <button className="btn btn-primary ml-4" onClick={sendMessage}>
             Send

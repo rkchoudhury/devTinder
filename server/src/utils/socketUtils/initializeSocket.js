@@ -49,6 +49,17 @@ const initializeSocket = (server) => {
         socket.on("disconnect", () => {
             console.log("User disconnected:", socket.id);
         });
+
+        /**
+         * Approach 2: Using Socket.IO to fetch chat history and send it to the client
+         */
+        socket.on("chatHistory", async ({ fromUserId, toUserId }) => {
+            const roomId = getHashedSecreteId(fromUserId, toUserId);
+            const chat = await Chat.findOne({ roomId });
+            const messages = chat ? chat.messages : [];
+            socket.emit("chatHistoryResponse", { messages });
+        });
+
     });
 };
 
