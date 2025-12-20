@@ -3,7 +3,7 @@ import { BASE_URL } from "../utils/apiConfig";
 
 const getChat = async (userId: string) => {
   try {
-    const response = await axios.get(`${BASE_URL}/chat?toUserId=${userId}`, {
+    const response = await axios.get(`${BASE_URL}/chat/${userId}`, {
       withCredentials: true,
     });
     return response?.data;

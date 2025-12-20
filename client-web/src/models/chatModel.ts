@@ -1,7 +1,9 @@
 export interface IChatMessage {
   _id: string;
-  fromUserId: string;
-  toUserId: string;
+  senderId: string;
   message: string;
   timestamp: string;
+  firstName: string;
+  lastName?: string;
+  photoUrl?: string;
 }

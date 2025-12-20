@@ -2,19 +2,34 @@ const express = require("express");
 
 const Chat = require("../models/chat");
 const { userAuth } = require("../middlewares/auth");
-const { getHashedSecreteId } = require("../utils/socketUtils/initializeSocket");
 
 const chatRouter = express.Router();
 
-chatRouter.get("/chat", userAuth, async (req, res) => {
+chatRouter.get("/chat/:toUserId", userAuth, async (req, res) => {
     try {
-        const { toUserId } = req.query;
+        const { toUserId } = req.params;
         const user = req.user;
         const fromUserId = user._id;
 
-        const roomId = getHashedSecreteId(fromUserId, toUserId);
-        const chat = await Chat.findOne({ roomId });
-        const messages = chat ? chat.messages : [];
+        const chat = await Chat.findOne({
+            participants: { $all: [fromUserId, toUserId] }
+        }).populate({
+            path: "messages.senderId",
+            select: "firstName lastName photoUrl"
+        });
+
+        /**
+         * Flatten the messages to include sender details
+         */
+        const messages = chat ? chat.messages.map(({ _id, senderId, message, timestamp }) => ({
+            _id,
+            message,
+            timestamp,
+            senderId: senderId._id,
+            firstName: senderId.firstName,
+            lastName: senderId.lastName,
+            photoUrl: senderId.photoUrl
+        })) : [];
 
         res.status(200).json({ messages, status: "success" });
     } catch (error) {
