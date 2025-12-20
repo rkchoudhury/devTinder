@@ -12,16 +12,19 @@ import { ConnectionCard } from "../../components/ConnectionCard";
 import type { IConnection } from "../../models/connectionModel";
 import { AlertType } from "../../enums/AlertEnum";
 import { reviewRequest } from "../../services/requestService";
+import { hideLoader, showLoader } from "../../redux/slices/loaderSlice";
 
 export const ConnectionRequest = () => {
   const dispatch = useDispatch();
   const requests: IConnection[] = useSelector(
     (state: RootState) => state.connectionRequest
   );
+  const { loading } = useSelector((state: RootState) => state.loader);
 
   useEffect(() => {
     const fetchConnectionReqests = async () => {
       try {
+        dispatch(showLoader({message: 'Loading Connection Requests...'}));
         const response = await getConnectionRequests();
         dispatch(addConnectionRequest(response.data));
       } catch (error) {
@@ -33,6 +36,8 @@ export const ConnectionRequest = () => {
             duration: 5000,
           })
         );
+      } finally {
+        dispatch(hideLoader());
       }
     };
     fetchConnectionReqests();
@@ -61,6 +66,10 @@ export const ConnectionRequest = () => {
       );
     }
   };
+
+  if (loading) {
+    return;
+  }
 
   if (requests?.length === 0) {
     return (

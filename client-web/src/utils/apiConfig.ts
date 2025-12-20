@@ -2,8 +2,7 @@ const BASE_URL_DEV = "http://localhost:7000";
 
 const BASE_URL_PROD = "/api";
 
-// TODO: Find a better way to manage it
-// May be using .env file
-const BASE_URL = true ? BASE_URL_PROD : BASE_URL_DEV;
+const BASE_URL =
+  location.hostname === "localhost" ? BASE_URL_DEV : BASE_URL_PROD;
 
-export { BASE_URL };
+export { BASE_URL, BASE_URL_DEV };

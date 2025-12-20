@@ -10,6 +10,7 @@ import type { RootState } from "../../redux/store";
 import { saveConnections } from "../../redux/slices/connection";
 import { UserCard } from "../../components/UserCard";
 import { ROUTE_NAMES } from "../../navigation/Routes";
+import { hideLoader, showLoader } from "../../redux/slices/loaderSlice";
 
 export const Connections = () => {
   const dispatch = useDispatch();
@@ -17,12 +18,13 @@ export const Connections = () => {
   const connections: IConnectionUser[] = useSelector(
     (state: RootState) => state.connection
   );
+  const { loading } = useSelector((state: RootState) => state.loader);
 
   useEffect(() => {
     const fetchserConnections = async () => {
       try {
+        dispatch(showLoader({ message: "Loading Connections..." }));
         const response = await getUserConnections();
-        console.log(response);
         dispatch(saveConnections(response.data));
       } catch (error) {
         const axiosError = error as AxiosError;
@@ -33,6 +35,8 @@ export const Connections = () => {
             duration: 5000,
           })
         );
+      } finally {
+        dispatch(hideLoader());
       }
     };
     fetchserConnections();
@@ -41,6 +45,10 @@ export const Connections = () => {
   const onPressConnect = () => {
     navigate(ROUTE_NAMES.HOME);
   };
+
+  if (loading) {
+    return;
+  }
 
   if (connections?.length === 0) {
     return (
@@ -65,11 +73,18 @@ export const Connections = () => {
       </h1>
       <div className="flex flex-wrap justify-center">
         {connections.map((eachConnection: IConnectionUser) => (
-          <div className="flex ml-4 mb-4">
+          <div className="flex ml-4 mb-4" key={eachConnection._id}>
             <UserCard
-              key={eachConnection._id}
               user={eachConnection}
               showButton={false}
+              showChatButton={true}
+              onPressChat={() =>
+                navigate(ROUTE_NAMES.CHAT, {
+                  state: {
+                    targetUserId: eachConnection._id,
+                  },
+                })
+              }
             />
           </div>
         ))}

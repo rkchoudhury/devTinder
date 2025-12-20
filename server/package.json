@@ -1,6 +1,6 @@
 {
   "name": "devtinder",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Tinder for devs",
   "main": "index.js",
   "scripts": {
@@ -23,13 +23,20 @@
   },
   "homepage": "https://github.com/rkchoudhury/devTinder#readme",
   "dependencies": {
+    "@aws-sdk/client-ses": "3.940.0",
     "bcrypt": "6.0.0",
     "cookie-parser": "1.4.7",
     "cors": "2.8.5",
+    "crypto": "1.0.1",
+    "date-fns": "4.1.0",
+    "dotenv": "17.2.3",
     "express": "5.1.0",
     "jsonwebtoken": "9.0.2",
     "mongoose": "8.6.1",
+    "node-cron": "4.2.1",
     "nodemon": "3.1.10",
+    "razorpay": "2.9.6",
+    "socket.io": "4.8.1",
     "validator": "13.15.15"
   }
 }

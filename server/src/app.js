@@ -1,12 +1,30 @@
 const express = require("express");
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const http = require("http");
+
+/**
+ * Configure dotenv
+ */
+require('dotenv').config({ path: '.env' });
+
+// const path = require('path');
+// require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
+
+/**
+ * Start the corn jobs as soon as the app started
+ */
+require("./utils/cornJobUtils/cronjob");
 
 const connectDB = require("./config/database");
 const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
+const paymentRouter = require("./routes/payment");
+const chatRouter = require("./routes/chat");
+
+const { initializeSocket } = require("./utils/socketUtils/initializeSocket");
 
 const app = express();
 
@@ -28,6 +46,8 @@ app.use("/", authRouter);
 app.use("/", profileRouter);
 app.use("/", requestRouter);
 app.use("/", userRouter);
+app.use("/", paymentRouter);
+app.use("/", chatRouter);
 
 
 // Default route handler
@@ -35,12 +55,19 @@ app.use("/", (_req, res) => {
     res.send("Hello from server!");
 });
 
+/**
+ * Socket.io setup
+ */
+const server = http.createServer(app);
+initializeSocket(server);
+
+
 connectDB()
     .then(() => {
         console.log("Database connected successfully");
 
-        app.listen(7000, () => {
-            console.log("Server is running at 7000");
+        server.listen(process.env.SERVER_PORT, () => {
+            console.log(`Server is running at ${process.env.SERVER_PORT}`);
         });
     })
     .catch((error) => {

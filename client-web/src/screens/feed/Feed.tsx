@@ -8,15 +8,18 @@ import { showAlert } from "../../redux/slices/alertSlice";
 import { addFeed, updateFeed } from "../../redux/slices/feedSlice";
 import { sendRequest } from "../../services/requestService";
 import { AlertType } from "../../enums/AlertEnum";
+import { hideLoader, showLoader } from "../../redux/slices/loaderSlice";
 
 const Feed = () => {
   const dispatch = useDispatch();
   const { list } = useSelector((state: RootState) => state.feed);
   const user = useSelector((state: RootState) => state.user);
+  const { loading } = useSelector((state: RootState) => state.loader);
 
   useEffect(() => {
     const fetchFeed = async () => {
       try {
+        dispatch(showLoader({message: 'Loading...'}));
         const response = await getFeed();
         dispatch(addFeed(response));
       } catch (error) {
@@ -28,6 +31,8 @@ const Feed = () => {
             duration: 5000,
           })
         );
+      } finally {
+        dispatch(hideLoader());
       }
     };
     fetchFeed();
@@ -57,14 +62,15 @@ const Feed = () => {
     }
   };
 
+  if (loading) {
+    return;
+  }
+
   if (!user) {
     return (
       <div className="flex flex-col items-center justify-center mt-10">
         <p className="text-2xl">⚠️</p>
         <p className="text-2xl font-bold">Something went wrong!</p>
-        <p className="text-lg mt-4">
-          Please check your internet connection and try to login again!
-        </p>
       </div>
     );
   }
@@ -82,9 +88,8 @@ const Feed = () => {
     <div className="flex justify-center  my-6">
       <div className="carousel carousel-center bg-neutral rounded-box max-w-md space-x-4 p-4">
         {list.map((item) => (
-          <div className="carousel-item">
+          <div className="carousel-item" key={item._id}>
             <UserCard
-              key={item._id}
               user={item}
               showButton
               onPressButton={handleSendRequest}

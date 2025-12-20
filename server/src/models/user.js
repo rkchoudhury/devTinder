@@ -80,6 +80,24 @@ const userSchema = new Schema(
                     throw new Error("Maximum 10 skills can be added.")
                 }
             }
+        },
+        isPremium: {
+            type: Boolean,
+            default: false,
+        },
+        membershipType: {
+            type: String,
+            enum: {
+                values: ["silver", "gold"],
+                message: '{VALUE} is incorrect membership type.'
+            },
+        },
+        membershipValidity: {
+            type: String,
+            enum: {
+                values: ["3 Months", "7 Months"],
+                message: '{VALUE} is incorrect membership validity.'
+            },
         }
     },
     {
@@ -89,7 +107,7 @@ const userSchema = new Schema(
 
 userSchema.methods.getJWT = async function () {
     const user = this;
-    const token = await jwt.sign({ _id: user._id }, 'DevTinder@123#TestEnv', { expiresIn: '7d' });
+    const token = await jwt.sign({ _id: user._id }, process.env.JWT_TOKEN, { expiresIn: '7d' });
     return token;
 }
 

@@ -59,7 +59,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex justify-center my-10 gap-10">
+    <div className="md:flex md:justify-center my-4 md:gap-10">
       <EditProfileCard
         firstName={firstName}
         setFirstName={setFirstName}

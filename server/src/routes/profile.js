@@ -10,7 +10,10 @@ const profileRouter = express.Router();
 
 profileRouter.get("/profile/view", userAuth, async (req, res) => {
     try {
-        const user = req.user;
+        const user = req.user.toJSON();
+
+        // Clenup the response data by removing sensitive information
+        delete user.password;
 
         // Sending custom data as a json from the server
         res.status(200).json({ data: user, status: "success" });
@@ -34,6 +37,9 @@ profileRouter.put("/profile/edit", userAuth, async (req, res) => {
 
         // 3. Save updated loggedInUser data
         await loggedInUser.save();
+
+        // Clenup the response data by removing sensitive information
+        delete loggedInUser._doc.password;
 
         // 4. Send success message back to the client
         res.json({

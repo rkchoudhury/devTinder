@@ -16,6 +16,8 @@ import { ConnectionRequest } from "../screens/connectionRequest/ConnectionReques
 import { Connections } from "../screens/connection/Connections";
 import { Signup } from "../screens/signup/Signup";
 import { ForgotPassword } from "../screens/forgotPassword/ForgotPassword";
+import { Premium } from "../screens/premium/Premium";
+import { Chat } from "../screens/chat/Chat";
 
 // const appRouter = createBrowserRouter([
 //   {
@@ -65,6 +67,8 @@ export const AppNavigator = () => {
             element={<ConnectionRequest />}
           />
           <Route path={ROUTE_NAMES.CONNECTIONS} element={<Connections />} />
+          <Route path={ROUTE_NAMES.PREMIUM} element={<Premium />} />
+          <Route path={ROUTE_NAMES.CHAT} element={<Chat />} />
           {/** Handling all other routes */}
           <Route path={"*"} element={<Feed />} />
         </Route>

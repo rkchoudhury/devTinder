@@ -6,6 +6,8 @@ const ROUTE_NAMES = {
   CONNECTIONS: "/connections",
   SIGNUP: "/signup",
   FORGOT_PASSWORD: "/password",
+  PREMIUM: "/premium",
+  CHAT: "/chat",
 };
 
 export { ROUTE_NAMES };
