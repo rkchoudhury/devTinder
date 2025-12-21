@@ -13,6 +13,7 @@
 ## 2. Connect to AWS Instance
 
 - Locate your private key file (devtinder-secrete.pem). This key is used to launch the instance. Open the terminal at that location.
+- The ssh command is dynamic, so if the following command does not wrok then login to AWS console and select the the region (eu-north-1). Then copy the new ssh command from the site.
 
   - chmod 400 "devtinder-secrete.pem"
   - ssh -i "devtinder-secrete.pem" ubuntu@ec2-16-170-133-198.eu-north-1.compute.amazonaws.com
@@ -214,6 +215,20 @@ server {
 }
 ```
 
+For all the Single Page Applications like react, nextjs (SPA), do the following modifications
+
+- Issue: On Page reloads, nginx is throwing `404 Not Found` error.
+- To resolve this issue do the following modifications - try_files $uri `/index.html;`
+
+```
+location / {
+  # First attempt to serve request as file, then
+  # as directory, then fall back to displaying a 404.
+  try_files $uri /index.html; # Change the path to /index.html from $uri/ =404;
+}
+
+```
+
 3. Restart nginx
 
    - sudo systemctl restart nginx
@@ -225,6 +240,8 @@ server {
    - http://51.21.171.84/api/feed
      - Hello from Server!
 
+5. `Note:` Always restarts nginx when we do any configuration changes for nginx. Otherwise the changes will not reflects.
+
 ### Modify the BASE_URL of the Frontend Project (DevTinder Web App)
 
 - from `"http://localhost:7000"` to `/api`
@@ -235,7 +252,6 @@ server {
 
   - cd client-web
   - npm run build
-
 
 ### Now re-deploy the Frontend Web Project
 
@@ -283,7 +299,7 @@ server {
   - sudo nano .env
 
 - List down the pm processes that are currently running
-  
+
   - pm2 list
 
 - Restart the process using process name/id
@@ -297,3 +313,11 @@ server {
 - Check the logs if there any logs
 
   - pm2 logs
+
+###
+
+- On Page reloads, nginx is throwing `404 Not Found` error
+
+sudo nano /etc/nginx/sites-available/default
+
+ ssh -i "devtinder-secrete.pem" ubuntu@ec2-51-21-171-84.eu-north-1.compute.amazonaws.com
