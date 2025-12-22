@@ -14,7 +14,7 @@ export const Loader = () => {
     <View style={styles.overlay}>
       <View style={styles.container}>
         <ActivityIndicator size="large" />
-        <Text style={styles.message}>
+        <Text variant="bodyMedium" style={styles.message}>
           {message}
         </Text>
       </View>
@@ -37,8 +37,8 @@ const styles = StyleSheet.create({
   container: {
     width: 224,
     height: 224,
-    backgroundColor: '#1a1a1a',
-    borderRadius: 8,
+    backgroundColor: '#eeeeee',
+    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
@@ -46,6 +46,5 @@ const styles = StyleSheet.create({
   message: {
     marginTop: 16,
     textAlign: 'center',
-    color: '#ffffff',
   },
 });
