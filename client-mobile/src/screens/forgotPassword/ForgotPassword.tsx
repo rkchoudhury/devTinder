@@ -1,24 +1,31 @@
 import { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { router } from 'expo-router';
 import { Button, TextInput, Text } from "react-native-paper";
 import { useDispatch } from "react-redux";
+import { router } from "expo-router";
 import type { AxiosError } from "axios";
 
-import { authenticateUser } from "../../services/authService";
-import { addUser } from "../../redux/slices/userSlice";
 import { showAlert } from "../../redux/slices/alertSlice";
+import { updateUserPassword } from "../../services/profileService";
+import { AlertType } from "../../enums/AlertEnum";
 
-const LogIn = () => {
+export const ForgotPassword = () => {
   const dispatch = useDispatch();
-  const [emailId, setEmailId] = useState("rakesh@gmail.com");
-  const [password, setPassword] = useState("Rakesh@123");
 
-  const onPressLogin = async () => {
+  const [emailId, setEmailId] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onPressChangePassword = async () => {
     try {
-      const response = await authenticateUser(emailId, password);
-      dispatch(addUser(response?.data));
-      router.replace('/feed');
+      const response = await updateUserPassword(emailId, password);
+      dispatch(
+        showAlert({
+          showAlert: true,
+          type: AlertType.Success,
+          message: response?.message,
+        })
+      );
+      router.back(); // Go back to the previous screen -> login
     } catch (error) {
       const axiosError = error as AxiosError;
       dispatch(
@@ -30,23 +37,15 @@ const LogIn = () => {
     }
   };
 
-  const onPressSignup = () => {
-    router.push('/signup');
-  };
-
-  const onPressForgotPassword = () => {
-    router.push('/forgotPassword');
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.card}>
         <View style={styles.cardBody}>
-          <Text variant="headlineMedium" style={styles.title}>Log In</Text>
+          <Text variant="headlineMedium" style={styles.title}>Forgot Password</Text>
           <View style={styles.formContainer}>
             <TextInput
               label="Email Id"
-              placeholder="Enter Your Email Id"
+              placeholder="Email Id"
               value={emailId}
               onChangeText={setEmailId}
               keyboardType="email-address"
@@ -54,27 +53,21 @@ const LogIn = () => {
               style={styles.input}
             />
             <TextInput
-              label="Password"
-              placeholder="Enter Your Password"
+              label="New Password"
+              placeholder="New Password"
+              secureTextEntry={true}
               value={password}
               onChangeText={setPassword}
-              secureTextEntry={true}
               style={styles.input}
             />
           </View>
           <Button 
             mode="contained" 
-            onPress={onPressLogin}
-            style={styles.loginButton}
+            onPress={onPressChangePassword}
+            style={styles.button}
           >
-            Login ❤️
+            Update Password
           </Button>
-          <Text style={styles.signupText} onPress={onPressSignup}>
-            New user <Text style={styles.signupLink}>Sign up</Text> here.
-          </Text>
-          <Text style={styles.forgotPassword} onPress={onPressForgotPassword}>
-            Forgot Password
-          </Text>
         </View>
       </View>
     </View>
@@ -109,25 +102,8 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 16,
   },
-  loginButton: {
+  button: {
     width: '100%',
     marginTop: 16,
   },
-  signupText: {
-    marginTop: 16,
-    fontSize: 14,
-  },
-  signupLink: {
-    fontWeight: 'bold',
-    textDecorationLine: 'underline',
-  },
-  forgotPassword: {
-    marginTop: 8,
-    color: '#ef4444',
-    fontWeight: '600',
-    textDecorationLine: 'underline',
-    fontSize: 14,
-  },
 });
-
-export default LogIn;
