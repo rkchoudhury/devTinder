@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { PaperProvider } from 'react-native-paper';
 
 import { store } from "../redux/store";
+import { Loader } from "../components/Loader";
 
 export default function RootLayout() {
   return (
@@ -15,6 +16,7 @@ export default function RootLayout() {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="(screens)/profile" options={{ title: 'Profile' }} />
         </Stack>
+        <Loader />
       </PaperProvider>
     </Provider>
   );
