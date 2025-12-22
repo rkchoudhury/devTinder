@@ -3,6 +3,8 @@ import { StyleSheet, ScrollView } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import type { AxiosError } from "axios";
 import { useLocalSearchParams } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Divider } from "react-native-paper";
 
 import { EditProfileCard } from "../../components/EditProfileCard";
 import { UserCard } from "../../components/UserCard";
@@ -64,44 +66,54 @@ const Profile = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      {enableEdit && (
-        <EditProfileCard
-          firstName={firstName}
-          setFirstName={setFirstName}
-          lastName={lastName}
-          setLastName={setLastName}
-          age={age}
-          setAge={setAge}
-          gender={gender}
-          setGender={setGender}
-          about={about}
-          setAbout={setAbout}
-          photoUrl={photoUrl}
-          setPhotoUrl={setPhotoUrl}
-          skills={skills}
-          setSkills={setSkills}
-          onPressUpdateProfile={updateProfile}
+    <SafeAreaView edges={["bottom"]} style={styles.scrollContainer}>
+      <ScrollView style={styles.scrollContainer}>
+        <UserCard
+          user={{
+            firstName,
+            lastName,
+            about,
+            photoUrl,
+            gender,
+            age: typeof age === "string" ? Number(age) : age,
+            skills,
+          }}
         />
-      )}
-      <UserCard
-        user={{
-          firstName,
-          lastName,
-          about,
-          photoUrl,
-          gender,
-          age: typeof age === "string" ? Number(age) : age,
-          skills,
-        }}
-      />
-    </ScrollView>
+        {enableEdit && (
+          <>
+            <Divider bold horizontalInset style={styles.divider} />
+            <EditProfileCard
+              firstName={firstName}
+              setFirstName={setFirstName}
+              lastName={lastName}
+              setLastName={setLastName}
+              age={age}
+              setAge={setAge}
+              gender={gender}
+              setGender={setGender}
+              about={about}
+              setAbout={setAbout}
+              photoUrl={photoUrl}
+              setPhotoUrl={setPhotoUrl}
+              skills={skills}
+              setSkills={setSkills}
+              onPressUpdateProfile={updateProfile}
+            />
+          </>
+        )}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
+  },
+  divider: {
+    marginVertical: 16,
+    height: 2,
+    color: "#6200ee",
   },
 });
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { TextInput, Button, Text, Menu } from "react-native-paper";
+import { TextInput, Button, Text, Menu, Card } from "react-native-paper";
 import { SkillBadgeList } from "./SkillBadgeList";
 
 interface IEditProfileProps {
@@ -59,9 +59,9 @@ export const EditProfileCard = (props: IEditProfileProps) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.card}>
-        <View style={styles.cardBody}>
-          <Text variant="headlineMedium" style={styles.title}>
+      <Card style={styles.card}>
+        <Card.Content style={styles.cardBody}>
+          <Text variant="headlineSmall" style={styles.title}>
             Edit Profile
           </Text>
           <View style={styles.formContainer}>
@@ -166,8 +166,8 @@ export const EditProfileCard = (props: IEditProfileProps) => {
           >
             Update Profile
           </Button>
-        </View>
-      </View>
+        </Card.Content>
+      </Card>
     </View>
   );
 };
@@ -178,16 +178,13 @@ const styles = StyleSheet.create({
   },
   card: {
     width: "90%",
-    maxWidth: 384,
-    backgroundColor: "#2a2a2a",
     borderRadius: 8,
-    padding: 16,
+    marginBottom: 16,
   },
   cardBody: {
     alignItems: "center",
   },
   title: {
-    marginBottom: 16,
     textAlign: "center",
   },
   formContainer: {
