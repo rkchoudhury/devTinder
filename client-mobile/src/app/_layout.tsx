@@ -12,10 +12,10 @@ export default function RootLayout() {
       <PaperProvider>
         <Stack>
           <Stack.Screen name="index" options={{ title: 'Login', headerShown: false }} />
-          <Stack.Screen name="(screens)/signup" options={{ title: 'Sign Up' }} />
-          <Stack.Screen name="(screens)/forgotPassword" options={{ title: 'Forgot Password' }} />
+          <Stack.Screen name="(screens)/signup" options={{ title: 'Sign Up', headerBackButtonDisplayMode: 'minimal' }} />
+          <Stack.Screen name="(screens)/forgotPassword" options={{ title: 'Forgot Password', headerBackButtonDisplayMode: 'minimal' }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="(screens)/profile" options={{ title: 'My Profile' }} />
+          <Stack.Screen name="(screens)/profile" options={{ title: 'My Profile', headerBackButtonDisplayMode: 'minimal' }} />
         </Stack>
         <Loader />
         <ToastAlert />
