@@ -53,6 +53,15 @@ export default function TabLayout() {
                     ),
                 }}
             />
+            <Tabs.Screen
+                name="settings"
+                options={{
+                    tabBarLabel: 'Settings',
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="cog" size={size} color={color} />
+                    ),
+                }}
+            />
         </Tabs>
     );
 }
