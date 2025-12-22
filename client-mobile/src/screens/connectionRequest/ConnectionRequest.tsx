@@ -77,8 +77,8 @@ export const ConnectionRequest = () => {
   if (requests?.length === 0) {
     return (
       <View style={styles.centerContainer}>
-        <Text variant="displaySmall">❤️</Text>
-        <Text variant="headlineMedium" style={styles.emptyText}>
+        <Text variant="titleLarge">❤️</Text>
+        <Text variant="titleLarge" style={styles.emptyText}>
           No new connection request found!
         </Text>
       </View>

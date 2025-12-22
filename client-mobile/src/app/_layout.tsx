@@ -15,7 +15,7 @@ export default function RootLayout() {
           <Stack.Screen name="(screens)/signup" options={{ title: 'Sign Up' }} />
           <Stack.Screen name="(screens)/forgotPassword" options={{ title: 'Forgot Password' }} />
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="(screens)/profile" options={{ title: 'Profile' }} />
+          <Stack.Screen name="(screens)/profile" options={{ title: 'My Profile' }} />
         </Stack>
         <Loader />
         <ToastAlert />
