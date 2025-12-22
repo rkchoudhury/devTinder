@@ -69,6 +69,7 @@ export const UserCard = ({
               mode="contained"
               onPress={() => onPressButton?.(StatusType.Ignored, _id)}
               style={styles.button}
+              buttonColor="darkred"
             >
               Ignore
             </Button>

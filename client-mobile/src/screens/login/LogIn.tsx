@@ -11,8 +11,8 @@ import { showAlert } from "../../redux/slices/alertSlice";
 
 const LogIn = () => {
   const dispatch = useDispatch();
-  const [emailId, setEmailId] = useState("rakesh@gmail.com");
-  const [password, setPassword] = useState("Rakesh@123");
+  const [emailId, setEmailId] = useState("");
+  const [password, setPassword] = useState("");
 
   const onPressLogin = async () => {
     try {

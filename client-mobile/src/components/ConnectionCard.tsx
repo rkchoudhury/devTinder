@@ -49,6 +49,7 @@ export const ConnectionCard = ({
             mode="contained"
             onPress={() => onPressButton?.(StatusType.Rejected, requestId)}
             style={styles.button}
+            buttonColor="darkred"
           >
             Reject
           </Button>
