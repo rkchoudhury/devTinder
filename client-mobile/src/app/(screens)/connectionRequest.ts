@@ -1,0 +1,1 @@
+export { ConnectionRequest as default } from '../../screens/connectionRequest/ConnectionRequest';
