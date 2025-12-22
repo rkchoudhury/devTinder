@@ -6,7 +6,6 @@ import { router } from 'expo-router';
 import { Button, TextInput, Text } from 'react-native-paper';
 
 import { showAlert } from "../../redux/slices/alertSlice";
-// import { ROUTE_NAMES } from "../../navigation/Routes";
 import { addUser } from "../../redux/slices/userSlice";
 import { signUpNewUser } from "../../services/authService";
 
@@ -27,8 +26,7 @@ const Signup = () => {
                 password,
             });
               dispatch(addUser(response?.data));
-            //   navigate(ROUTE_NAMES.HOME, { replace: true });
-            router.replace('/ScreenA');
+            router.replace('/feed');
         } catch (error) {
               const axiosError = error as AxiosError;
               dispatch(

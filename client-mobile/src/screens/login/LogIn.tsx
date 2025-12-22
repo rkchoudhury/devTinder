@@ -7,20 +7,18 @@ import type { AxiosError } from "axios";
 
 import { authenticateUser } from "../../services/authService";
 import { addUser } from "../../redux/slices/userSlice";
-// import { ROUTE_NAMES } from "../../navigation/Routes";
 import { showAlert } from "../../redux/slices/alertSlice";
 
 const LogIn = () => {
   const dispatch = useDispatch();
-  const [emailId, setEmailId] = useState("");
-  const [password, setPassword] = useState("");
+  const [emailId, setEmailId] = useState("rakesh@gmail.com");
+  const [password, setPassword] = useState("Rakesh@123");
 
   const onPressLogin = async () => {
     try {
       const response = await authenticateUser(emailId, password);
       dispatch(addUser(response?.data));
-      // navigate(ROUTE_NAMES.HOME, { replace: true });
-      router.replace('/ScreenA');
+      router.replace('/feed');
     } catch (error) {
       const axiosError = error as AxiosError;
       dispatch(
