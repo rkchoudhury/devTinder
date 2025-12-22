@@ -15,6 +15,7 @@ export default function TabLayout() {
     return (
         <Tabs
             screenOptions={{
+                headerTitle: `Welcome, ${user?.firstName}`,
                 headerRight: () => (
                     <TouchableOpacity onPress={() => router.push('/profile')} style={styles.profileIconContainer}>
                         <Avatar.Image
@@ -28,7 +29,7 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="feed"
                 options={{
-                    title: 'My Feed',
+                    tabBarLabel: 'Feed',
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="cards" size={size} color={color} />
                     ),
@@ -37,7 +38,7 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="connection"
                 options={{
-                    title: 'My Connections',
+                    tabBarLabel: 'Connections',
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="account-group" size={size} color={color} />
                     ),
@@ -46,7 +47,7 @@ export default function TabLayout() {
             <Tabs.Screen
                 name="connectionRequest"
                 options={{
-                    title: 'Connection Requests',
+                    tabBarLabel: 'Requests',
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="account-clock" size={size} color={color} />
                     ),
