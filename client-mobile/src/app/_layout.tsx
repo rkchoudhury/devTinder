@@ -4,6 +4,7 @@ import { PaperProvider } from 'react-native-paper';
 
 import { store } from "../redux/store";
 import { Loader } from "../components/Loader";
+import { ToastAlert } from "../components/ToastAlert";
 
 export default function RootLayout() {
   return (
@@ -17,6 +18,7 @@ export default function RootLayout() {
           <Stack.Screen name="(screens)/profile" options={{ title: 'Profile' }} />
         </Stack>
         <Loader />
+        <ToastAlert />
       </PaperProvider>
     </Provider>
   );
