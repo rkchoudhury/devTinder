@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { View, StyleSheet, FlatList } from "react-native";
 import { Text } from "react-native-paper";
 import { useDispatch, useSelector } from "react-redux";
-import { SafeAreaView } from "react-native-safe-area-context";
 import type { AxiosError } from "axios";
 
 import { getConnectionRequests } from "../../services/userService";
@@ -87,7 +86,7 @@ export const ConnectionRequest = () => {
   }
 
   return (
-    <SafeAreaView edges={["bottom"]} style={styles.container}>
+    <View style={styles.container}>
       <FlatList
         data={requests}
         keyExtractor={(item) => item._id}
@@ -99,13 +98,8 @@ export const ConnectionRequest = () => {
             onPressButton={handleReviewRequest}
           />
         )}
-        ListHeaderComponent={
-          <Text variant="headlineMedium" style={styles.title}>
-            Connection Requests
-          </Text>
-        }
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -121,10 +115,5 @@ const styles = StyleSheet.create({
   emptyText: {
     marginTop: 8,
     textAlign: "center",
-  },
-  title: {
-    textAlign: "center",
-    marginVertical: 16,
-    fontWeight: "600",
   },
 });
