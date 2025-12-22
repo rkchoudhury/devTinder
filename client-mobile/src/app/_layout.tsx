@@ -12,10 +12,8 @@ export default function RootLayout() {
           <Stack.Screen name="index" options={{ title: 'Login', headerShown: false }} />
           <Stack.Screen name="(screens)/signup" options={{ title: 'Sign Up' }} />
           <Stack.Screen name="(screens)/forgotPassword" options={{ title: 'Forgot Password' }} />
-          <Stack.Screen name="(screens)/feed" options={{ title: 'Feed' }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="(screens)/profile" options={{ title: 'Profile' }} />
-          <Stack.Screen name="(screens)/connection" options={{ title: 'Connections' }} />
-          <Stack.Screen name="(screens)/connectionRequest" options={{ title: 'Connection Requests' }} />
         </Stack>
       </PaperProvider>
     </Provider>
