@@ -82,7 +82,7 @@ export const UserCard = ({
           </Card.Actions>
         )}
         {showChatButton && (
-          <Card.Actions>
+          <Card.Actions style={styles.cardActions}>
             <Button
               mode="contained"
               onPress={onPressChat}
@@ -92,6 +92,7 @@ export const UserCard = ({
             </Button>
           </Card.Actions>
         )}
+        {!showButton && !showChatButton && <View style={styles.cardActions} />}
       </Card>
     </View>
   );
@@ -136,5 +137,8 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
+  },
+  emptySpace: { 
+    height: 4,
   },
 });

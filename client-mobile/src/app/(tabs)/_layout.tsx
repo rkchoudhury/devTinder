@@ -17,7 +17,10 @@ export default function TabLayout() {
             screenOptions={{
                 headerTitle: `Welcome, ${user?.firstName}`,
                 headerRight: () => (
-                    <TouchableOpacity onPress={() => router.push('/profile')} style={styles.profileIconContainer}>
+                    <TouchableOpacity
+                        onPress={() => router.push({ pathname: '/profile', params: { enableEdit: 'false' } })}
+                        style={styles.profileIconContainer}
+                    >
                         <Avatar.Image
                             source={{ uri }}
                             size={36}

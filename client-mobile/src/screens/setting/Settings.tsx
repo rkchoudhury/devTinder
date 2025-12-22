@@ -57,14 +57,14 @@ export default function Setting() {
           onPress={() => router.push('/(screens)/profile')}
         />
         <Divider />
-        <List.Item
+        {/* <List.Item
           title="Premium"
           description="Upgrade to premium membership"
           left={(props) => <List.Icon {...props} icon="crown" />}
           right={(props) => <List.Icon {...props} icon="chevron-right" />}
           onPress={() => router.push('/(screens)/premium')}
           disabled={true}
-        />
+        /> */}
         <Divider />
         <List.Item
           title="Logout"
