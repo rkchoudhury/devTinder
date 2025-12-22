@@ -1,19 +1,17 @@
 import { useState } from "react";
 import { View, StyleSheet } from "react-native";
-// import { useDispatch } from "react-redux";
-// import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import type { AxiosError } from "axios";
+import { router } from 'expo-router';
 import { Button, TextInput, Text } from 'react-native-paper';
 
-// import { TextInput } from "../../components/TextInput";
-// import { showAlert } from "../../redux/slices/alertSlice";
+import { showAlert } from "../../redux/slices/alertSlice";
 // import { ROUTE_NAMES } from "../../navigation/Routes";
-// import { addUser } from "../../redux/slices/userSlice";
+import { addUser } from "../../redux/slices/userSlice";
 import { signUpNewUser } from "../../services/authService";
 
 const Signup = () => {
-    //   const dispatch = useDispatch();
-    //   const navigate = useNavigate();
+      const dispatch = useDispatch();
 
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
@@ -28,18 +26,17 @@ const Signup = () => {
                 emailId,
                 password,
             });
-            console.log('Signup response:', response);
-            //   dispatch(addUser(response?.data));
+              dispatch(addUser(response?.data));
             //   navigate(ROUTE_NAMES.HOME, { replace: true });
+            router.replace('/ScreenA');
         } catch (error) {
-            console.error('Signup error:', error);
-            //   const axiosError = error as AxiosError;
-            //   dispatch(
-            //     showAlert({
-            //       showAlert: true,
-            //       message: axiosError?.message,
-            //     })
-            //   );
+              const axiosError = error as AxiosError;
+              dispatch(
+                showAlert({
+                  showAlert: true,
+                  message: axiosError?.message,
+                })
+              );
         }
     };
 

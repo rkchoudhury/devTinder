@@ -34,14 +34,11 @@ const signUpNewUser = async (data: {
   password: string;
 }) => {
   try {
-    console.log('signUpNewUser data:', data, BASE_URL);
     const response = await axios.post(`${BASE_URL}/signup`, data, {
       withCredentials: true,
     });
-    console.log('signUpNewUser response:', response);
     return response?.data;
   } catch (error) {
-    console.error('Error in signUpNewUser:', error);
     const axiosError = error as AxiosError;
     throw axiosError?.response?.data;
   }

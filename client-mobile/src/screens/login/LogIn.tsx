@@ -2,40 +2,37 @@ import { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { router } from 'expo-router';
 import { Button, TextInput, Text } from "react-native-paper";
-// import { useDispatch } from "react-redux";
-// import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import type { AxiosError } from "axios";
 
 import { authenticateUser } from "../../services/authService";
-// import { addUser } from "../../redux/slices/userSlice";
+import { addUser } from "../../redux/slices/userSlice";
 // import { ROUTE_NAMES } from "../../navigation/Routes";
-// import { showAlert } from "../../redux/slices/alertSlice";
+import { showAlert } from "../../redux/slices/alertSlice";
 
 const LogIn = () => {
-  // const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
 
   const onPressLogin = async () => {
     try {
       const response = await authenticateUser(emailId, password);
-      // dispatch(addUser(response?.data));
+      dispatch(addUser(response?.data));
       // navigate(ROUTE_NAMES.HOME, { replace: true });
       router.replace('/ScreenA');
     } catch (error) {
       const axiosError = error as AxiosError;
-      // dispatch(
-      //   showAlert({
-      //     showAlert: true,
-      //     message: axiosError?.message,
-      //   })
-      // );
+      dispatch(
+        showAlert({
+          showAlert: true,
+          message: axiosError?.message,
+        })
+      );
     }
   };
 
   const onPressSignup = () => {
-    // navigate(ROUTE_NAMES.SIGNUP);
     router.push('/signup');
   };
 
