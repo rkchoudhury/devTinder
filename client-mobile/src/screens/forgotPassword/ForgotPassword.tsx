@@ -41,7 +41,6 @@ export const ForgotPassword = () => {
     <View style={styles.container}>
       <View style={styles.card}>
         <View style={styles.cardBody}>
-          <Text variant="headlineMedium" style={styles.title}>Forgot Password</Text>
           <View style={styles.formContainer}>
             <TextInput
               label="Email Id"
@@ -84,7 +83,6 @@ const styles = StyleSheet.create({
   card: {
     width: '100%',
     maxWidth: 384,
-    backgroundColor: '#2a2a2a',
     borderRadius: 8,
     padding: 16,
   },
