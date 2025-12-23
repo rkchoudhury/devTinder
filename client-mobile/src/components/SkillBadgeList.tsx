@@ -78,11 +78,11 @@ const styles = StyleSheet.create({
   chipsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: 4,
   },
   chip: {
-    marginRight: 8,
-    marginBottom: 8,
+    marginRight: 4,
+    marginBottom: 4,
   },
   inputContainer: {
     flexDirection: 'row',

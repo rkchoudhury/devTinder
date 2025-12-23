@@ -11,8 +11,8 @@ import { showAlert } from "../../redux/slices/alertSlice";
 
 const LogIn = () => {
   const dispatch = useDispatch();
-  const [emailId, setEmailId] = useState("rakesh@gmail.com");
-  const [password, setPassword] = useState("Rakesh@123");
+  const [emailId, setEmailId] = useState("");
+  const [password, setPassword] = useState("");
 
   const onPressLogin = async () => {
     try {
@@ -40,9 +40,9 @@ const LogIn = () => {
 
   return (
     <View style={styles.container}>
+      <Text variant="headlineMedium" style={styles.title}>🧑‍💻 DevTinder 💕</Text>
       <View style={styles.card}>
         <View style={styles.cardBody}>
-          <Text variant="headlineMedium" style={styles.title}>Log In</Text>
           <View style={styles.formContainer}>
             <TextInput
               label="Email Id"
@@ -69,10 +69,10 @@ const LogIn = () => {
           >
             Login ❤️
           </Button>
-          <Text style={styles.signupText} onPress={onPressSignup}>
+          <Text variant="bodyLarge" style={styles.signupText} onPress={onPressSignup}>
             New user <Text style={styles.signupLink}>Sign up</Text> here.
           </Text>
-          <Text style={styles.forgotPassword} onPress={onPressForgotPassword}>
+          <Text variant="bodyLarge" style={styles.forgotPassword} onPress={onPressForgotPassword}>
             Forgot Password
           </Text>
         </View>
@@ -91,7 +91,6 @@ const styles = StyleSheet.create({
   card: {
     width: '100%',
     maxWidth: 384,
-    backgroundColor: '#2a2a2a',
     borderRadius: 8,
     padding: 16,
   },
@@ -99,8 +98,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    marginBottom: 16,
     textAlign: 'center',
+    position: 'absolute',
+    top: 100,
+    right: 0,
+    left: 0,
+    fontWeight: '700',
   },
   formContainer: {
     width: '100%',
@@ -115,7 +118,6 @@ const styles = StyleSheet.create({
   },
   signupText: {
     marginTop: 16,
-    fontSize: 14,
   },
   signupLink: {
     fontWeight: 'bold',
@@ -126,7 +128,6 @@ const styles = StyleSheet.create({
     color: '#ef4444',
     fontWeight: '600',
     textDecorationLine: 'underline',
-    fontSize: 14,
   },
 });
 

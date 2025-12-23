@@ -4,7 +4,6 @@ import { Text, Button } from "react-native-paper";
 import type { AxiosError } from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { router } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import { getUserConnections } from "../../services/userService";
 import { showAlert } from "../../redux/slices/alertSlice";
@@ -73,7 +72,7 @@ export const Connections = () => {
   }
 
   return (
-    <SafeAreaView edges={["bottom"]} style={styles.container}>
+    <View style={styles.container}>
       <FlatList
         data={connections}
         keyExtractor={(item) => item._id}
@@ -91,13 +90,8 @@ export const Connections = () => {
             }}
           />
         )}
-        ListHeaderComponent={
-          <Text variant="headlineMedium" style={styles.title}>
-            My Connections
-          </Text>
-        }
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -119,10 +113,5 @@ const styles = StyleSheet.create({
   },
   connectButton: {
     marginTop: 8,
-  },
-  title: {
-    textAlign: "center",
-    marginVertical: 4,
-    fontWeight: "600",
   },
 });

@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { StyleSheet, ScrollView } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import type { AxiosError } from "axios";
+import { useLocalSearchParams } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Divider } from "react-native-paper";
 
 import { EditProfileCard } from "../../components/EditProfileCard";
 import { UserCard } from "../../components/UserCard";
@@ -15,6 +18,9 @@ import { addUser } from "../../redux/slices/userSlice";
 const Profile = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user) as IUser | null;
+
+  const params = useLocalSearchParams<{ enableEdit?: string }>();
+  const enableEdit = params?.enableEdit ? params?.enableEdit === "true" : true;
 
   const [firstName, setFirstName] = useState<string>(user?.firstName ?? "");
   const [lastName, setLastName] = useState<string>(user?.lastName ?? "");
@@ -60,42 +66,54 @@ const Profile = () => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <EditProfileCard
-        firstName={firstName}
-        setFirstName={setFirstName}
-        lastName={lastName}
-        setLastName={setLastName}
-        age={age}
-        setAge={setAge}
-        gender={gender}
-        setGender={setGender}
-        about={about}
-        setAbout={setAbout}
-        photoUrl={photoUrl}
-        setPhotoUrl={setPhotoUrl}
-        skills={skills}
-        setSkills={setSkills}
-        onPressUpdateProfile={updateProfile}
-      />
-      <UserCard
-        user={{
-          firstName,
-          lastName,
-          about,
-          photoUrl,
-          gender,
-          age: typeof age === "string" ? Number(age) : age,
-          skills,
-        }}
-      />
-    </ScrollView>
+    <SafeAreaView edges={["bottom"]} style={styles.scrollContainer}>
+      <ScrollView style={styles.scrollContainer}>
+        <UserCard
+          user={{
+            firstName,
+            lastName,
+            about,
+            photoUrl,
+            gender,
+            age: typeof age === "string" ? Number(age) : age,
+            skills,
+          }}
+        />
+        {enableEdit && (
+          <>
+            <Divider bold horizontalInset style={styles.divider} />
+            <EditProfileCard
+              firstName={firstName}
+              setFirstName={setFirstName}
+              lastName={lastName}
+              setLastName={setLastName}
+              age={age}
+              setAge={setAge}
+              gender={gender}
+              setGender={setGender}
+              about={about}
+              setAbout={setAbout}
+              photoUrl={photoUrl}
+              setPhotoUrl={setPhotoUrl}
+              skills={skills}
+              setSkills={setSkills}
+              onPressUpdateProfile={updateProfile}
+            />
+          </>
+        )}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
+  },
+  divider: {
+    marginVertical: 16,
+    height: 2,
+    color: "#6200ee",
   },
 });
 

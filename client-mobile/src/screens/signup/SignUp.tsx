@@ -42,7 +42,6 @@ const Signup = () => {
         <View style={styles.container}>
             <View style={styles.card}>
                 <View style={styles.cardBody}>
-                    <Text variant="headlineMedium" style={styles.title}>Sign Up</Text>
                     <View style={styles.formContainer}>
                         <TextInput
                             label="First Name"
@@ -93,7 +92,6 @@ const styles = StyleSheet.create({
     card: {
         width: '100%',
         maxWidth: 384,
-        backgroundColor: '#2a2a2a',
         borderRadius: 8,
         padding: 16,
     },
