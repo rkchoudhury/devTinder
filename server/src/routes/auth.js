@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 
 const { validateSignUpData, validateLoginData } = require("../utils/validation");
+const { detectClient } = require("../middlewares/client");
 const User = require("../models/user");
 
 const authRouter = express.Router();
@@ -56,9 +57,10 @@ authRouter.post("/signup", async (req, res) => {
     }
 });
 
-authRouter.post("/login", async (req, res) => {
+authRouter.post("/login", detectClient, async (req, res) => {
     try {
         const { emailId, password } = req.body;
+        const clientType = req.clientType;
 
         // 1. Validate the emailId
         validateLoginData(emailId);
@@ -76,18 +78,30 @@ authRouter.post("/login", async (req, res) => {
 
         // 4. Send the response back to the client
         if (isPasswordValid) {
-            // A. Creating JSW token - Added expire time of 7 days
-            // const token = jwt.sign({ _id: user._id }, process.env.JWT_TOKEN, { expiresIn: '7d' });
-            const token = await user.getJWT();
+            if (clientType === 'web') {
+                // A. Creating JSW token - Added expire time of 7 days
+                // const token = jwt.sign({ _id: user._id }, process.env.JWT_TOKEN, { expiresIn: '7d' });
+                const token = await user.getJWT();
 
-            // B. Adding JWT token onto the cookie header
-            // Added a exipre time of 7 days - After the exipre time the token will automatically removed from the browser's cookie
-            res.cookie("token", token, { expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) }); // Adding value to the cookie header
+                // B. Adding JWT token onto the cookie header
+                // Added a exipre time of 7 days - After the exipre time the token will automatically removed from the browser's cookie
+                res.cookie("token", token, { expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) }); // Adding value to the cookie header
 
-            // Clenup the response data by removing sensitive information
-            delete user._doc.password;
+                // Clenup the response data by removing sensitive information
+                delete user._doc.password;
 
-            res.status(200).json({ message: "Login Successful!", data: user });
+                res.status(200).json({ message: "Login Successful!", data: user });
+            } else if (clientType === 'mobile') {
+                // Generate Access Token and Refresh Token for Mobile Client
+                const { accessToken, refreshToken } = await user.getMobileToken(); 
+
+                // Clenup the response data by removing sensitive information
+                delete user._doc.password;
+
+                res.status(200).json({ message: "Login Successful!", data: user, accessToken, refreshToken });
+            } else {
+                return res.status(400).json({ message: 'Unauthorized: Invalid client type' });
+            }
         } else {
             throw new Error("Invalid Credentials."); // Don't expose any other infromation
         }

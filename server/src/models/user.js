@@ -118,6 +118,13 @@ userSchema.methods.validatePassword = async function (passwordEnteredByUser) {
     return isPasswordValid;
 }
 
+userSchema.methods.getMobileToken = async function () {
+    const user = this;
+    const accessToken = await jwt.sign({ _id: user._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+    const refreshToken = await jwt.sign({ _id: user._id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+    return { accessToken, refreshToken };
+}
+
 const User = model("User", userSchema);
 
 module.exports = User;
