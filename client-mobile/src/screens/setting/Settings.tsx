@@ -7,6 +7,7 @@ import { removeUser } from '@/src/redux/slices/userSlice';
 import { logoutUser } from '@/src/services/authService';
 import { showAlert } from '@/src/redux/slices/alertSlice';
 import { AlertType } from '@/src/enums/AlertEnum';
+import { clearRefreshToken } from '@/src/utils/secureStorage';
 
 export default function Setting() {
   const router = useRouter();
@@ -27,6 +28,7 @@ export default function Setting() {
           onPress: async () => {
             try {
               await logoutUser();
+              await clearRefreshToken();
               dispatch(removeUser());
               router.replace('/');
               dispatch(

@@ -1,5 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken');
 
 const { validateSignUpData, validateLoginData } = require("../utils/validation");
 const { detectClient } = require("../middlewares/client");
@@ -56,10 +57,14 @@ authRouter.post("/signup", detectClient, async (req, res) => {
             res.status(200).json({ message: "User created successfully!", data });
         } else if (clientType === 'mobile') {
             // Generate Access Token and Refresh Token for Mobile Client
-            const { accessToken, refreshToken } = await user.getMobileToken(); 
+            const { accessToken, refreshToken } = await user.getMobileToken();
+
+            // Save the refresh token in the database
+            user.refreshToken = refreshToken;
+            await user.save();
 
             // Clenup the response data by removing sensitive information
-            delete data._doc.password;  
+            delete data._doc.password;
 
             res.status(200).json({ message: "User created successfully!", data, accessToken, refreshToken });
         } else {
@@ -106,7 +111,11 @@ authRouter.post("/login", detectClient, async (req, res) => {
                 res.status(200).json({ message: "Login Successful!", data: user });
             } else if (clientType === 'mobile') {
                 // Generate Access Token and Refresh Token for Mobile Client
-                const { accessToken, refreshToken } = await user.getMobileToken(); 
+                const { accessToken, refreshToken } = await user.getMobileToken();
+
+                // Save the refresh token in the database
+                user.refreshToken = refreshToken;
+                await user.save();
 
                 // Clenup the response data by removing sensitive information
                 delete user._doc.password;
@@ -129,5 +138,33 @@ authRouter.post("/logout", async (req, res) => {
     res.cookie("token", null, { expires: new Date(Date.now()) });
     res.status(200).send("You are logout Successful!");
 });
+
+authRouter.post("/auth/refresh", async (req, res) => {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+        return res.status(401).json({ message: 'No refresh token' });
+    }
+
+    const storedToken = await User.findOne({ refreshToken }).populate('refreshToken');
+    if (!storedToken) {
+        return res.status(403).json({ message: 'Invalid refresh token' });
+    }
+
+    const decoded = jwt.verify(
+        refreshToken,
+        process.env.REFRESH_TOKEN_SECRET
+    );
+    const { _id } = decoded;
+
+    if (!_id) {
+        return res.status(401).send("Unauthorized: Invalid refresh token");
+    }
+
+    const newAccessToken = await jwt.sign({ _id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+
+    res.json({ accessToken: newAccessToken });
+});
+
 
 module.exports = authRouter;

@@ -3,11 +3,12 @@ import { View, StyleSheet } from "react-native";
 import { useDispatch } from "react-redux";
 import type { AxiosError } from "axios";
 import { router } from 'expo-router';
-import { Button, TextInput, Text } from 'react-native-paper';
+import { Button, TextInput } from 'react-native-paper';
 
 import { showAlert } from "../../redux/slices/alertSlice";
 import { addUser } from "../../redux/slices/userSlice";
 import { signUpNewUser } from "../../services/authService";
+import { saveRefreshToken } from "@/src/utils/secureStorage";
 
 const Signup = () => {
       const dispatch = useDispatch();
@@ -25,7 +26,8 @@ const Signup = () => {
                 emailId,
                 password,
             });
-              dispatch(addUser(response));
+            await saveRefreshToken(response.refreshToken);
+            dispatch(addUser(response));
             router.replace('/feed');
         } catch (error) {
               const axiosError = error as AxiosError;
