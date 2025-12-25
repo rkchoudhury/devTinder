@@ -7,10 +7,11 @@ const User = require("../models/user");
 
 const authRouter = express.Router();
 
-authRouter.post("/signup", async (req, res) => {
+authRouter.post("/signup", detectClient, async (req, res) => {
     const saltRounds = 10;
     const userObj = req.body; // Reading the data from the request
     const { firstName, lastName, emailId, password } = userObj;
+    const clientType = req.clientType;
 
     /**
        * Sample Data Format:
@@ -42,16 +43,28 @@ authRouter.post("/signup", async (req, res) => {
         // 4. Now the data will be saved onto the database
         const data = await user.save();
 
-        // 5. Adding JWT token onto the cookie header
-        const token = await user.getJWT();
-        // Added a exipre time of 7 days - After the exipre time the token will automatically removed from the browser's cookie
-        res.cookie("token", token, { expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) }); // Adding value to the cookie header
+        if (clientType === 'web') {
+            // 5. Adding JWT token onto the cookie header
+            const token = await user.getJWT();
+            // Added a exipre time of 7 days - After the exipre time the token will automatically removed from the browser's cookie
+            res.cookie("token", token, { expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) }); // Adding value to the cookie header
 
-        // Clenup the response data by removing sensitive information
-        delete data._doc.password;
+            // Clenup the response data by removing sensitive information
+            delete data._doc.password;
 
-        // 6. Send the response back to the client
-        res.status(200).json({ message: "User created successfully!", data });
+            // 6. Send the response back to the client
+            res.status(200).json({ message: "User created successfully!", data });
+        } else if (clientType === 'mobile') {
+            // Generate Access Token and Refresh Token for Mobile Client
+            const { accessToken, refreshToken } = await user.getMobileToken(); 
+
+            // Clenup the response data by removing sensitive information
+            delete data._doc.password;  
+
+            res.status(200).json({ message: "User created successfully!", data, accessToken, refreshToken });
+        } else {
+            return res.status(400).json({ message: 'Unauthorized: Invalid client type' });
+        }
     } catch (error) {
         res.status(400).json({ message: "Error: " + error?.message });
     }
