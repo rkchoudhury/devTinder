@@ -1,7 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { IUser } from "../../models/userModel";
 
-const initialState: IUser | null = null;
+const initialState: {
+  data: IUser | null;
+  accessToken?: string | null;
+  refreshToken?: string | null;
+} = {
+  data: null,
+  accessToken: null,
+  refreshToken: null,
+};
 
 const userSlice = createSlice({
   name: "user",
@@ -14,8 +22,7 @@ const userSlice = createSlice({
       return initialState;
     },
     updateUser: (state, action) => {
-      if (!state) return state;
-      return { ...(state as IUser), ...action.payload };
+      return { ...state, data: { ...state.data, ...action.payload } };
     }
   },
 });

@@ -15,7 +15,7 @@ import { hideLoader, showLoader } from "../../redux/slices/loaderSlice";
 const Feed = () => {
   const dispatch = useDispatch();
   const { list } = useSelector((state: RootState) => state.feed);
-  const user = useSelector((state: RootState) => state.user);
+  const user = useSelector((state: RootState) => state.user.data);
   const { loading } = useSelector((state: RootState) => state.loader);
 
   useEffect(() => {

@@ -9,7 +9,7 @@ import { IUser } from '@/src/models/userModel';
 
 export default function TabLayout() {
     const router = useRouter();
-    const user = useSelector((state: RootState) => state.user) as IUser | null;
+    const user = useSelector((state: RootState) => state.user.data) as IUser | null;
     const uri = user?.photoUrl || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
 
     return (

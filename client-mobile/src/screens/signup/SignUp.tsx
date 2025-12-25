@@ -25,7 +25,7 @@ const Signup = () => {
                 emailId,
                 password,
             });
-              dispatch(addUser(response?.data));
+              dispatch(addUser(response));
             router.replace('/feed');
         } catch (error) {
               const axiosError = error as AxiosError;

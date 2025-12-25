@@ -17,7 +17,7 @@ const LogIn = () => {
   const onPressLogin = async () => {
     try {
       const response = await authenticateUser(emailId, password);
-      dispatch(addUser(response?.data));
+      dispatch(addUser(response));
       router.replace('/feed');
     } catch (error) {
       const axiosError = error as AxiosError;

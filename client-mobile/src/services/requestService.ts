@@ -1,17 +1,11 @@
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 
-import { BASE_URL } from "../utils/apiConfig";
+import api from "../utils/axiosInstance";
 
 // Used in Feed Page
 const sendRequest = async (status: string, userId: string) => {
   try {
-    const response = await axios.post(
-      `${BASE_URL}/request/send/${status}/${userId}`,
-      null,
-      {
-        withCredentials: true,
-      }
-    );
+    const response = await api.post(`/request/send/${status}/${userId}`, null);
     return response?.data;
   } catch (error) {
     const axiosError = error as AxiosError;
@@ -22,12 +16,9 @@ const sendRequest = async (status: string, userId: string) => {
 // Used in Connection Request Page
 const reviewRequest = async (status: string, requestId: string) => {
   try {
-    const response = await axios.post(
-      `${BASE_URL}/request/review/${status}/${requestId}`,
-      null,
-      {
-        withCredentials: true,
-      }
+    const response = await api.post(
+      `/request/review/${status}/${requestId}`,
+      null
     );
     return response?.data;
   } catch (error) {

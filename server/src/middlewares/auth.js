@@ -4,16 +4,28 @@ const User = require("../models/user");
 
 const userAuth = async (req, res, next) => {
     try {
-        // 1. Accessing value from the cookie
-        const cookies = req.cookies;
-        const { token } = cookies;
+        const clientType = req.clientType;
+        let token;
+        let secretKey;
+
+        if (clientType === 'web') { 
+             // 1. Accessing value from the cookie
+            const cookies = req.cookies;
+            token = cookies.token;
+            secretKey = process.env.JWT_TOKEN;
+        } else if (clientType === 'mobile') {
+            // 1. Accessing value from the Authorization header
+            const authHeader = req.headers['authorization'];
+            token = authHeader?.split(' ')[1]; // Bearer <token>
+            secretKey = process.env.ACCESS_TOKEN_SECRET;
+        }
 
         if (!token) {
             return res.status(401).send("Unauthorized Access. Please login again!");
         }
 
         // 2. Decoded the token to get the user id
-        const decodedMessage = jwt.verify(token, process.env.JWT_TOKEN);
+        const decodedMessage = jwt.verify(token, secretKey);
         const { _id } = decodedMessage;
 
         if (!_id) {

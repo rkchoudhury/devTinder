@@ -1,6 +1,8 @@
 import axios from "axios";
+
 import { BASE_URL } from "../utils/apiConfig";
-// import { getAccessToken, setAccessToken, logout } from "../store/authSlice";
+import { store } from "../redux/store";
+// import { getAccessToken, setAccessToken, logout } from "../redux/slices/userSlice";
 // import { getRefreshToken, saveRefreshToken, clearTokens } from "./tokenService";
 
 const api = axios.create({
@@ -12,15 +14,15 @@ const api = axios.create({
   },
 });
 
-// api.interceptors.request.use(config => {
-//   const accessToken = getAccessToken();
+api.interceptors.request.use(config => {
+  const accessToken = store.getState().user.accessToken;
 
-//   if (accessToken) {
-//     config.headers.Authorization = `Bearer ${accessToken}`;
-//   }
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
 
-//   return config;
-// });
+  return config;
+});
 
 // let isRefreshing = false;
 // let failedQueue: any[] = [];
