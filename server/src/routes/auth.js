@@ -52,6 +52,7 @@ authRouter.post("/signup", detectClient, async (req, res) => {
 
             // Clenup the response data by removing sensitive information
             delete data._doc.password;
+            delete data._doc.refreshToken;
 
             // 6. Send the response back to the client
             res.status(200).json({ message: "User created successfully!", data });
@@ -65,6 +66,7 @@ authRouter.post("/signup", detectClient, async (req, res) => {
 
             // Clenup the response data by removing sensitive information
             delete data._doc.password;
+            delete data._doc.refreshToken;
 
             res.status(200).json({ message: "User created successfully!", data, accessToken, refreshToken });
         } else {
@@ -107,6 +109,7 @@ authRouter.post("/login", detectClient, async (req, res) => {
 
                 // Clenup the response data by removing sensitive information
                 delete user._doc.password;
+                delete user._doc.refreshToken;
 
                 res.status(200).json({ message: "Login Successful!", data: user });
             } else if (clientType === 'mobile') {
@@ -119,6 +122,7 @@ authRouter.post("/login", detectClient, async (req, res) => {
 
                 // Clenup the response data by removing sensitive information
                 delete user._doc.password;
+                delete user._doc.refreshToken;
 
                 res.status(200).json({ message: "Login Successful!", data: user, accessToken, refreshToken });
             } else {
