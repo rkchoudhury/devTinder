@@ -12,9 +12,9 @@ const authenticateUser = async (emailId: string, password: string) => {
   }
 };
 
-const logoutUser = async () => {
+const logoutUser = async (userId: string) => {
   try {
-    const response = await api.post("/logout");
+    const response = await api.post("/logout", { userId });
     return response?.data;
   } catch (error) {
     const axiosError = error as AxiosError;

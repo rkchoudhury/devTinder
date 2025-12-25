@@ -137,12 +137,30 @@ authRouter.post("/login", detectClient, async (req, res) => {
     }
 });
 
-authRouter.post("/logout", async (req, res) => {
-    // Clearing the token from the cookie by updating the expies time
-    res.cookie("token", null, { expires: new Date(Date.now()) });
+authRouter.post("/logout", detectClient, async (req, res) => {
+    const clientType = req.clientType;
+
+    if (clientType === 'web') {
+        // Clearing the token from the cookie by updating the expies time
+        res.cookie("token", null, { expires: new Date(Date.now()) });
+    } else if (clientType === 'mobile') {
+        // Invalidate the refresh token in the database
+        const { userId } = req.body;
+        const user = await User.findById(userId);
+        if (user) {
+            user.refreshToken = null;
+            await user.save();
+        }
+    }
+
     res.status(200).send("You are logout Successful!");
 });
 
+/**
+ * Generate new access token using refresh token
+ * 
+ * Platform: Mobile
+ */
 authRouter.post("/auth/refresh", async (req, res) => {
     const { refreshToken } = req.body;
 

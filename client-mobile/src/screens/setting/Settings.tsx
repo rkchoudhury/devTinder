@@ -1,17 +1,19 @@
 import { View, StyleSheet, Alert } from 'react-native';
 import { List, Divider } from 'react-native-paper';
 import { useRouter } from 'expo-router';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { removeUser } from '@/src/redux/slices/userSlice';
 import { logoutUser } from '@/src/services/authService';
 import { showAlert } from '@/src/redux/slices/alertSlice';
 import { AlertType } from '@/src/enums/AlertEnum';
 import { clearRefreshToken } from '@/src/utils/secureStorage';
+import { RootState } from '@/src/redux/store';
 
 export default function Setting() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user.data);
 
   const handleLogout = () => {
     Alert.alert(
@@ -27,7 +29,7 @@ export default function Setting() {
           style: 'destructive',
           onPress: async () => {
             try {
-              await logoutUser();
+              await logoutUser(user?._id ?? '');
               await clearRefreshToken();
               dispatch(removeUser());
               router.replace('/');
