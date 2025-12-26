@@ -99,10 +99,6 @@ const userSchema = new Schema(
                 message: '{VALUE} is incorrect membership validity.'
             },
         },
-        refreshToken: {
-            type: String,
-            default: null,
-        },
     },
     {
         timestamps: true

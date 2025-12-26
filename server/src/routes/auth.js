@@ -3,8 +3,10 @@ const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 
 const { validateSignUpData, validateLoginData } = require("../utils/validation");
+const { hashToken } = require("../utils/hashhelper");
 const { detectClient } = require("../middlewares/client");
 const User = require("../models/user");
+const RefreshToken = require("../models/refreshToken");
 
 const authRouter = express.Router();
 
@@ -52,7 +54,6 @@ authRouter.post("/signup", detectClient, async (req, res) => {
 
             // Clenup the response data by removing sensitive information
             delete data._doc.password;
-            delete data._doc.refreshToken;
 
             // 6. Send the response back to the client
             res.status(200).json({ message: "User created successfully!", data });
@@ -61,12 +62,15 @@ authRouter.post("/signup", detectClient, async (req, res) => {
             const { accessToken, refreshToken } = await user.getMobileToken();
 
             // Save the refresh token in the database
-            user.refreshToken = refreshToken;
-            await user.save();
+            const saveRefreshToken = new RefreshToken({
+                userId: data._id,
+                tokenHash: hashToken(refreshToken),
+                expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Added a exipre time of 7 days
+            });
+            await saveRefreshToken.save();
 
             // Clenup the response data by removing sensitive information
             delete data._doc.password;
-            delete data._doc.refreshToken;
 
             res.status(200).json({ message: "User created successfully!", data, accessToken, refreshToken });
         } else {
@@ -109,7 +113,6 @@ authRouter.post("/login", detectClient, async (req, res) => {
 
                 // Clenup the response data by removing sensitive information
                 delete user._doc.password;
-                delete user._doc.refreshToken;
 
                 res.status(200).json({ message: "Login Successful!", data: user });
             } else if (clientType === 'mobile') {
@@ -117,12 +120,15 @@ authRouter.post("/login", detectClient, async (req, res) => {
                 const { accessToken, refreshToken } = await user.getMobileToken();
 
                 // Save the refresh token in the database
-                user.refreshToken = refreshToken;
-                await user.save();
+                const saveRefreshToken = new RefreshToken({
+                    userId: user._id,
+                    tokenHash: hashToken(refreshToken),
+                    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Added a exipre time of 7 days
+                });
+                await saveRefreshToken.save();
 
                 // Clenup the response data by removing sensitive information
                 delete user._doc.password;
-                delete user._doc.refreshToken;
 
                 res.status(200).json({ message: "Login Successful!", data: user, accessToken, refreshToken });
             } else {
@@ -146,11 +152,7 @@ authRouter.post("/logout", detectClient, async (req, res) => {
     } else if (clientType === 'mobile') {
         // Invalidate the refresh token in the database
         const { userId } = req.body;
-        const user = await User.findById(userId);
-        if (user) {
-            user.refreshToken = null;
-            await user.save();
-        }
+        await RefreshToken.deleteOne({ userId });
     }
 
     res.status(200).send("You are logout Successful!");
@@ -165,39 +167,27 @@ authRouter.post("/auth/refresh", async (req, res) => {
     const { refreshToken } = req.body;
 
     if (!refreshToken) {
-        return res.status(401).json({ message: 'No refresh token' });
+        return res.status(403).json({ message: 'No refresh token' });
     }
 
-    const { _id: userId, refreshToken: storedToken } = await User.findOne({ refreshToken }).select('_id refreshToken');
+    const tokenHash = hashToken(refreshToken);
+    const storedToken = await RefreshToken.findOne({ tokenHash });
+
     if (!storedToken) {
         return res.status(403).json({ message: 'Invalid refresh token' });
     }
 
-    try {
-        const decoded = jwt.verify(
-            refreshToken,
-            process.env.REFRESH_TOKEN_SECRET
-        );
-        const { _id } = decoded;
-
-        if (!_id) {
-            return res.status(401).send("Unauthorized: Invalid refresh token");
-        }
-
-    const newAccessToken = await jwt.sign({ _id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
-
-        res.json({ accessToken: newAccessToken });
-    } catch (error) {
-        const user = await User.findById(userId);
-        if (user) {
-            user.refreshToken = null;
-            await user.save();
-        }
-        res.status(403).json({
+    // In case refresh token is expired
+    if (storedToken.expiresAt < new Date()) {
+        await RefreshToken.deleteOne({ tokenHash });
+        return res.status(403).json({
             code: "REFRESH_TOKEN_EXPIRED",
-            message: "Session expired. Please login again."
+            message: "Session expired. Please login again.",
         });
     }
+
+    const newAccessToken = jwt.sign({ _id: storedToken.userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
+    res.json({ accessToken: newAccessToken });
 });
 
 

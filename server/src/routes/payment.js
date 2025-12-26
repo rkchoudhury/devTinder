@@ -109,7 +109,6 @@ paymentRouter.post("/payment/verification", detectClient, userAuth, async (req, 
         // Removed sensitive data before sending the response
         const response = user.toJSON();
         delete response.password;
-        delete response.refreshToken;
 
         res.status(200).json({ user: response, status: "success" });
     } catch (error) {

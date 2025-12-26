@@ -15,7 +15,6 @@ profileRouter.get("/profile/view", detectClient, userAuth, async (req, res) => {
 
         // Clenup the response data by removing sensitive information
         delete user.password;
-        delete user.refreshToken;
 
         // Sending custom data as a json from the server
         res.status(200).json({ data: user, status: "success" });
@@ -42,7 +41,6 @@ profileRouter.put("/profile/edit", detectClient, userAuth, async (req, res) => {
 
         // Clenup the response data by removing sensitive information
         delete loggedInUser._doc.password;
-        delete loggedInUser._doc.refreshToken;
 
         // 4. Send success message back to the client
         res.json({
