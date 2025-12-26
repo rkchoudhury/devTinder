@@ -1,13 +1,14 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { router } from "expo-router";
 
 import { BASE_URL } from "../utils/apiConfig";
 import { store } from "../redux/store";
-import { updateAccessToken } from "../redux/slices/userSlice";
-import { getRefreshToken, saveRefreshToken, clearRefreshToken } from "./secureStorage";
+import { removeUser, updateAccessToken } from "../redux/slices/userSlice";
+import { getRefreshToken, clearRefreshToken } from "./secureStorage";
+import { logoutUser } from "../services/authService";
 
 const api = axios.create({
   baseURL: BASE_URL,
-  timeout: 10000,
   withCredentials: false, // web support
   headers: {
     "X-Client-Type": "mobile",
@@ -71,9 +72,18 @@ api.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
         return api(originalRequest);
       } catch (err) {
+        const axiosError = err as AxiosError;
         processQueue(err, null);
-        // await clearTokens();
-        // logout();
+
+        // Handling refresh token expiry
+        if (axiosError.response?.data?.code === "REFRESH_TOKEN_EXPIRED") {
+          const userId = store.getState().user.data?._id;
+          await clearRefreshToken();
+          await logoutUser(userId ?? '');
+          store.dispatch(removeUser());
+          router.replace('/');
+        }
+
         return Promise.reject(err);
       } finally {
         isRefreshing = false;

@@ -168,24 +168,36 @@ authRouter.post("/auth/refresh", async (req, res) => {
         return res.status(401).json({ message: 'No refresh token' });
     }
 
-    const storedToken = await User.findOne({ refreshToken }).populate('refreshToken');
+    const { _id: userId, refreshToken: storedToken } = await User.findOne({ refreshToken }).select('_id refreshToken');
     if (!storedToken) {
         return res.status(403).json({ message: 'Invalid refresh token' });
     }
 
-    const decoded = jwt.verify(
-        refreshToken,
-        process.env.REFRESH_TOKEN_SECRET
-    );
-    const { _id } = decoded;
+    try {
+        const decoded = jwt.verify(
+            refreshToken,
+            process.env.REFRESH_TOKEN_SECRET
+        );
+        const { _id } = decoded;
 
-    if (!_id) {
-        return res.status(401).send("Unauthorized: Invalid refresh token");
-    }
+        if (!_id) {
+            return res.status(401).send("Unauthorized: Invalid refresh token");
+        }
 
     const newAccessToken = await jwt.sign({ _id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
 
-    res.json({ accessToken: newAccessToken });
+        res.json({ accessToken: newAccessToken });
+    } catch (error) {
+        const user = await User.findById(userId);
+        if (user) {
+            user.refreshToken = null;
+            await user.save();
+        }
+        res.status(403).json({
+            code: "REFRESH_TOKEN_EXPIRED",
+            message: "Session expired. Please login again."
+        });
+    }
 });
 
 
