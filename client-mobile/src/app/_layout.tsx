@@ -1,12 +1,30 @@
-import { Stack } from "expo-router";
+import { useEffect } from "react";
+import { SplashScreen, Stack } from "expo-router";
 import { Provider } from "react-redux";
 import { PaperProvider } from 'react-native-paper';
 
 import { store } from "../redux/store";
 import { Loader } from "../components/Loader";
 import { ToastAlert } from "../components/ToastAlert";
+import { bootstrapAuth } from "../helpers/authHelper";
+
+// Prevent the splash screen from auto-hiding
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  useEffect(() => {
+    const initAuth = async () => {
+      await bootstrapAuth();
+      
+      // Hide splash screen once auth is initialized
+      if (store.getState().user.authInitialized) {
+        await SplashScreen.hideAsync();
+      }
+    };
+    
+    initAuth();
+  }, []);
+
   return (
     <Provider store={store}>
       <PaperProvider>

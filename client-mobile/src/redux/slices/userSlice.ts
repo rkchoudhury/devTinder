@@ -4,9 +4,11 @@ import type { IUser } from "../../models/userModel";
 const initialState: {
   data: IUser | null;
   accessToken?: string | null;
+  authInitialized: boolean;
 } = {
   data: null,
   accessToken: null,
+  authInitialized: false,
 };
 
 const userSlice = createSlice({
@@ -25,11 +27,26 @@ const userSlice = createSlice({
     updateAccessToken: (state, action) => {
       state.accessToken = action.payload;
     },
+    updateAuthInitialized: (state, action) => {
+      state.authInitialized = action.payload;
+    },
   },
 });
 
-const { addUser, removeUser, updateUser, updateAccessToken } = userSlice.actions;
+const {
+  addUser,
+  removeUser,
+  updateUser,
+  updateAccessToken,
+  updateAuthInitialized,
+} = userSlice.actions;
 
-export { addUser, removeUser, updateUser, updateAccessToken };
+export {
+  addUser,
+  removeUser,
+  updateUser,
+  updateAccessToken,
+  updateAuthInitialized,
+};
 
 export default userSlice.reducer;
