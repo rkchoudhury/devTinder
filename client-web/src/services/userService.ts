@@ -1,15 +1,10 @@
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 
-import { BASE_URL } from "../utils/apiConfig";
+import api from "../utils/axiosInstance";
 
 const getFeed = async (page: number = 1, limit: number = 10) => {
   try {
-    const response = await axios.get(
-      `${BASE_URL}/user/feed?page=${page}&limit=${limit}`,
-      {
-        withCredentials: true,
-      }
-    );
+    const response = await api.get(`/user/feed?page=${page}&limit=${limit}`);
     return response?.data;
   } catch (error) {
     const axiosError = error as AxiosError;
@@ -19,9 +14,7 @@ const getFeed = async (page: number = 1, limit: number = 10) => {
 
 const getConnectionRequests = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/user/requests/received`, {
-      withCredentials: true,
-    });
+    const response = await api.get("/user/requests/received");
     return response?.data;
   } catch (error) {
     const axiosError = error as AxiosError;
@@ -31,9 +24,7 @@ const getConnectionRequests = async () => {
 
 const getUserConnections = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/user/connections`, {
-      withCredentials: true,
-    });
+    const response = await api.get("/user/connections");
     return response?.data;
   } catch (error) {
     const axiosError = error as AxiosError;

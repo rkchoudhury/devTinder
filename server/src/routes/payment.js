@@ -4,6 +4,7 @@ const {
     validateWebhookSignature,
 } = require("razorpay/dist/utils/razorpay-utils");
 const { userAuth } = require("../middlewares/auth");
+const { detectClient } = require("../middlewares/client");
 
 const paymentRouter = express.Router();
 const razorpayInstnace = require("../utils/paymentUtils/razorpay");
@@ -16,7 +17,7 @@ const User = require("../models/user");
  * 1. Create the Order on RozarPay
  * 2. Sends back the orderId
  */
-paymentRouter.post("/payment/create", userAuth, async (req, res) => {
+paymentRouter.post("/payment/create", detectClient, userAuth, async (req, res) => {
     try {
         const user = req.user;
         const { membershipType } = req.body;
@@ -65,7 +66,7 @@ paymentRouter.post("/payment/create", userAuth, async (req, res) => {
  * 3. Update the payment status on DB
  * 4. Update the user data on DB
  */
-paymentRouter.post("/payment/verification", userAuth, async (req, res) => {
+paymentRouter.post("/payment/verification", detectClient, userAuth, async (req, res) => {
     try {
         const { razorpayPaymentId, razorpayOrderId, razorpaySignature } = req.body;
 
@@ -118,7 +119,7 @@ paymentRouter.post("/payment/verification", userAuth, async (req, res) => {
 /**
  * Update the payment status and user data on payment failure
  */
-paymentRouter.post('/payment/failure', userAuth, async (req, res) => {
+paymentRouter.post('/payment/failure', detectClient, userAuth, async (req, res) => {
     const { razorpayPaymentId, razorpayOrderId } = req.body;
 
     if (!razorpayPaymentId || !razorpayOrderId) {

@@ -2,13 +2,14 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 
 const { userAuth } = require("../middlewares/auth");
+const { detectClient } = require("../middlewares/client");
 const { validateForgotPasswordData, validateEditProfileData } = require("../utils/validation");
 
 const User = require("../models/user");
 
 const profileRouter = express.Router();
 
-profileRouter.get("/profile/view", userAuth, async (req, res) => {
+profileRouter.get("/profile/view", detectClient, userAuth, async (req, res) => {
     try {
         const user = req.user.toJSON();
 
@@ -23,7 +24,7 @@ profileRouter.get("/profile/view", userAuth, async (req, res) => {
 });
 
 // patch is giving cors error on web -> So changed `profileRouter.patch` to `profileRouter.put`
-profileRouter.put("/profile/edit", userAuth, async (req, res) => {
+profileRouter.put("/profile/edit", detectClient, userAuth, async (req, res) => {
     try {
         const data = req.body;
 

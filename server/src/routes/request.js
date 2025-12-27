@@ -1,6 +1,7 @@
 const express = require("express");
 
 const { userAuth } = require("../middlewares/auth");
+const { detectClient } = require("../middlewares/client");
 const ConnectionRequest = require("../models/connectionRequest");
 const User = require("../models/user");
 
@@ -8,7 +9,7 @@ const sendEmail = require("../utils/emailUtils/sendEmail");
 
 const requestRouter = express.Router();
 
-requestRouter.post("/request/send/:status/:userId", userAuth, async (req, res) => {
+requestRouter.post("/request/send/:status/:userId", detectClient, userAuth, async (req, res) => {
     try {
         const { status, userId: toUserId } = req.params;
         const fromUserId = req.user._id;
@@ -83,7 +84,7 @@ requestRouter.post("/request/send/:status/:userId", userAuth, async (req, res) =
  *      3. LoggedIn user's id should match the toUserId
  *      4. connection request should be interested
  */
-requestRouter.post("/request/review/:status/:requestId", userAuth, async (req, res) => {
+requestRouter.post("/request/review/:status/:requestId", detectClient, userAuth, async (req, res) => {
     try {
         const { status, requestId } = req.params;
         const loggedInUser = req.user;

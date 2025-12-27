@@ -1,5 +1,6 @@
 const express = require("express");
 const { userAuth } = require("../middlewares/auth");
+const { detectClient } = require("../middlewares/client");
 const ConnectionRequest = require("../models/connectionRequest");
 const User = require("../models/user");
 
@@ -10,7 +11,7 @@ const USER_SAFE_FIELDS = ["firstName", "lastName", "age", "gender", "photoUrl", 
 /**
  * Get all the pending connection request for the loggedIn user
  */
-userRouter.get("/user/requests/received", userAuth, async (req, res) => {
+userRouter.get("/user/requests/received", detectClient, userAuth, async (req, res) => {
     try {
         const loggedInUserId = req.user._id;
         const connectionRequests = await ConnectionRequest.find({
@@ -33,7 +34,7 @@ userRouter.get("/user/requests/received", userAuth, async (req, res) => {
 /**
  * Get all the connections that are connected to me or are accepted my request
  */
-userRouter.get("/user/connections", userAuth, async (req, res) => {
+userRouter.get("/user/connections", detectClient, userAuth, async (req, res) => {
     try {
         const loggedInUserId = req.user._id;
 
@@ -77,7 +78,7 @@ userRouter.get("/user/connections", userAuth, async (req, res) => {
  * ie. We have to hide all the users that you have ignored/iterested/accepted/rejected the connection request
  * ie. To the users to which a record available in the connectionRequest table
  */
-userRouter.get("/user/feed", userAuth, async (req, res) => {
+userRouter.get("/user/feed", detectClient, userAuth, async (req, res) => {
     try {
         const loggedInUserId = req.user._id;
         const page = parseInt(req.query.page) || 1;
