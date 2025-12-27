@@ -9,15 +9,14 @@ import { Divider } from "react-native-paper";
 import { EditProfileCard } from "../../components/EditProfileCard";
 import { UserCard } from "../../components/UserCard";
 import type { RootState } from "../../redux/store";
-import type { IUser } from "../../models/userModel";
 import { updateUserProfile } from "../../services/profileService";
 import { showAlert } from "../../redux/slices/alertSlice";
 import { AlertType } from "../../enums/AlertEnum";
-import { addUser } from "../../redux/slices/userSlice";
+import { updateUser } from "../../redux/slices/userSlice";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.user) as IUser | null;
+  const user = useSelector((state: RootState) => state.user.data);
 
   const params = useLocalSearchParams<{ enableEdit?: string }>();
   const enableEdit = params?.enableEdit ? params?.enableEdit === "true" : true;
@@ -45,7 +44,7 @@ const Profile = () => {
         age: Number(age),
         skills,
       });
-      dispatch(addUser(response?.data));
+      dispatch(updateUser(response?.data));
       dispatch(
         showAlert({
           showAlert: true,

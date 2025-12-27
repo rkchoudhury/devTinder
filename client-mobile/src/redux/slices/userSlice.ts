@@ -1,7 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { IUser } from "../../models/userModel";
 
-const initialState: IUser | null = null;
+const initialState: {
+  data: IUser | null;
+  accessToken?: string | null;
+} = {
+  data: null,
+  accessToken: null,
+};
 
 const userSlice = createSlice({
   name: "user",
@@ -14,14 +20,16 @@ const userSlice = createSlice({
       return initialState;
     },
     updateUser: (state, action) => {
-      if (!state) return state;
-      return { ...(state as IUser), ...action.payload };
-    }
+      return { ...state, data: { ...state.data, ...action.payload } };
+    },
+    updateAccessToken: (state, action) => {
+      state.accessToken = action.payload;
+    },
   },
 });
 
-const { addUser, removeUser, updateUser } = userSlice.actions;
+const { addUser, removeUser, updateUser, updateAccessToken } = userSlice.actions;
 
-export { addUser, removeUser, updateUser };
+export { addUser, removeUser, updateUser, updateAccessToken };
 
 export default userSlice.reducer;

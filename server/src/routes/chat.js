@@ -2,10 +2,11 @@ const express = require("express");
 
 const Chat = require("../models/chat");
 const { userAuth } = require("../middlewares/auth");
+const { detectClient } = require("../middlewares/client");
 
 const chatRouter = express.Router();
 
-chatRouter.get("/chat/:toUserId", userAuth, async (req, res) => {
+chatRouter.get("/chat/:toUserId", detectClient, userAuth, async (req, res) => {
     try {
         const { toUserId } = req.params;
         const user = req.user;

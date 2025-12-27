@@ -1,13 +1,10 @@
-import axios, { AxiosError } from "axios";
-
-import { BASE_URL } from "../utils/apiConfig";
+import { AxiosError } from "axios";
+import api from "../utils/axiosInstance";
 
 const authenticateUser = async (emailId: string, password: string) => {
   try {
     const data = { emailId, password };
-    const response = await axios.post(`${BASE_URL}/login`, data, {
-      withCredentials: true,
-    });
+    const response = await api.post("/login", data);
     return response?.data;
   } catch (error) {
     const axiosError = error as AxiosError;
@@ -15,11 +12,9 @@ const authenticateUser = async (emailId: string, password: string) => {
   }
 };
 
-const logoutUser = async () => {
+const logoutUser = async (userId: string) => {
   try {
-    const response = await axios.post(`${BASE_URL}/logout`, null, {
-      withCredentials: true,
-    });
+    const response = await api.post("/logout", { userId });
     return response?.data;
   } catch (error) {
     const axiosError = error as AxiosError;
@@ -34,9 +29,7 @@ const signUpNewUser = async (data: {
   password: string;
 }) => {
   try {
-    const response = await axios.post(`${BASE_URL}/signup`, data, {
-      withCredentials: true,
-    });
+    const response = await api.post("/signup", data);
     return response?.data;
   } catch (error) {
     const axiosError = error as AxiosError;

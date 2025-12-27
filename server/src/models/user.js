@@ -98,7 +98,7 @@ const userSchema = new Schema(
                 values: ["3 Months", "7 Months"],
                 message: '{VALUE} is incorrect membership validity.'
             },
-        }
+        },
     },
     {
         timestamps: true
@@ -116,6 +116,13 @@ userSchema.methods.validatePassword = async function (passwordEnteredByUser) {
     const passwordHash = user?.password;
     const isPasswordValid = await bcrypt.compare(passwordEnteredByUser, passwordHash);
     return isPasswordValid;
+}
+
+userSchema.methods.getMobileToken = async function () {
+    const user = this;
+    const accessToken = await jwt.sign({ _id: user._id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+    const refreshToken = await jwt.sign({ _id: user._id }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+    return { accessToken, refreshToken };
 }
 
 const User = model("User", userSchema);

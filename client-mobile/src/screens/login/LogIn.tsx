@@ -8,6 +8,7 @@ import type { AxiosError } from "axios";
 import { authenticateUser } from "../../services/authService";
 import { addUser } from "../../redux/slices/userSlice";
 import { showAlert } from "../../redux/slices/alertSlice";
+import { saveRefreshToken } from "@/src/utils/secureStorage";
 
 const LogIn = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,8 @@ const LogIn = () => {
   const onPressLogin = async () => {
     try {
       const response = await authenticateUser(emailId, password);
-      dispatch(addUser(response?.data));
+      await saveRefreshToken(response.refreshToken);
+      dispatch(addUser(response));
       router.replace('/feed');
     } catch (error) {
       const axiosError = error as AxiosError;
