@@ -32,9 +32,7 @@ const corsOptions = {
     // Whitelisting the domain so that the cookies can be set
     origin: [
         'http://localhost:5173', // For client-web - Vite dev server
-        'http://localhost:8081', // For client-mobile - React Native dev server
-        'http://192.168.43.170:8081',
-        'exp://192.168.43.170:8081',
+        'http://localhost:8081', // For client-mobile - React Native dev server for Web
     ],
     credentials: true,
 }
