@@ -11,13 +11,14 @@ const api = axios.create({
   baseURL: BASE_URL,
   withCredentials: false, // web support
   headers: {
-    "X-Client-Type": "mobile",
+    "X-Client-Type": "mobile", // distinct between the mobile and web API call for the backend services.
   },
 });
 
 api.interceptors.request.use(config => {
   const accessToken = store.getState().user.accessToken;
 
+  // Appending Access Token to every request
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
@@ -35,6 +36,10 @@ const processQueue = (error: any, token: string | null = null) => {
   failedQueue = [];
 };
 
+/**
+ * 1. Handled Acess Token Expires. And re-generate the access token if expired.
+ * 2. Handle Refresh Token Expires by logging out the user.
+ */
 api.interceptors.response.use(
   response => response,
   async error => {
@@ -65,7 +70,6 @@ api.interceptors.response.use(
         });
 
         store.dispatch(updateAccessToken(data.accessToken));
-        // await saveRefreshToken(data.refreshToken);
 
         processQueue(null, data.accessToken);
 

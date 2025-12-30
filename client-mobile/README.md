@@ -40,7 +40,7 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 ## For Local Development
 
-1. Open **apiConfig.ts** file.
+1. Open **apiConfig.ts** file. [src/utils/apiConfig.ts]
 
 2. Change the IP Address of base url with Machine's IP Address
 
@@ -108,3 +108,4 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 1. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 2. For development build [follow the steps](https://docs.expo.dev/develop/development-builds/introduction/).
+3. Used `X-Client-Type` header to distinct between the mobile and web API call for the backend services.
