@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Allow cleartext traffic only for specific domains -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">51.21.171.84</domain>
+        <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">10.245.225.57</domain>
+    </domain-config>
+
+    <!-- Default security configuration for all other domains -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>
