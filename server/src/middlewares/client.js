@@ -6,6 +6,7 @@ const detectClient = (req, res, next) => {
         return res.status(400).json({ message: 'Invalid client type' });
     }
 
+    // Include client type in the request object for further use
     req.clientType = clientType;
     
     next();

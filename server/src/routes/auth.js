@@ -162,6 +162,10 @@ authRouter.post("/logout", detectClient, async (req, res) => {
  * Generate new access token using refresh token
  * 
  * Platform: Mobile
+ * 
+ * Note:
+ *  - Send error code as 403 for easily distrinct for refresh token expires
+ *  - Don't send error code as 401 as the frontend re-triggers the /auth/refresh based on 401
  */
 authRouter.post("/auth/refresh", async (req, res) => {
     const { refreshToken } = req.body;

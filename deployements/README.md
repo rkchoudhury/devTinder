@@ -267,7 +267,9 @@ location / {
 - Go to the web project & build the project
 
   - cd client-web
+  - npm install
   - npm run build
+  - npx vite build [Incase if npm run build fails due to typescript error then use this command]
 
 - Copy code from dist(build files) to the nginx's http server (/var/www/html/)
 
