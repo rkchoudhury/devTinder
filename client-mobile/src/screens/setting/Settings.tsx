@@ -131,8 +131,8 @@ export default function Setting() {
         /> */}
         <Divider />
         <List.Item
-          title="Notifications"
-          description="Manage your notification settings"
+          title="Push Notifications"
+          description="Receive updates and matches notifications"
           left={(props) => <List.Icon {...props} icon="bell" />}
           right={() => <Switch value={notificationsEnabled} onValueChange={handleToggleNotifications} />}
         />
