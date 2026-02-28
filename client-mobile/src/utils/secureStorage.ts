@@ -13,5 +13,21 @@ async function clearRefreshToken() {
     await SecureStore.deleteItemAsync('refreshToken');
 }
 
+async function saveNotificationsEnabled(value: boolean) {
+    await SecureStore.setItemAsync('notificationsEnabled', value ? 'true' : 'false');
+}
 
-export { saveRefreshToken, getRefreshToken, clearRefreshToken };
+async function getNotificationsEnabled() {
+    const result = await SecureStore.getItemAsync('notificationsEnabled');
+    if (result == null) return null;
+    return result === 'true';
+}
+
+
+export {
+    saveRefreshToken,
+    getRefreshToken,
+    clearRefreshToken,
+    saveNotificationsEnabled,
+    getNotificationsEnabled,
+};

@@ -23,6 +23,7 @@ const requestRouter = require("./routes/request");
 const userRouter = require("./routes/user");
 const paymentRouter = require("./routes/payment");
 const chatRouter = require("./routes/chat");
+const notificationRouter = require("./routes/notification");
 
 const { initializeSocket } = require("./utils/socketUtils/initializeSocket");
 
@@ -51,6 +52,7 @@ app.use("/", requestRouter);
 app.use("/", userRouter);
 app.use("/", paymentRouter);
 app.use("/", chatRouter);
+app.use("/", notificationRouter);
 
 
 // Default route handler
