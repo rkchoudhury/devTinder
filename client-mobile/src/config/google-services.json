@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "862822725207",
+    "project_id": "dev-tinder-e572d",
+    "storage_bucket": "dev-tinder-e572d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:862822725207:android:1afee45c565100d4231512",
+        "android_client_info": {
+          "package_name": "com.app.devtinder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7LOlrdoM6uKwKwyYZWlTuMEXIQjFZVVs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

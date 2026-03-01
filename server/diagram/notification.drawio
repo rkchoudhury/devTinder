@@ -1,0 +1,82 @@
+<mxfile host="65bd71144e">
+    <diagram id="notif-updated" name="Notification Flow Updated">
+        <mxGraphModel dx="1176" dy="820" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="client" value="Mobile&lt;div&gt;(obtain push token)&lt;/div&gt;" style="verticalLabelPosition=bottom;verticalAlign=top;html=1;shadow=0;dashed=0;strokeWidth=1;shape=mxgraph.android.phone2;strokeColor=#c0c0c0;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="60" width="120" height="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="backend" value="Backend&lt;div&gt;Node.js Server&lt;/div&gt;" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="300" y="120" width="180" height="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="regLabel" value="POST /devices (auth) → save token" style="text;html=1;align=center;verticalAlign=middle;resizable=0;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="300" y="70" width="220" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="queue" value="Jobs Queue&lt;div&gt;(Redis + Bull)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="300" y="260" width="200" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="worker" value="Worker Pool&lt;div&gt;(retries, batching, rate-limit)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1f7e7;strokeColor=#6dbb7a;" parent="1" vertex="1">
+                    <mxGeometry x="540" y="260" width="200" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="providers" value="FCM / APNs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8d7da;strokeColor=#d39ea0;" parent="1" vertex="1">
+                    <mxGeometry x="540" y="380" width="200" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="db" value="Database&lt;div&gt;(devices: deviceId, userId, token, platform, topics, lastSeen, disabled, failureCount)&lt;/div&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" parent="1" vertex="1">
+                    <mxGeometry x="300" y="380" width="200" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="secrets" value="Secrets Manager&lt;div&gt;(service-account / APNs key)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f0f0;strokeColor=#999999;" parent="1" vertex="1">
+                    <mxGeometry x="780" y="60" width="200" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="metrics" value="Metrics / Logs&lt;div&gt;(queue length, delivery rate)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8e8ff;strokeColor=#8a8ae6;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="380" width="200" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="payload" value="Payload:&lt;div&gt;- notification(title, body)&lt;/div&gt;&lt;div&gt;- data(screen, params)&lt;/div&gt;" style="text;html=1;align=left;verticalAlign=top;resizable=0;strokeColor=#d6b656;fillColor=#fff2cc;" parent="1" vertex="1">
+                    <mxGeometry x="540" y="180" width="260" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_client_backend" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=blockThin;html=1;" parent="1" source="client" target="backend" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_backend_db" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=blockThin;html=1;" parent="1" source="backend" target="db" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_backend_queue" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;endArrow=blockThin;html=1;" parent="1" source="backend" target="queue" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_queue_worker" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=blockThin;html=1;" parent="1" source="queue" target="worker" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_worker_providers" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=blockThin;html=1;" parent="1" source="worker" target="providers" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_providers_feedback" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;endArrow=blockThin;html=1;" parent="1" source="providers" target="worker" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_worker_db_update" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=blockThin;html=1;" parent="1" source="worker" target="db" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_worker_metrics" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=blockThin;html=1;" parent="1" source="worker" target="metrics" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_backend_secrets" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;endArrow=blockThin;html=1;" parent="1" source="backend" target="secrets" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e_worker_secrets" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;endArrow=blockThin;html=1;" parent="1" source="worker" target="secrets" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="note_retry" value="Worker: exponential backoff, maxRetries → mark device disabled after N permanent failures" style="text;html=1;align=left;verticalAlign=top;resizable=0;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="540" y="350" width="300" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="note_cleanup" value="Cleanup policy: On NotRegistered → mark disabled / periodic sweep to remove stale tokens" style="text;html=1;align=left;verticalAlign=top;resizable=0;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="300" y="500" width="300" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="note_payload" value="Payload: use `notification` for display, `data` for routing (screen, params)" style="text;html=1;align=left;verticalAlign=top;resizable=0;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+                    <mxGeometry x="540" y="150" width="300" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="note_updated" value="Diagram updated: layout tweak — 2026-02-14" style="text;html=1;align=right;verticalAlign=bottom;resizable=0;strokeColor=none;fillColor=none;fontSize=10;fontColor=#666666;" parent="1" vertex="1">
+                    <mxGeometry x="760" y="780" width="320" height="18" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
