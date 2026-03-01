@@ -11,6 +11,8 @@ import { bootstrapAuth } from "../helpers/authHelper";
 import messaging from '@react-native-firebase/messaging';
 import { Alert, PermissionsAndroid, Platform } from "react-native";
 
+import '../helpers/notification/notifeeHelper/notifeeEvents'; // Import to register notification handlers
+
 // Prevent the splash screen from auto-hiding
 SplashScreen.preventAutoHideAsync();
 
