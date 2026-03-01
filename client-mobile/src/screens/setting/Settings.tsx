@@ -1,6 +1,6 @@
 import { useCallback, useState, use, useEffect } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { List, Divider, Switch } from 'react-native-paper';
+import { List, Divider, Switch, Text } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import { useDispatch, useSelector } from 'react-redux';
 import messaging from '@react-native-firebase/messaging';
@@ -15,18 +15,24 @@ import {
   saveNotificationsEnabled,
 } from '@/src/utils/secureStorage';
 import { RootState } from '@/src/redux/store';
+import { NotificationPermissionStatus } from '@/src/helpers/notification/permissionHelper/enums';
+import { checkNotificationPermission } from '@/src/helpers/notification/permissionHelper/permission';
 
 export default function Setting() {
   const router = useRouter();
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user.data);
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [notificationStatus, setNotificationStatus] = useState(NotificationPermissionStatus.Unavailable);
 
   useEffect(() => {
     (async () => {
       try {
         const saved = await getNotificationsEnabled();
         if (saved !== null) setNotificationsEnabled(saved);
+
+        const status = await checkNotificationPermission();
+        setNotificationStatus(status);
       } catch {
         // If secure storage is unavailable, keep default.
       }
@@ -129,6 +135,13 @@ export default function Setting() {
           onPress={() => router.push('/(screens)/premium')}
           disabled={true}
         /> */}
+        <Divider />
+        <List.Item
+          title="Notifications"
+          description="To receive the notification, enable the permission from settings"
+          left={(props) => <List.Icon {...props} icon="bell" />}
+          right={() => <Text variant="bodyMedium">{notificationStatus}</Text>}
+        />
         <Divider />
         <List.Item
           title="Push Notifications"

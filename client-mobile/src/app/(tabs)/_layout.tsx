@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { Tabs, useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -6,11 +7,16 @@ import { useSelector } from 'react-redux';
 
 import { RootState } from '@/src/redux/store';
 import { IUser } from '@/src/models/userModel';
+import { requestNotificationPermission } from '@/src/helpers/notification/permissionHelper/permission';
 
 export default function TabLayout() {
     const router = useRouter();
     const user = useSelector((state: RootState) => state.user.data) as IUser | null;
     const uri = user?.photoUrl || 'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
+
+    useEffect(() => {
+        requestNotificationPermission();
+    }, []);
 
     return (
         <Tabs
