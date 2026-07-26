@@ -1,4 +1,4 @@
-package com.example.devtinder.presentation.components
+package com.example.devtinder.ui.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer

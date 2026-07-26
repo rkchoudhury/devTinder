@@ -1,7 +1,6 @@
-package com.example.devtinder.presentation.screens.signin
+package com.example.devtinder.presentation.login
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,10 +24,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.devtinder.R
-import com.example.devtinder.presentation.components.TextInput
+import com.example.devtinder.ui.components.TextInput
 
 @Composable
-fun SignInScreen() {
+fun LoginScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -66,9 +65,13 @@ fun SignInScreen() {
                 .fillMaxWidth()
         ) {
             TextInput(label = "Email Id", keyboardType = KeyboardType.Email)
-            TextInput(label = "Password", isPasswordInput = true, keyboardType = KeyboardType.Password)
+            TextInput(
+                label = "Password",
+                isPasswordInput = true,
+                keyboardType = KeyboardType.Password
+            )
             Button(onClick = {}) {
-                Text(text = "Sign In")
+                Text(text = "Log In")
             }
         }
         Column(
@@ -86,6 +89,6 @@ fun SignInScreen() {
 
 @Composable
 @Preview(showSystemUi = true)
-fun SignInScreenPreview() {
-    SignInScreen()
+fun LoginScreenPreview() {
+    LoginScreen()
 }
