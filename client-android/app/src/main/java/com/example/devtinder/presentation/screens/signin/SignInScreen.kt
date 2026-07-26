@@ -1,6 +1,7 @@
 package com.example.devtinder.presentation.screens.signin
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,10 +20,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.devtinder.R
+import com.example.devtinder.presentation.components.TextInput
 
 @Composable
 fun SignInScreen() {
@@ -63,10 +65,8 @@ fun SignInScreen() {
                 .weight(2f)
                 .fillMaxWidth()
         ) {
-            TextField(value = "Enter Email Id", onValueChange = {})
-            Spacer(modifier = Modifier.height(10.dp))
-            TextField(value = "Enter Password", onValueChange = {})
-            Spacer(modifier = Modifier.height(20.dp))
+            TextInput(label = "Email Id", keyboardType = KeyboardType.Email)
+            TextInput(label = "Password", isPasswordInput = true, keyboardType = KeyboardType.Password)
             Button(onClick = {}) {
                 Text(text = "Sign In")
             }
