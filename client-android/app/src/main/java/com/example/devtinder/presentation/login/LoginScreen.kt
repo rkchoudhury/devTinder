@@ -15,7 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,14 +39,20 @@ import com.example.devtinder.ui.navigation.Route
 
 @Composable
 fun LoginScreen(navController: NavController) {
-    var login by remember { mutableStateOf(false) }
+    var emailId by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
+    var login by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(login) {
         if (login) {
             try {
-                val data = LoginData("priti@gmail.com", "Priti@123")
+                val data = LoginData(emailId, password)
                 val response = devTinderService.authenticateUser(data)
-                navController.navigate(Route.Dashboard.name)
+                navController.navigate(Route.Dashboard.name) {
+                    popUpTo(Route.LogIn.name) {
+                        inclusive = true
+                    }
+                }
             } catch (error: Exception) {
                 Log.d("RKKKKKK", "LoginScreen: error " + error)
             } finally {
@@ -92,11 +98,17 @@ fun LoginScreen(navController: NavController) {
                 .weight(2f)
                 .fillMaxWidth()
         ) {
-            TextInput(label = "Email Id", keyboardType = KeyboardType.Email)
             TextInput(
+                text = emailId,
+                label = "Email Id",
+                keyboardType = KeyboardType.Email,
+                setText = { emailId = it })
+            TextInput(
+                text = password,
                 label = "Password",
                 isPasswordInput = true,
-                keyboardType = KeyboardType.Password
+                keyboardType = KeyboardType.Password,
+                setText = { password = it }
             )
             Button(onClick = { login = true }) {
                 Text(text = "Log In")

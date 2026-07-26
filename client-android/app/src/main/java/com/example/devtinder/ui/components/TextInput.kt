@@ -28,19 +28,20 @@ import com.example.devtinder.R
 
 @Composable
 fun TextInput(
+    text: String,
     label: String,
     isPasswordInput: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.Text,
-    maxLength: Int = 50
+    maxLength: Int = 50,
+    setText: (value: String) -> Unit
 ) {
-    val text = remember { mutableStateOf("") }
     val isFocused = remember { mutableStateOf(false) }
     var isPasswordVisible by remember { mutableStateOf(false) }
 
     TextField(
-        value = text.value,
+        value = text,
         onValueChange = {
-            if (it.length <= maxLength) text.value = it
+            if (it.length <= maxLength) setText(it)
         },
         label = { Text(label) },
         singleLine = true,
@@ -62,7 +63,7 @@ fun TextInput(
                             )
                         }
                     }
-                    IconButton(onClick = { text.value = "" }, modifier = Modifier.size(24.dp)) {
+                    IconButton(onClick = { setText("") }, modifier = Modifier.size(24.dp)) {
                         Icon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "",
@@ -87,5 +88,5 @@ fun TextInput(
 @Composable
 @Preview(showSystemUi = true)
 fun TextInputPreview() {
-    TextInput("Email Id")
+    TextInput(label = "Email Id", text = "", setText = {})
 }
