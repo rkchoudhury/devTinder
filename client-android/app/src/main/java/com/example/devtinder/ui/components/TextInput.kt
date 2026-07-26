@@ -1,8 +1,8 @@
 package com.example.devtinder.ui.components
 
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -30,7 +30,8 @@ import com.example.devtinder.R
 fun TextInput(
     label: String,
     isPasswordInput: Boolean = false,
-    keyboardType: KeyboardType = KeyboardType.Text
+    keyboardType: KeyboardType = KeyboardType.Text,
+    maxLength: Int = 50
 ) {
     val text = remember { mutableStateOf("") }
     val isFocused = remember { mutableStateOf(false) }
@@ -38,7 +39,9 @@ fun TextInput(
 
     TextField(
         value = text.value,
-        onValueChange = { text.value = it },
+        onValueChange = {
+            if (it.length <= maxLength) text.value = it
+        },
         label = { Text(label) },
         singleLine = true,
         maxLines = 1,
@@ -69,15 +72,16 @@ fun TextInput(
                 }
             }
         },
-        modifier = Modifier.onFocusChanged { focusState ->
-            isFocused.value = focusState.isFocused
-        },
+        modifier = Modifier
+            .fillMaxWidth(1f)
+            .padding(50.dp, 0.dp, 50.dp, 10.dp)
+            .onFocusChanged { focusState ->
+                isFocused.value = focusState.isFocused
+            },
         visualTransformation =
             if (isPasswordInput && !isPasswordVisible) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardOptions = KeyboardOptions(keyboardType = keyboardType)
-
     )
-    Spacer(modifier = Modifier.height(10.dp))
 }
 
 @Composable

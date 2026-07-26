@@ -84,7 +84,7 @@ fun LoginScreen(navController: NavController) {
                 .weight(1f)
                 .fillMaxWidth()
         ) {
-            Text(text = "Made with :")
+            Text(text = "Made with ❤\uFE0F")
             Spacer(modifier = Modifier.height(20.dp))
         }
     }
