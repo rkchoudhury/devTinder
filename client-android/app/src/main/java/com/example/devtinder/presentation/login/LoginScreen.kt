@@ -23,11 +23,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.devtinder.R
 import com.example.devtinder.ui.components.TextInput
+import com.example.devtinder.ui.navigation.Route
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -70,7 +73,7 @@ fun LoginScreen() {
                 isPasswordInput = true,
                 keyboardType = KeyboardType.Password
             )
-            Button(onClick = {}) {
+            Button(onClick = { navController.navigate(Route.Dashboard.name) }) {
                 Text(text = "Log In")
             }
         }
@@ -90,5 +93,6 @@ fun LoginScreen() {
 @Composable
 @Preview(showSystemUi = true)
 fun LoginScreenPreview() {
-    LoginScreen()
+    val navController = rememberNavController()
+    LoginScreen(navController)
 }
